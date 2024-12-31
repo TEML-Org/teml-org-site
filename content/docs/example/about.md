@@ -25,7 +25,7 @@ Started 2024-12-29 after years of tinkering and thinking about it.
 
 1. Event Modeling is awesome.
 2. To make Event Modeling more accessible for people that can't use a mouse to draw, and drag.
-3. Finding diagramming tools that meet the requirements of multiple users or teams can be problemtic. Using plain text is accessible to everyone, everywhere, and eliminates any vendor lock-in to tooling. Use the tools you like and take your model anywhere.
+3. Finding diagramming tools that meet the requirements of multiple users or teams can be problematic. Using plain text is accessible to everyone, everywhere, and eliminates any vendor lock-in to tooling. Use the tools you like and take your model anywhere.
 4. Ability to save models in version control.
 5. Ability to generate event models from code.
 6. Ability to generate code from event models.
