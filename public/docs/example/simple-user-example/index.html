@@ -2,75 +2,69 @@
   A Simple Example
   #
 
+First we will view the sections and then at the end we can see the whole document.
 
-  
+  Document Header:
   #
 
 apiVersion: teml.org/v-alpha-001
 metadata:
   name: sample
+The header information is not needed for informal use, but will be useful for tooling.
+
+  Aggregates:
+  #
+
 # Aggregates
 aggs:
   - UserAgg: &amp;User
       id: g
       firstName: s
       lastName: s
-
-# Views
-views:
-  - UserView: &amp;UserView
-      id: g
-      firstName: s
-      lastName: s
-
-# A 'Slice' contains a single operation and a single event.
-# A command and event and tightly coupled. They operate together and the event will never exist without the command. The command will never exist in a slice without the event.
-
-# Slices
-slices:
-  - AddUser:
-      agg: *User
-      command:
-        name: AddUser # The command name is optional since by default it will match the name of the Slice
-      event:
-        name: AddedUsed # The event name should be the past tense of the command
-        props:
-          id: g
-          firstName: s
-          lastName:
-      views:
-        - *UserView
-
-  - RenameUser: # In this slice we don't have a command specified. The command is inferred and will be named after the slice ('RenameUser' in this case)
-      agg: *User
-      event:
-        name: RenamedUser
-        props:
-          id: g
-          firstName: s
-          lastName: s
-      views:
-        - <<: *UserView
-          id: x
-          firstName: x
-
-  - ReAgeUser: # In this slice we don't have a command specified. The command is inferred and will be named after the slice ('RenameUser' in this case)
-      story: &#34;https://www.example.com/12345&#34;
-      status: InDev
-      agg: *User
-      event:
-        name: ReAgedUser
-        props:
-          id: g
-          age: int
-      views:
-        - <<: *UserView
-          id: x
-          age: in```
-"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="http://localhost:1313/docs/example/simple-user-example/"><meta property="og:site_name" content="The Event Modeling Language Org"><meta property="og:title" content="A Simple Example"><meta property="og:description" content="A Simple Example # # apiVersion: teml.org/v-alpha-001 metadata: name: sample # Aggregates aggs: - UserAgg: &amp;User id: g firstName: s lastName: s # Views views: - UserView: &amp;UserView id: g firstName: s lastName: s # A 'Slice' contains a single operation and a single event. # A command and event and tightly coupled. They operate together and the event will never exist without the command. The command will never exist in a slice without the event. # Slices slices: - AddUser: agg: *User command: name: AddUser # The command name is optional since by default it will match the name of the Slice event: name: AddedUsed # The event name should be the past tense of the command props: id: g firstName: s lastName: views: - *UserView - RenameUser: # In this slice we don't have a command specified. The command is inferred and will be named after the slice ('RenameUser' in this case) agg: *User event: name: RenamedUser props: id: g firstName: s lastName: s views: - <<: *UserView id: x firstName: x - ReAgeUser: # In this slice we don't have a command specified. The command is inferred and will be named after the slice ('RenameUser' in this case) story: &#34;https://www.example.com/12345&#34; status: InDev agg: *User event: name: ReAgedUser props: id: g age: int views: - <<: *UserView id: x age: in```"><meta property="og:locale" content="en_us"><meta property="og:type" content="article"><meta property="article:section" content="docs"><title>A Simple Example | The Event Modeling Language Org</title>
-<link rel=icon href=/favicon.png><link rel=manifest href=/manifest.json><link rel=canonical href=http://localhost:1313/docs/example/simple-user-example/><link rel=stylesheet href=/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.0e3f84618753350011b8dd9985066765ed4aeb9d147d037b17306e7315030497.js integrity="sha256-Dj+EYYdTNQARuN2ZhQZnZe1K650UfQN7FzBucxUDBJc=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><span>The Event Modeling Language Org</span></a></h2><div class="book-search hidden"><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li class=book-section-flat><a href=/docs/example/>TEML Specificication</a><ul><li><a href=/docs/example/simple-user-example/ class=active>A Simple Example</a></li><li><a href=/docs/example/about/>About</a></li></ul></li></ul><ul><li><a href=/posts/>Blog</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label><h3>A Simple Example</h3><label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#heading></a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=a-simple-example>A Simple Example
-<a class=anchor href=#a-simple-example>#</a></h1><h2 id=heading><a class=anchor href=#heading>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>teml.org/v-alpha-001</span>
+Optionally define a list of aggregates near the top of the document. Each aggregate in the list can be created using the YAML anchor syntax (ie: &amp;User) so it can be referenced later in the document."><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="http://localhost:1313/docs/example/simple-user-example/"><meta property="og:site_name" content="The Event Modeling Language Org"><meta property="og:title" content="A Simple Example"><meta property="og:description" content="A Simple Example # First we will view the sections and then at the end we can see the whole document.
+Document Header: # apiVersion: teml.org/v-alpha-001 metadata: name: sample The header information is not needed for informal use, but will be useful for tooling.
+Aggregates: # # Aggregates aggs: - UserAgg: &amp;User id: g firstName: s lastName: s Optionally define a list of aggregates near the top of the document. Each aggregate in the list can be created using the YAML anchor syntax (ie: &amp;User) so it can be referenced later in the document."><meta property="og:locale" content="en_us"><meta property="og:type" content="article"><meta property="article:section" content="docs"><title>A Simple Example | The Event Modeling Language Org</title>
+<link rel=icon href=/favicon.png><link rel=manifest href=/manifest.json><link rel=canonical href=http://localhost:1313/docs/example/simple-user-example/><link rel=stylesheet href=/book.min.6c8b9d2a1fc95075ed7da46ca81060b39add8fff6741ac51259f768929281e2c.css integrity="sha256-bIudKh/JUHXtfaRsqBBgs5rdj/9nQaxRJZ92iSkoHiw=" crossorigin=anonymous><script defer src=/fuse.min.js></script><script defer src=/en.search.min.ec5cde4b561c92bfcf85101a27af66d8d3d508eadaea22838188b72bccc58f4f.js integrity="sha256-7FzeS1Yckr/PhRAaJ69m2NPVCOra6iKDgYi3K8zFj08=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><span>The Event Modeling Language Org</span></a></h2><div class="book-search hidden"><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li class=book-section-flat><a href=/docs/example/>TEML Specificication</a><ul><li><a href=/docs/example/simple-user-example/ class=active>A Simple Example</a></li><li><a href=/docs/example/about/>About</a></li></ul></li></ul><ul><li><a href=/posts/>Blog</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label><h3>A Simple Example</h3><label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#document-header>Document Header:</a></li><li><a href=#aggregates>Aggregates:</a></li><li><a href=#views>Views:</a></li><li><a href=#slices>Slices:</a></li><li><a href=#the-full-document>The full document:</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=a-simple-example>A Simple Example
+<a class=anchor href=#a-simple-example>#</a></h1><p>First we will view the sections and then at the end we can see the whole document.</p><h2 id=document-header>Document Header:
+<a class=anchor href=#document-header>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>teml.org/v-alpha-001</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>sample</span>
+</span></span></code></pre></div><p>The header information is not needed for informal use, but will be useful for tooling.</p><h2 id=aggregates>Aggregates:
+<a class=anchor href=#aggregates>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># Aggregates</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>aggs</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>UserAgg</span>: <span style=color:#75715e>&amp;User</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>id</span>: <span style=color:#ae81ff>g</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>firstName</span>: <span style=color:#ae81ff>s</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>lastName</span>: <span style=color:#ae81ff>s</span>
+</span></span></code></pre></div><p>Optionally define a list of aggregates near the top of the document. Each aggregate in the list can be created using the YAML anchor syntax (ie: &amp;User) so it can be referenced later in the document.</p><h2 id=views>Views:
+<a class=anchor href=#views>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># Views</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>views</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>UserView</span>: <span style=color:#75715e>&amp;UserView</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>id</span>: <span style=color:#ae81ff>g</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>firstName</span>: <span style=color:#ae81ff>s</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>lastName</span>: <span style=color:#ae81ff>s</span>
+</span></span></code></pre></div><p>Optionally define a list of views near the top of the document. Each document in the list can be created using the YAML anchnor syntax (ie: &amp;UserView) so it can be referenced later in the document.</p><h2 id=slices>Slices:
+<a class=anchor href=#slices>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># A &#39;Slice&#39; contains a single operation and a single event.</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># A command and event and tightly coupled. They operate together and the event will never exist without the command. The command will never exist in a slice without the event.</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Slices</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>slices</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>AddUser</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>agg</span>: <span style=color:#75715e>*User</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>command</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>name</span>: <span style=color:#ae81ff>AddUser</span> <span style=color:#75715e># The command name is optional since by default it will match the name of the Slice</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>event</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>name</span>: <span style=color:#ae81ff>AddedUsed</span> <span style=color:#75715e># The event name should be the past tense of the command</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>props</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>id</span>: <span style=color:#ae81ff>g</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>firstName</span>: <span style=color:#ae81ff>s</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>lastName</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>views</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#75715e>*UserView</span>
+</span></span><span style=display:flex><span>   <span style=color:#ae81ff>...</span>
+</span></span></code></pre></div><p>A list of slices are defined after the optional <em>aggregates</em> and <em>views</em>. We put these after the aggregates and views so we can reference the YAML anchors using YAML aliases such as **User* and **UserView*.</p><p>A slice defines a unit of work in an application. The unit of work is triggered by some external force that calls a <em>command</em>. Every <em>command</em> results in atleast one <em>event</em>. <em>Views</em> are updated by handling <em>events</em>.</p><p>Properties of slices include:</p><ul><li><em>agg</em>: The aggregate that is affected by the slice.</li><li><em>command</em>: If not defined, a command is inferred and will have the same name as the slice. A command name should be imperitive (ie: &lsquo;DoSomething!&rsquo;)</li><li><em>event</em>: An event is the result of a command. The name of an event must be in the past-tense. An event name should be declarative (ie: &lsquo;ItWasDone&rsquo;)</li><li><em>views</em>: If the events will affect any views, the views can be listed here. Using the YAML alias syntax allows for linking back to a views that was optionally defined at the top of the document.</li><li><em>wfes</em>: If the events will trigger a &lsquo;WorkFlowEngine&rsquo; (WFE) process, then the WFEs can be listed here.</li></ul><h2 id=the-full-document>The full document:
+<a class=anchor href=#the-full-document>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>teml.org/v-alpha-001</span>
 </span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
 </span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>sample</span>
 </span></span><span style=display:flex><span><span style=color:#75715e># Aggregates</span>
@@ -131,4 +125,4 @@ slices:
 </span></span><span style=display:flex><span>        - <span style=color:#f92672>&lt;&lt;</span>: <span style=color:#75715e>*UserView</span>
 </span></span><span style=display:flex><span>          <span style=color:#f92672>id</span>: <span style=color:#ae81ff>x</span>
 </span></span><span style=display:flex><span>          <span style=color:#f92672>age</span>: <span style=color:#ae81ff>in```</span>
-</span></span></code></pre></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#heading></a></li></ul></nav></div></aside></main></body></html>
+</span></span></code></pre></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#document-header>Document Header:</a></li><li><a href=#aggregates>Aggregates:</a></li><li><a href=#views>Views:</a></li><li><a href=#slices>Slices:</a></li><li><a href=#the-full-document>The full document:</a></li></ul></nav></div></aside></main></body></html>

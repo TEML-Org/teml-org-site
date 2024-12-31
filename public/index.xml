@@ -1,3 +1,46 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Introduction on The Event Modeling Language Org</title><link>http://localhost:1313/</link><description>Recent content in Introduction on The Event Modeling Language Org</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sun, 29 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml"/><item><title>Day One of TEML.org</title><link>http://localhost:1313/posts/day-one-of-teml/</link><pubDate>Sun, 29 Dec 2024 00:00:00 +0000</pubDate><guid>http://localhost:1313/posts/day-one-of-teml/</guid><description>&lt;p>Today is 2024-12-29. I decided that no one was going to come around and give me permission to standardize a textual language for the event moddeling process, and I could wait forevery for someone else to do it. I think that means I should just get started.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Introduction on The Event Modeling Language Org</title><link>http://localhost:1313/</link><description>Recent content in Introduction on The Event Modeling Language Org</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sun, 29 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml"/><item><title>A Simple Example</title><link>http://localhost:1313/docs/example/simple-user-example/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://localhost:1313/docs/example/simple-user-example/</guid><description>&lt;h1 id="a-simple-example">
+ A Simple Example
+ &lt;a class="anchor" href="#a-simple-example">#&lt;/a>
+&lt;/h1>
+&lt;p>First we will view the sections and then at the end we can see the whole document.&lt;/p>
+&lt;h2 id="document-header">
+ Document Header:
+ &lt;a class="anchor" href="#document-header">#&lt;/a>
+&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">apiVersion&lt;/span>: &lt;span style="color:#ae81ff">teml.org/v-alpha-001&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">metadata&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">sample&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The header information is not needed for informal use, but will be useful for tooling.&lt;/p>
+&lt;h2 id="aggregates">
+ Aggregates:
+ &lt;a class="anchor" href="#aggregates">#&lt;/a>
+&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Aggregates&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">aggs&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">UserAgg&lt;/span>: &lt;span style="color:#75715e">&amp;amp;User&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">id&lt;/span>: &lt;span style="color:#ae81ff">g&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">firstName&lt;/span>: &lt;span style="color:#ae81ff">s&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">lastName&lt;/span>: &lt;span style="color:#ae81ff">s&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Optionally define a list of aggregates near the top of the document. Each aggregate in the list can be created using the YAML anchor syntax (ie: &amp;amp;User) so it can be referenced later in the document.&lt;/p></description></item><item><title>About</title><link>http://localhost:1313/docs/example/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://localhost:1313/docs/example/about/</guid><description>&lt;h1 id="about">
+ About
+ &lt;a class="anchor" href="#about">#&lt;/a>
+&lt;/h1>
+&lt;h2 id="who">
+ Who:
+ &lt;a class="anchor" href="#who">#&lt;/a>
+&lt;/h2>
+&lt;p>Marc Talcott - &lt;a href="https://www.marctalcott.com/">https://www.marctalcott.com/&lt;/a>
+And hopefully some help will be coming soon.&lt;/p>
+&lt;h2 id="what">
+ What:
+ &lt;a class="anchor" href="#what">#&lt;/a>
+&lt;/h2>
+&lt;p>&amp;lsquo;TEML&amp;rsquo; stands for &amp;lsquo;The Event Modeling Language&amp;rsquo; and is a textual form of Event Modeling. The original Event Modeling is a graphical process.&lt;/p>
+&lt;p>The TEML specification (TEML spec) is an open source project under the Apache 2.0 license.&lt;/p>
+&lt;h2 id="when">
+ When:
+ &lt;a class="anchor" href="#when">#&lt;/a>
+&lt;/h2>
+&lt;p>Started 2024-12-29 after years of tinkering and thinking about it.&lt;/p></description></item><item><title>Day One of TEML.org</title><link>http://localhost:1313/posts/day-one-of-teml/</link><pubDate>Sun, 29 Dec 2024 00:00:00 +0000</pubDate><guid>http://localhost:1313/posts/day-one-of-teml/</guid><description>&lt;p>Today is 2024-12-29. I decided that no one was going to come around and give me permission to standardize a textual language for the event modeling process, and I could wait forevery for someone else to do it. I think that means I should just get started.&lt;/p>
 &lt;p>I&amp;rsquo;ve started this website. I&amp;rsquo;ve created a new organization on Github with a repo for my documentation notes.&lt;/p>
 &lt;p>The project will be open source under the Apache 2.0 License. I would love some help with this, but I also would love it to say so simple that it doesn&amp;rsquo;t require much work.&lt;/p></description></item></channel></rss>
