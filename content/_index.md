@@ -5,12 +5,13 @@ type: docs
 
 # The Event Modeling Language Org
 
+TEML stands for 'The Event Modeling Language'.
+
 ## Mission
 
 The Event Modeling Language Org has been established to create a
 formalized language for defining an Event Model. Having an agreed upon standard
 language for Event Modeling opens opportunities for the design and implementation of tooling for Event Modeling.
-<--->
 
 ## What is Event Modeling?
 
