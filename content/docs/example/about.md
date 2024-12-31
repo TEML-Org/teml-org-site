@@ -15,14 +15,16 @@ And hopefully some help will be coming soon.
 
 'TEML' stands for 'The Event Modeling Language' and is a textual form of Event Modeling. The original Event Modeling is a graphical process.
 
+The TEML specification (TEML spec) is an open source project under the Apache 2.0 license.
+
 ## When:
 
 Started 2024-12-29 after years of tinkering and thinking about it.
 
 ## Why:
 
-1. I love Event Modeling.
-2. I have developed hand and arm pain from RSI (repetive strain injury), so using a mouse can be dibilitating at times.
+1. Event Modeling is awesome.
+2. To make Event Modeling more accessible for people that can't use a mouse to draw, and drag.
 3. Finding diagramming tools that meet the requirements of multiple users or teams can be problemtic. Using plain text is accessible to everyone, everywhere, and eliminates any vendor lock-in to tooling. Use the tools you like and take your model anywhere.
 4. Ability to save models in version control.
 5. Ability to generate event models from code.

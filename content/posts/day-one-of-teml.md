@@ -11,7 +11,7 @@ categories = [
 menu = "main"
 +++
 
-Today is 2024-12-29. I decided that no one was going to come around and give me permission to standardize a textual language for the event moddeling process, and I could wait forevery for someone else to do it. I think that means I should just get started.
+Today is 2024-12-29. I decided that no one was going to come around and give me permission to standardize a textual language for the event modeling process, and I could wait forevery for someone else to do it. I think that means I should just get started.
 
 I've started this website. I've created a new organization on Github with a repo for my documentation notes.
 
