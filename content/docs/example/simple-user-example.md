@@ -195,6 +195,6 @@ slices:
           age: ""
 ```
 
-This version is fairly minimal. Most of the valuable information is still conveyed. We can still see there is one aggregate, two views and 3 slices. We have shorted the slices by leaving out the command. The command and command-name can be inferred from the slice and slice name. The events are defined since they the critical piece of information that we need to capture in our system. The event carries the data that will be used by the viewsor processors that handle events.
+This version is fairly minimal. Most of the valuable information is still conveyed. We can still see there is one aggregate, two views and 3 slices. We have shortened the slices by leaving out the command. The command and command-name can be inferred from the slice and slice name. The events are defined since they the critical piece of information that we need to capture in our system. The event carries the data that will be used by the views and/or processors that handle events.
 
-Once teams become familiar with Event Modeling and with each other, the notation required to communicate can be more and more condensed. This notation allows us to be very breif when needed. It also allows us to add more details if we would like to feed this into tooling that could help generate code or documentation.
+Once teams become familiar with Event Modeling and with each other, the notation required to communicate can be more and more condensed. This notation allows us to be very brief when needed. It also allows us to add more details if we would like to feed the model into tooling that could help generate code or documentation.
