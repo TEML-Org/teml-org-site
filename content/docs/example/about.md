@@ -6,11 +6,6 @@ title: "About"
 
 # About
 
-## Who:
-
-Marc Talcott - [https://www.marctalcott.com/](https://www.marctalcott.com/)
-And hopefully some help will be coming soon.
-
 ## What:
 
 'TEML' stands for 'The Event Modeling Language' and is a textual form of Event Modeling. The original Event Modeling is a graphical process.
@@ -29,3 +24,8 @@ Started 2024-12-29 after years of tinkering and thinking about it.
 4. Ability to save models in version control.
 5. Ability to generate event models from code.
 6. Ability to generate code from event models.
+
+## Who:
+
+Marc Talcott - [https://www.marctalcott.com/](https://www.marctalcott.com/)
+And hopefully some help will be coming soon.
