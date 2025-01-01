@@ -145,3 +145,56 @@ slices:
           id: x
           age: in```
 ````
+
+## Skimmed Down Version:
+
+```yaml
+# Header left out for brevity
+# Aggregates
+aggs:
+  - UserAgg: &User id
+      firstName
+      lastName
+      age
+
+# Views
+views:
+  - UserView: &UserView id
+      firstName
+      lastName
+      age
+
+# Slices
+slices:
+  - AddUser:
+      event: AddedUser
+        props
+        - id
+        - firstName
+        - lastName
+        - age
+      views:
+        - *UserView
+
+  - RenameUser:
+      event: RenamedUser
+        props
+        - id
+        - firstName
+        - lastName
+      views:
+        - <<: *UserView
+          firstName: ""
+          lastName: ""
+  - ReAgeUser:
+      event: ReAgedUser
+        props
+        - age
+      views:
+        - <<: *UserView
+          age: ""
+```
+
+This version is fairly minimal. Most of the valuable information is still conveyed. We can still see there is one aggregate, two views and 3 slices. We have shorted the slices by leaving out the command. The command and command-name can be inferred from the slice and slice name. The events are defined since they the critical piece of information that we need to capture in our system. The event carries the data that will be used by the viewsor processors that handle events.
+
+Once teams become familiar with Event Modeling and with each other, the notation required to communicate can be more and more condensed. This notation allows us to be very breif when needed. It also allows us to add more details if we would like to feed this into tooling that could help generate code or documentation.
