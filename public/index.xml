@@ -21,16 +21,11 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">id&lt;/span>: &lt;span style="color:#ae81ff">g&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">firstName&lt;/span>: &lt;span style="color:#ae81ff">s&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">lastName&lt;/span>: &lt;span style="color:#ae81ff">s&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">age&lt;/span>: &lt;span style="color:#ae81ff">int&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Optionally define a list of aggregates near the top of the document. Each aggregate in the list can be created using the YAML anchor syntax (ie: &amp;amp;User) so it can be referenced later in the document.&lt;/p></description></item><item><title>About</title><link>http://localhost:1313/docs/example/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://localhost:1313/docs/example/about/</guid><description>&lt;h1 id="about">
  About
  &lt;a class="anchor" href="#about">#&lt;/a>
 &lt;/h1>
-&lt;h2 id="who">
- Who:
- &lt;a class="anchor" href="#who">#&lt;/a>
-&lt;/h2>
-&lt;p>Marc Talcott - &lt;a href="https://www.marctalcott.com/">https://www.marctalcott.com/&lt;/a>
-And hopefully some help will be coming soon.&lt;/p>
 &lt;h2 id="what">
  What:
  &lt;a class="anchor" href="#what">#&lt;/a>
@@ -41,6 +36,24 @@ And hopefully some help will be coming soon.&lt;/p>
  When:
  &lt;a class="anchor" href="#when">#&lt;/a>
 &lt;/h2>
-&lt;p>Started 2024-12-29 after years of tinkering and thinking about it.&lt;/p></description></item><item><title>Day One of TEML.org</title><link>http://localhost:1313/posts/day-one-of-teml/</link><pubDate>Sun, 29 Dec 2024 00:00:00 +0000</pubDate><guid>http://localhost:1313/posts/day-one-of-teml/</guid><description>&lt;p>Today is 2024-12-29. I decided that no one was going to come around and give me permission to standardize a textual language for the event modeling process, and I could wait forevery for someone else to do it. I think that means I should just get started.&lt;/p>
+&lt;p>Started 2024-12-29 after years of tinkering and thinking about it.&lt;/p>
+&lt;h2 id="why">
+ Why:
+ &lt;a class="anchor" href="#why">#&lt;/a>
+&lt;/h2>
+&lt;ol>
+&lt;li>Event Modeling is awesome.&lt;/li>
+&lt;li>To make Event Modeling more accessible for people that can&amp;rsquo;t use a mouse to draw, and drag.&lt;/li>
+&lt;li>Finding diagramming tools that meet the requirements of multiple users or teams can be problematic. Using plain text is accessible to everyone, everywhere, and eliminates any vendor lock-in to tooling. Use the tools you like and take your model anywhere.&lt;/li>
+&lt;li>Ability to save models in version control.&lt;/li>
+&lt;li>Ability to generate event models from code.&lt;/li>
+&lt;li>Ability to generate code from event models.&lt;/li>
+&lt;/ol>
+&lt;h2 id="who">
+ Who:
+ &lt;a class="anchor" href="#who">#&lt;/a>
+&lt;/h2>
+&lt;p>Marc Talcott - &lt;a href="https://www.marctalcott.com/">https://www.marctalcott.com/&lt;/a>
+And hopefully some help will be coming soon.&lt;/p></description></item><item><title>Day One of TEML.org</title><link>http://localhost:1313/posts/day-one-of-teml/</link><pubDate>Sun, 29 Dec 2024 00:00:00 +0000</pubDate><guid>http://localhost:1313/posts/day-one-of-teml/</guid><description>&lt;p>Today is 2024-12-29. I decided that no one was going to come around and give me permission to standardize a textual language for the event modeling process, and I could wait forevery for someone else to do it. I think that means I should just get started.&lt;/p>
 &lt;p>I&amp;rsquo;ve started this website. I&amp;rsquo;ve created a new organization on Github with a repo for my documentation notes.&lt;/p>
 &lt;p>The project will be open source under the Apache 2.0 License. I would love some help with this, but I also would love it to say so simple that it doesn&amp;rsquo;t require much work.&lt;/p></description></item></channel></rss>

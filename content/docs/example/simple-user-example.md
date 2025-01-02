@@ -27,6 +27,7 @@ aggs:
       id: g
       firstName: s
       lastName: s
+      age: int
 ```
 
 Optionally define a list of aggregates near the top of the document. Each aggregate in the list can be created using the YAML anchor syntax (ie: &User) so it can be referenced later in the document.
@@ -40,6 +41,7 @@ views:
       id: g
       firstName: s
       lastName: s
+      age: int
 ```
 
 Optionally define a list of views near the top of the document. Each document in the list can be created using the YAML anchnor syntax (ie: &UserView) so it can be referenced later in the document.
@@ -61,12 +63,18 @@ slices:
         props:
           id: g
           firstName: s
-          lastName:
+          lastName: s
+          age: int
       views:
         - *UserView
    ...
 
 ```
+
+Here is an equivelant standard event model:
+![Add User Slice of Event Model](/addUser.png)
+
+---
 
 A list of slices are defined after the optional _aggregates_ and _views_. We put these after the aggregates and views so we can reference the YAML anchors using YAML aliases such as **User\* and **UserView\*.
 
@@ -92,6 +100,7 @@ aggs:
       id: g
       firstName: s
       lastName: s
+      age: int
 
 # Views
 views:
@@ -99,6 +108,7 @@ views:
       id: g
       firstName: s
       lastName: s
+      age: int
 
 # A 'Slice' contains a single operation and a single event.
 # A command and event and tightly coupled. They operate together and the event will never exist without the command. The command will never exist in a slice without the event.
@@ -114,7 +124,8 @@ slices:
         props:
           id: g
           firstName: s
-          lastName:
+          lastName: s
+          age: int
       views:
         - *UserView
 
