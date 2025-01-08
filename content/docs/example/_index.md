@@ -1,10 +1,10 @@
 ---
 weight: 1
 bookFlatSection: true
-title: "TEML Specificication"
+title: "Introduction to TEML"
 ---
 
-# TEML Language Specification
+# Introduction to TEML
 
 ## Overview
 
