@@ -14,7 +14,7 @@ TEML can be used in two key ways:
    - Feeding into processors to generate code.
    - Outputting models from existing code using specialized tools.
 
-TEML is an open-source project, and its repository can be found here: [TEML-Org GitHub](https://github.com/TEML-Org/teml-org-site).
+TEML is an open-source project. The specification, examples and tools live in [TEML-Org/Teml-spec](https://github.com/TEML-Org/Teml-spec), and this website in [TEML-Org/teml-org-site](https://github.com/TEML-Org/teml-org-site).
 
 ---
 
@@ -67,3 +67,13 @@ By providing this standardized language, TEML aims to give users an additional w
 2. Accelerate the development and maintenance of Event Models.
 
 ---
+
+## **Get started**
+
+The current version of TEML is **v-alpha-002**, a working draft.
+
+- [Introduction to TEML](docs/example/): a quick tour of the language.
+- [A Simple Example](docs/example/simple-user-example/): a small model built step by step.
+- [Specification](docs/example/specification/): the full rules.
+- [Demos](/demos/): models drawn as Event Modeling boards, straight from their TEML.
+- JSON Schema for editors and tools: [`teml-alpha-002.schema.json`](/schema/teml-alpha-002.schema.json)

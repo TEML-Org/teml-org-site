@@ -1,0 +1,512 @@
+<title>TEML v-alpha-002 Demos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --page: #f3f5f7;
+    --ink: #1b2128;
+    --muted: #5b6573;
+    --line: #d4d9df;
+    --board: #fbfcfd;
+    --dot: #dde2e7;
+    --lane-alt: rgba(27, 33, 40, 0.025);
+    --label-bg: #f0f3f6;
+    --surface: #ffffff;
+    --arrow: #7a8491;
+    --hot: #1b2128;
+    --focus: #2f6db0;
+    --note-ink: #1b2027;
+    --cmd: #86bdf2;
+    --evt: #f7ab5e;
+    --view: #93d494;
+    --screen: #ffffff;
+    --screen-edge: #98a2ae;
+    --wfe: #d3cbf1;
+    --sys: #dbe9ec;
+    --sys-edge: #6f8e96;
+    --err: #c8423b;
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --cond: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page: #111418; --ink: #e5e9ee; --muted: #98a2ae; --line: #2a3138;
+      --board: #171b20; --dot: #262d35; --lane-alt: rgba(229, 233, 238, 0.025); --label-bg: #1c2127;
+      --surface: #1a1f25; --arrow: #7f8995; --hot: #e5e9ee; --focus: #7fb2ec;
+      --cmd: #6fa8e0; --evt: #e99a4f; --view: #7fc180; --screen: #e8ecf0; --screen-edge: #8d97a3; --wfe: #b9aee4; --sys: #c9dde2; --sys-edge: #6f8e96; --err: #f0776f;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #111418; --ink: #e5e9ee; --muted: #98a2ae; --line: #2a3138;
+    --board: #171b20; --dot: #262d35; --lane-alt: rgba(229, 233, 238, 0.025); --label-bg: #1c2127;
+    --surface: #1a1f25; --arrow: #7f8995; --hot: #e5e9ee; --focus: #7fb2ec;
+    --cmd: #6fa8e0; --evt: #e99a4f; --view: #7fc180; --screen: #e8ecf0; --screen-edge: #8d97a3; --wfe: #b9aee4; --sys: #c9dde2; --sys-edge: #6f8e96; --err: #f0776f;
+  }
+
+  body { background: var(--page); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.5; }
+  .wrap { padding-inline: 24px; padding-block: 28px 56px; max-width: 1400px; margin: 0 auto; display: grid; gap: 28px; }
+  @media (max-width: 600px) { .wrap { padding-inline: 16px; } }
+
+  header { display: grid; gap: 6px; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: 0.02em; }
+  h1 { font-family: var(--cond); font-weight: 700; font-size: clamp(28px, 4vw, 40px); line-height: 1.1; margin: 0; text-wrap: balance; }
+  .lede { margin: 0; max-width: 68ch; color: var(--muted); }
+  .facts { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--muted); margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .facts b { color: var(--ink); font-weight: 600; }
+
+  .toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13px; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .sw { width: 14px; height: 14px; border-radius: 2px; display: inline-block; }
+  .sw.screen { background: var(--screen); border: 1px solid var(--screen-edge); }
+  .sw.sys { background: var(--sys); border: 1px solid var(--sys-edge); }
+  .sw.wfe { background: var(--wfe); } .sw.cmd { background: var(--cmd); } .sw.view { background: var(--view); } .sw.evt { background: var(--evt); }
+  .zoom { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--surface); }
+  .zoom button { font: 500 13px var(--sans); color: var(--ink); background: none; border: 0; padding: 6px 12px; cursor: pointer; }
+  .zoom button + button { border-left: 1px solid var(--line); }
+  .zoom output { font: 500 13px var(--mono); padding: 6px 10px; border-left: 1px solid var(--line); min-width: 5ch; text-align: center; font-variant-numeric: tabular-nums; }
+  .zoom button:hover { background: var(--label-bg); }
+  button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  .scroller { overflow: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--board); max-height: 78vh; }
+  .board { position: relative; background-color: var(--board); background-image: radial-gradient(var(--dot) 1px, transparent 1.2px); background-size: 18px 18px; }
+  .board svg { position: absolute; inset: 0; z-index: 1; overflow: visible; pointer-events: none; }
+  .lane { position: absolute; left: 0; border-top: 1px solid var(--line); }
+  .lane:nth-of-type(even) { background: var(--lane-alt); }
+  .lane-label { position: sticky; left: 0; z-index: 4; height: 100%; display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 0 14px; background: var(--label-bg); border-right: 1px solid var(--line); box-sizing: border-box; }
+  .lane-label b { font: 600 14px/1.2 var(--cond); }
+  .lane-label small { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .col-head { position: absolute; top: 0; z-index: 2; display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 0 4px; background: none; border: 0; text-align: left; color: var(--ink); cursor: pointer; border-radius: 6px; }
+  .col-head .sn { font: 700 16px/1.15 var(--cond); }
+  .col-head .meta { display: flex; gap: 6px; align-items: center; font-size: 11px; color: var(--muted); }
+  .col-head:hover .sn { text-decoration: underline; text-underline-offset: 3px; }
+  .col-head.sel .sn { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+  .col-head .viewtag { font: 600 10px/1 var(--sans); letter-spacing: 0.05em; text-transform: uppercase; padding: 3px 6px; border-radius: 3px; background: var(--view); color: var(--note-ink); }
+  .divider { position: absolute; top: 0; width: 0; border-left: 1px dashed var(--line); z-index: 0; }
+
+  .chip { font: 600 10px/1 var(--sans); letter-spacing: 0.05em; text-transform: uppercase; padding: 3px 6px; border-radius: 99px; white-space: nowrap; }
+  .chip.Completed { background: var(--ink); color: var(--page); }
+  .chip.InDev { border: 1px solid var(--ink); color: var(--ink); }
+  .chip.InDev::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; margin-right: 4px; vertical-align: 1px; }
+  .chip.other { border: 1px dashed var(--muted); color: var(--muted); }
+
+  .note { position: absolute; z-index: 2; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 6px 10px; border: 0; border-radius: 3px; text-align: left; color: var(--note-ink); cursor: pointer; box-shadow: 0 1px 0 rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.08); transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease; }
+  .note .nm { font: 600 13.5px/1.2 var(--cond); overflow-wrap: anywhere; }
+  .note .k { font: 500 10px/1 var(--sans); text-transform: uppercase; letter-spacing: 0.06em; opacity: .7; display: flex; align-items: center; gap: 4px; }
+  .note.cmd { background: var(--cmd); } .note.evt { background: var(--evt); } .note.view { background: var(--view); } .note.wfe { background: var(--wfe); }
+  .note.screen { background: var(--screen); border: 1px solid var(--screen-edge); }
+  .note.screen::after { content: ""; position: absolute; left: 8px; right: 8px; top: 5px; height: 3px; border-radius: 2px; background: var(--screen-edge); opacity: .35; }
+  .note.system { background: var(--sys); border: 1px solid var(--sys-edge); }
+  .note.inferred { background-image: repeating-linear-gradient(135deg, transparent 0 6px, rgba(255,255,255,.35) 6px 8px); }
+  .note:hover { transform: translateY(-1px); box-shadow: 0 2px 0 rgba(0,0,0,.08), 0 6px 14px rgba(0,0,0,.14); }
+  .board.focusing .note:not(.sel):not(.linked) { opacity: .45; }
+  .note.sel { outline: 2.5px solid var(--hot); outline-offset: 2px; }
+  .edge { fill: none; stroke: var(--arrow); stroke-width: 1.4; }
+  .edge.trig { stroke-dasharray: 5 4; }
+  .edge.hot { stroke: var(--hot); stroke-width: 2.2; }
+  .board.focusing .edge:not(.hot) { opacity: .3; }
+  .m-arrow path { fill: var(--arrow); } .m-hot path { fill: var(--hot); }
+
+  .detail { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 20px; align-items: start; }
+  .detail.single { grid-template-columns: minmax(0, 1fr); }
+  @media (max-width: 860px) { .detail { grid-template-columns: minmax(0, 1fr); } }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 18px 20px; display: grid; gap: 14px; min-width: 0; }
+  .panel h2 { font: 700 22px/1.15 var(--cond); margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; overflow-wrap: anywhere; }
+  .panel h3 { font: 600 11px/1 var(--sans); text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin: 0 0 6px; }
+  .kind { font: 500 11px/1 var(--sans); text-transform: uppercase; letter-spacing: 0.06em; padding: 4px 7px; border-radius: 3px; color: var(--note-ink); }
+  .kind.cmd { background: var(--cmd); } .kind.evt { background: var(--evt); } .kind.view { background: var(--view); } .kind.wfe { background: var(--wfe); }
+  .kind.system { background: var(--sys); border: 1px solid var(--sys-edge); }
+  .kind.screen { background: var(--screen); border: 1px solid var(--screen-edge); } .kind.slice { background: var(--label-bg); color: var(--ink); border: 1px solid var(--line); }
+  .kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 14px; font-size: 14px; margin: 0; }
+  .kv dt { color: var(--muted); } .kv dd { margin: 0; overflow-wrap: anywhere; }
+  .props { list-style: none; margin: 0; padding: 0; font: 13px/1.6 var(--mono); }
+  .props .props { padding-left: 16px; border-left: 1px solid var(--line); margin-left: 4px; }
+  .props .ty { color: var(--muted); }
+  .props .touched { background: color-mix(in srgb, var(--view) 45%, transparent); border-radius: 2px; padding: 0 3px; }
+  .muted { color: var(--muted); }
+  .link { background: none; border: 0; padding: 0; font: inherit; color: var(--ink); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; cursor: pointer; }
+  .link:hover { text-decoration-color: currentColor; }
+
+  .spec { border-top: 1px solid var(--line); padding-top: 12px; display: grid; gap: 6px; }
+  .spec:first-of-type { border-top: 0; padding-top: 0; }
+  .spec > b { font-weight: 600; }
+  .gwt { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 4px 10px; align-items: start; font-size: 13px; }
+  .gwt > span { font: 600 11px/22px var(--sans); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .insts { display: flex; flex-wrap: wrap; gap: 6px; }
+  .inst { font: 12px/1.45 var(--mono); padding: 2px 7px; border-radius: 3px; color: var(--note-ink); overflow-wrap: anywhere; }
+  .inst b { font-weight: 500; }
+  .inst.evt { background: var(--evt); } .inst.view { background: var(--view); } .inst.cmd { background: var(--cmd); }
+  .inst.err { background: none; color: var(--err); border: 1px solid var(--err); }
+  .inst.none { background: none; color: var(--muted); border: 1px dashed var(--line); }
+
+  details.src summary { cursor: pointer; font-weight: 600; }
+  details.src pre { margin: 12px 0 0; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; overflow: auto; max-height: 70vh; font: 12.5px/1.55 var(--mono); }
+  @media (prefers-reduced-motion: reduce) { .note { transition: none; } }
+
+  .tabs { display: flex; flex-wrap: wrap; gap: 4px; border-bottom: 1px solid var(--line); }
+  .tab { font: 600 15px/1.2 var(--cond); color: var(--muted); background: none; border: 0; border-bottom: 3px solid transparent; padding: 10px 14px 9px; margin-bottom: -1px; cursor: pointer; }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+  .demo { display: grid; gap: 20px; }
+  .demo-intro { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 12px 40px; align-items: start; }
+  @media (max-width: 860px) { .demo-intro { grid-template-columns: minmax(0, 1fr); } }
+  .demo-intro h2 { font: 700 26px/1.15 var(--cond); margin: 0 0 8px; text-wrap: balance; }
+  .demo-intro p { margin: 0; max-width: 64ch; }
+  .demo-intro h3, .src-block h3 { font: 600 11px/1 var(--sans); text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin: 0 0 8px; }
+  .demo-intro ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+  .demo-intro .facts { margin-top: 12px; }
+  .board-app { display: grid; gap: 20px; }
+  .src-block h3 span { font: 400 12px var(--mono); text-transform: none; letter-spacing: 0; margin-left: 6px; }
+  .src-block pre { margin: 0; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; overflow: auto; max-height: 560px; font: 12.5px/1.55 var(--mono); }
+  .note-box { border-left: 3px solid var(--sys-edge); background: var(--surface); padding: 12px 16px; border-radius: 0 6px 6px 0; max-width: 80ch; }
+  .note-box p { margin: 0; }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">teml.org/v-alpha-002 · draft for review (PR #4)</div>
+    <h1>What's new in v-alpha-002</h1>
+    <p class="lede">Each tab shows one new feature as a small model, then everything together in the hotel model. Every board is drawn directly from the TEML shown under it. Click any sticky or slice heading for its details and Given/When/Then specs.</p>
+  </header>
+  <div class="note-box"><p><b>Revised after review:</b> external systems no longer put events into our model. A system calls our API (for example, a webhook), which issues one of our commands. The events that follow are ours and can trigger our workflows.</p></div>
+  <nav class="tabs" role="tablist" aria-label="Demos" id="tabs"></nav>
+  <div id="panels"></div>
+</div>
+
+<template id="board-ui">
+<div class="toolbar">
+  <div class="legend" aria-label="Legend">
+    <span><i class="sw screen"></i>Screen</span>
+    <span><i class="sw sys"></i>External system (API call)</span>
+    <span><i class="sw wfe"></i>Automation</span>
+    <span><i class="sw cmd"></i>Command</span>
+    <span><i class="sw view"></i>Read model</span>
+    <span><i class="sw evt"></i>Event</span>
+    <span class="muted">Dashed arrow: an event triggers an automation</span>
+  </div>
+  <div class="zoom" role="group" aria-label="Zoom">
+    <button type="button" class="zoom-out" aria-label="Zoom out">−</button>
+    <output>80%</output>
+    <button type="button" class="zoom-in" aria-label="Zoom in">+</button>
+    <button type="button" class="zoom-fit">Fit</button>
+  </div>
+</div>
+<div class="scroller"><div class="board"></div></div>
+<section class="detail" aria-live="polite"></section>
+
+</template>
+
+<script>
+// Event Modeling board renderer for TEML board data (see board-data.mjs).
+// mountBoard(root, M) draws into `root`, which must contain .scroller > .board,
+// .detail, and optionally .zoom controls. Several boards can share one page.
+const TEML_BOARD = (() => {
+  const NOTE_W = 140, NOTE_H = 54, GAP = 12, PAD = 16, LABEL_W = 136, SUB_GAP = 40, HEAD_H = 64;
+  const COL_W = NOTE_W * 2 + SUB_GAP + 44;
+  const TYPE_NAMES = { g: "unique identifier", guid: "unique identifier", uuid: "unique identifier", s: "text", str: "text", string: "text",
+    int: "whole number", i: "whole number", integer: "whole number", dec: "decimal", decimal: "decimal", float: "floating-point number",
+    bool: "true / false", b: "true / false", boolean: "true / false", date: "calendar date", time: "time of day", dt: "date and time",
+    datetime: "date and time", timestamp: "date and time", dur: "duration", duration: "duration", uri: "URI", url: "URI", any: "unspecified" };
+  const GEAR = '<svg width="11" height="11" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M9.4 1l.4 1.9c.4.1.8.3 1.1.5l1.7-1 1.4 1.4-1 1.7c.2.3.4.7.5 1.1l1.9.4v2l-1.9.4c-.1.4-.3.8-.5 1.1l1 1.7-1.4 1.4-1.7-1c-.3.2-.7.4-1.1.5L9.4 15h-2l-.4-1.9c-.4-.1-.8-.3-1.1-.5l-1.7 1-1.4-1.4 1-1.7c-.2-.3-.4-.7-.5-1.1L1.6 9V7l1.9-.4c.1-.4.3-.8.5-1.1l-1-1.7 1.4-1.4 1.7 1c.3-.2.7-.4 1.1-.5L7.6 1h1.8zM8.5 5.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5z"/></svg>';
+  const PLUG = '<svg width="11" height="11" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M5 1h1.5v3.5h3V1H11v3.5h1.5V8a4.5 4.5 0 01-3.75 4.44V15h-1.5v-2.56A4.5 4.5 0 013.5 8V4.5H5V1z"/></svg>';
+  const KIND = { screen: "Screen", wfe: "Automation", system: "API call", cmd: "Command", view: "Read model", evt: "Event" };
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const spaced = n => String(n).replace(/([a-z])([A-Z])/g, "$1 $2");
+  let uid = 0;
+
+  function facts(M) {
+    const changes = M.slices.filter(s => s.kind === "change");
+    const n = [
+      [changes.length, "change slices"], [M.slices.length - changes.length, "view slices"],
+      [changes.reduce((a, s) => a + s.events.length, 0), "events"], [M.actors.length, "actors"], [M.systems.length, "external systems"],
+      [M.aggs.length, "aggregates"], [M.views.length, "read models"], [M.wfes.length, "automations"],
+      [M.slices.reduce((a, s) => a + s.specs.length, 0), "specs"]];
+    return n.filter(([c]) => c > 0).map(([c, l]) => `<span><b>${c}</b> ${l}</span>`).join("");
+  }
+
+  function mountBoard(root, M, opts = {}) {
+    const id = ++uid;
+    const changes = M.slices.filter(s => s.kind === "change"), viewSlices = M.slices.filter(s => s.kind === "view");
+    const screenActor = new Map(M.screens.map(s => [s.name, s.actor]));
+    const actorLane = name => (screenActor.get(name) ? "actor:" + screenActor.get(name) : "screens");
+    const triggerLane = t => (t.kind === "wfe" ? "wfe" : t.kind === "system" ? "sys:" + t.name : actorLane(t.name));
+
+    // ---- placement: every note gets a lane and a sub-column, then stacks ----
+    const notes = [], edges = [];
+    const cols = M.slices.map(() => new Map());
+    const put = (n, lane, sub) => {
+      const key = lane + "|" + sub, c = cols[n.slice];
+      n.lane = lane; n.sub = sub; n.row = c.get(key) ?? 0; c.set(key, n.row + 1);
+      notes.push(n); return n;
+    };
+    M.slices.forEach((s, i) => {
+      if (s.kind === "view") {
+        const v = put({ id: `view:${s.name}:${s.view}`, kind: "view", name: s.view, slice: i, ref: { name: s.view, touched: [] } }, "mid", 0);
+        // Readers sit to the right of the read model: on the timeline the read model
+        // must exist before a screen can show it, so information flows left to right.
+        s.readBy.forEach((r, k) => edges.push({ a: v, b: put({ id: `read:${s.name}:${k}`, kind: r.kind, name: r.name, slice: i }, triggerLane(r), 1), t: "read" }));
+        return;
+      }
+      const trig = s.trigger ? put({ id: `trig:${s.name}`, kind: s.trigger.kind, name: s.trigger.name, slice: i }, triggerLane(s.trigger), 0) : null;
+      const cmd = put({ id: `cmd:${s.name}`, kind: "cmd", name: s.command.name, slice: i, inferred: s.command.inferred }, "mid", 0);
+      if (trig) edges.push({ a: trig, b: cmd, t: "down" });
+      const evs = s.events.map(e => put({ id: `evt:${e.name}`, kind: "evt", name: e.name, slice: i, ev: e }, "agg:" + s.agg, 0));
+      evs.forEach(e => edges.push({ a: cmd, b: e, t: "down" }));
+      const vs = s.views.map(v => put({ id: `view:${s.name}:${v.name}`, kind: "view", name: v.name, slice: i, ref: v }, "mid", 1));
+      evs.forEach(e => vs.forEach(v => edges.push({ a: e, b: v, t: "up" })));
+    });
+    // Event -> the WFE it triggers: the first sticky for that WFE later on the timeline
+    M.slices.forEach((s, i) => s.kind === "change" && s.wfes.forEach(w => {
+      const target = notes.find(n => n.kind === "wfe" && n.name === w && n.slice > i) ?? notes.find(n => n.kind === "wfe" && n.name === w);
+      if (target) notes.filter(n => n.kind === "evt" && n.slice === i).forEach(e => edges.push({ a: e, b: target, t: "trig" }));
+    }));
+
+    // ---- lanes ----
+    const laneIds = new Set(notes.map(n => n.lane)); laneIds.add("mid");
+    const lanes = [];
+    const rowsOf = lid => Math.max(1, ...cols.flatMap(c => [...c].filter(([k]) => k.startsWith(lid + "|")).map(([, v]) => v)));
+    const addLane = (lid, label, sub) => laneIds.has(lid) && lanes.push({ id: lid, label, sub, rows: rowsOf(lid) });
+    M.actors.forEach(a => addLane("actor:" + a.name, spaced(a.name), "Actor"));
+    M.systems.forEach(s => addLane("sys:" + s.name, spaced(s.name), "External system"));
+    addLane("screens", "Screens", M.actors.length ? "No actor" : "User interface");
+    addLane("wfe", "Automations", "Workflow engines");
+    addLane("mid", "Commands & read models", "");
+    M.aggs.forEach(a => addLane("agg:" + a.name, a.name, "Events"));
+    addLane("agg:null", "No aggregate", "Events");
+    let y = HEAD_H;
+    for (const l of lanes) { l.y = y; l.h = l.rows * (NOTE_H + GAP) - GAP + PAD * 2; y += l.h; }
+    const W = LABEL_W + M.slices.length * COL_W + 16, H = y;
+    const laneY = new Map(lanes.map(l => [l.id, l.y]));
+    notes.forEach(n => {
+      const x0 = LABEL_W + n.slice * COL_W + 22;
+      n.x = n.sub ? x0 + NOTE_W + SUB_GAP : x0;
+      n.y = laneY.get(n.lane) + PAD + n.row * (NOTE_H + GAP);
+    });
+
+    function path(e) {
+      const a = e.a, b = e.b;
+      if (e.t === "down") {
+        const x1 = a.x + NOTE_W / 2, y1 = a.y + NOTE_H, x2 = b.x + NOTE_W / 2, y2 = b.y - 3, d = Math.max(16, (y2 - y1) / 2);
+        return `M${x1},${y1} C${x1},${y1 + d} ${x2},${y2 - d} ${x2},${y2}`;
+      }
+      // event -> read model, and read model -> reader: rightwards, then up into the target
+      if (e.t === "up" || e.t === "read") {
+        const x1 = a.x + NOTE_W, y1 = a.y + NOTE_H / 2, x2 = b.x + NOTE_W / 2, y2 = b.y + NOTE_H + 3;
+        return `M${x1},${y1} C${x2},${y1} ${x2},${y1 + (y2 - y1) * 0.35} ${x2},${y2}`;
+      }
+      const x1 = a.x + NOTE_W, y1 = a.y + NOTE_H / 3, x2 = b.x - 3, y2 = b.y + NOTE_H / 2;
+      return `M${x1},${y1} C${x1 + 120},${y1} ${x2 - 120},${y2} ${x2},${y2}`;
+    }
+
+    // ---- render ----
+    const board = root.querySelector(".board");
+    board.style.width = W + "px"; board.style.height = H + "px";
+    let html = "";
+    lanes.forEach(l => {
+      html += `<div class="lane" style="top:${l.y}px;height:${l.h}px;width:${W}px"><div class="lane-label" style="width:${LABEL_W}px"><b>${esc(l.label)}</b>${l.sub ? `<small>${esc(l.sub)}</small>` : ""}</div></div>`;
+    });
+    M.slices.forEach((s, i) => {
+      const x = LABEL_W + i * COL_W;
+      if (i > 0) html += `<div class="divider" style="left:${x}px;height:${H}px"></div>`;
+      const st = s.status ? `<span class="chip ${["Completed", "InDev"].includes(s.status) ? s.status : "other"}">${esc(s.status === "InDev" ? "In dev" : s.status)}</span>` : "";
+      const sp = s.specs.length ? `<span>${s.specs.length} spec${s.specs.length > 1 ? "s" : ""}</span>` : "";
+      const kind = s.kind === "view" ? `<span class="viewtag">View</span>` : "";
+      html += `<button type="button" class="col-head" data-id="slice:${esc(s.name)}" style="left:${x + 18}px;width:${COL_W - 36}px;height:${HEAD_H}px"><span class="sn">${esc(spaced(s.name))}</span><span class="meta">${kind}${st}${sp}${s.story ? `<span>${esc(s.story)}</span>` : ""}</span></button>`;
+    });
+    notes.forEach(n => {
+      const k = n.kind === "wfe" ? `${GEAR}${KIND.wfe}` : n.kind === "system" ? `${PLUG}${KIND.system}` : n.inferred ? "Command · inferred" : KIND[n.kind];
+      html += `<button type="button" class="note ${n.kind}${n.inferred ? " inferred" : ""}" data-id="${esc(n.id)}" data-slice="${n.slice}" style="left:${n.x}px;top:${n.y}px;width:${NOTE_W}px;height:${NOTE_H}px"><span class="k">${k}</span><span class="nm">${esc(spaced(n.name))}</span></button>`;
+    });
+    html += `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true"><defs>
+      <marker id="arrow-${id}" class="m-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z"/></marker>
+      <marker id="arrowHot-${id}" class="m-hot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z"/></marker></defs>
+      ${edges.map((e, i) => `<path class="edge ${e.t === "trig" ? "trig" : ""}" data-e="${i}" d="${path(e)}" marker-end="url(#arrow-${id})"/>`).join("")}</svg>`;
+    board.innerHTML = html;
+
+    // ---- zoom ----
+    let zoom = 0.8;
+    const zv = root.querySelector(".zoom output");
+    const setZoom = z => { zoom = Math.min(1.5, Math.max(0.3, Math.round(z * 100) / 100)); board.style.zoom = zoom; if (zv) zv.textContent = Math.round(zoom * 100) + "%"; };
+    root.querySelector(".zoom-in")?.addEventListener("click", () => setZoom(zoom + 0.1));
+    root.querySelector(".zoom-out")?.addEventListener("click", () => setZoom(zoom - 0.1));
+    root.querySelector(".zoom-fit")?.addEventListener("click", () => setZoom((root.querySelector(".scroller").clientWidth - 2) / W));
+    setZoom(opts.zoom ?? (window.innerWidth < 700 ? 0.6 : 0.8));
+
+    // ---- details ----
+    const viewDef = n => M.views.find(v => v.name === n)?.body;
+    const wfeDef = n => M.wfes.find(v => v.name === n)?.body;
+    const screenDef = n => M.screens.find(s => s.name === n);
+    const systemDef = n => M.systems.find(s => s.name === n);
+    function propsHtml(p, touched) {
+      if (!p) return `<p class="muted" style="margin:0">Not specified.</p>`;
+      if (Array.isArray(p)) return `<ul class="props">${p.map(n => `<li>${esc(n)}</li>`).join("")}</ul>`;
+      const t = new Map(touched ?? []);
+      const line = (k, v) => {
+        const mark = t.has(k) ? ` class="touched" title="Touched by this slice${t.get(k) !== "x" ? " (" + t.get(k) + ")" : ""}"` : "";
+        if (typeof v === "string") return `<li><span${mark}>${esc(k)}</span>: <span class="ty" title="${esc(TYPE_NAMES[v.replace(/(\[\])*\??$/, "")] ?? "named type")}">${esc(v)}</span></li>`;
+        if (Array.isArray(v)) return typeof v[0] === "string"
+          ? `<li><span${mark}>${esc(k)}</span>: <span class="ty">list of ${esc(v[0])}</span></li>`
+          : `<li><span${mark}>${esc(k)}</span>: <span class="ty">list of</span>${propsHtml(v[0])}</li>`;
+        return `<li><span${mark}>${esc(k)}</span>:${propsHtml(v)}</li>`;
+      };
+      return `<ul class="props">${Object.entries(p).map(([k, v]) => line(k, v)).join("")}</ul>`;
+    }
+    const allEvents = new Set(changes.flatMap(s => s.events.map(e => e.name)));
+    const allCmds = new Set(changes.map(s => s.command.name)), allViews = new Set(M.views.map(v => v.name));
+    const val = v => Array.isArray(v) ? `[${v.map(val).join(", ")}]`
+      : v && typeof v === "object" ? `{ ${Object.entries(v).map(([k, x]) => `${k}: ${val(x)}`).join(", ")} }` : String(v);
+    function inst(o) {
+      const [n, data] = Object.entries(o)[0];
+      if (n === "error") return `<span class="inst err">error: <b>${esc(data)}</b></span>`;
+      const cls = allEvents.has(n) ? "evt" : allCmds.has(n) ? "cmd" : allViews.has(n) ? "view" : "";
+      return `<span class="inst ${cls}"><b>${esc(spaced(n))}</b>${data && typeof data === "object" ? " " + esc(val(data)) : ""}</span>`;
+    }
+    function specsHtml(s) {
+      if (!s.specs.length) return `<p class="muted" style="margin:0">No specs for this slice.</p>`;
+      return s.specs.map(sp => `<div class="spec"><b>${esc(sp.name)}</b><div class="gwt">
+        <span>Given</span><div class="insts">${sp.given?.length ? sp.given.map(inst).join("") : `<span class="inst none">nothing yet</span>`}</div>
+        ${sp.when ? `<span>When</span><div class="insts">${inst(sp.when)}</div>` : ""}
+        <span>Then</span><div class="insts">${sp.then.length ? sp.then.map(inst).join("") : `<span class="inst none">nothing happens</span>`}</div></div></div>`).join("");
+    }
+    const sel = (nid, label) => `<button type="button" class="link" data-go="${esc(nid)}">${esc(label)}</button>`;
+    const who = name => (screenActor.get(name) ? ` <span class="muted">(${esc(spaced(screenActor.get(name)))})</span>` : "");
+    const triggerText = (t, nid) => t.kind === "wfe" ? `Automation ${sel(nid, spaced(t.name))}`
+      : t.kind === "system" ? `External system ${sel(nid, spaced(t.name))} <span class="muted">(calls our API)</span>`
+      : `Screen ${sel(nid, spaced(t.name))}${who(t.name)}`;
+    function sliceSummary(s) {
+      const head = `<h2><span class="kind slice">${s.kind === "view" ? "View slice" : "Slice"}</span>${esc(spaced(s.name))}</h2>`;
+      const meta = `<dt>Status</dt><dd>${esc(s.status ?? "—")}</dd>${s.story ? `<dt>Story</dt><dd>${esc(s.story)}</dd>` : ""}`;
+      if (s.kind === "view") return `<div class="panel">${head}<dl class="kv">${meta}<dt>Read model</dt><dd>${sel(`view:${s.name}:${s.view}`, spaced(s.view))}</dd>
+          <dt>Read by</dt><dd>${s.readBy.map((r, k) => triggerText(r, `read:${s.name}:${k}`)).join("<br>") || "—"}</dd></dl><div><h3>Specs</h3>${specsHtml(s)}</div></div>`;
+      return `<div class="panel">${head}<dl class="kv">${meta}
+        <dt>Aggregate</dt><dd>${esc(s.agg ?? "—")}</dd><dt>Trigger</dt><dd>${s.trigger ? triggerText(s.trigger, "trig:" + s.name) : '<span class="muted">Unspecified</span>'}</dd>
+        <dt>Command</dt><dd>${sel("cmd:" + s.name, spaced(s.command.name))}${s.command.inferred ? ' <span class="muted">(inferred from the slice name)</span>' : ""}</dd>
+        <dt>Event${s.events.length > 1 ? "s" : ""}</dt><dd>${s.events.map(e => sel("evt:" + e.name, spaced(e.name))).join(", ")}</dd>
+        <dt>Updates</dt><dd>${s.views.map(v => sel(`view:${s.name}:${v.name}`, spaced(v.name))).join(", ") || "—"}</dd>
+        ${s.wfes.length ? `<dt>Triggers</dt><dd>${s.wfes.map(w => esc(spaced(w))).join(", ")}</dd>` : ""}</dl>
+        <div><h3>Specs</h3>${specsHtml(s)}</div></div>`;
+    }
+    function elementPanel(nid) {
+      const n = notes.find(x => x.id === nid), s = M.slices[n.slice];
+      if (n.kind === "cmd") return `<div class="panel"><h2><span class="kind cmd">Command</span>${esc(spaced(n.name))}</h2>
+        <dl class="kv"><dt>Aggregate</dt><dd>${esc(s.agg ?? "—")}</dd></dl><div><h3>Props</h3>${propsHtml(s.command.props)}</div></div>`;
+      if (n.kind === "evt") return `<div class="panel"><h2><span class="kind evt">Event</span>${esc(spaced(n.name))}</h2>
+        <dl class="kv"><dt>Aggregate</dt><dd>${esc(s.agg ?? "—")}</dd><dt>Updates</dt><dd>${s.views.map(v => esc(spaced(v.name))).join(", ") || "—"}</dd>
+        ${s.wfes.length ? `<dt>Triggers</dt><dd>${s.wfes.map(w => esc(spaced(w))).join(", ")}</dd>` : ""}</dl>
+        <div><h3>Props</h3>${propsHtml(n.ev.props)}</div></div>`;
+      if (n.kind === "view") {
+        const by = changes.filter(o => o.views.some(v => v.name === n.name)).map(o => o.name);
+        const readIn = viewSlices.filter(o => o.view === n.name).map(o => o.name);
+        const hl = n.ref.touched.length ? ` <span style="text-transform:none;letter-spacing:0;font-weight:400">· highlighted: touched in ${esc(spaced(s.name))}</span>` : "";
+        return `<div class="panel"><h2><span class="kind view">Read model</span>${esc(spaced(n.name))}</h2>
+        <dl class="kv"><dt>Updated by</dt><dd>${by.map(b => sel("slice:" + b, spaced(b))).join(", ") || "—"}</dd>
+        <dt>Read in</dt><dd>${readIn.map(b => sel("slice:" + b, spaced(b))).join(", ") || "—"}</dd></dl>
+        <div><h3>Props${hl}</h3>${propsHtml(viewDef(n.name), n.ref.touched)}</div></div>`;
+      }
+      if (n.kind === "wfe") {
+        const d = wfeDef(n.name) ?? {};
+        const from = changes.filter(o => o.wfes.includes(n.name)).flatMap(o => o.events.map(e => e.name));
+        const reads = viewSlices.filter(o => o.readBy.some(r => r.kind === "wfe" && r.name === n.name)).map(o => o.view);
+        const issues = changes.filter(o => o.trigger?.kind === "wfe" && o.trigger.name === n.name).map(o => o.command.name);
+        return `<div class="panel"><h2><span class="kind wfe">Automation</span>${esc(spaced(n.name))}</h2>
+        ${d.description ? `<p style="margin:0">${esc(d.description)}</p>` : ""}
+        <dl class="kv">${d.schedule ? `<dt>Schedule</dt><dd>${esc(d.schedule)}</dd>` : ""}
+        ${from.length ? `<dt>Triggered by</dt><dd>${from.map(e => esc(spaced(e))).join(", ")}</dd>` : ""}
+        ${reads.length ? `<dt>Reads</dt><dd>${reads.map(v => esc(spaced(v))).join(", ")}</dd>` : ""}
+        <dt>Issues</dt><dd>${issues.map(c => esc(spaced(c))).join(", ") || "—"}</dd></dl></div>`;
+      }
+      if (n.kind === "system") {
+        const d = systemDef(n.name) ?? {};
+        const issues = changes.filter(o => o.trigger?.kind === "system" && o.trigger.name === n.name).map(o => o.command.name);
+        return `<div class="panel"><h2><span class="kind system">External system</span>${esc(spaced(n.name))}</h2>
+        ${d.description ? `<p style="margin:0">${esc(d.description)}</p>` : ""}
+        <dl class="kv"><dt>Calls our API to issue</dt><dd>${issues.map(c => esc(spaced(c))).join(", ") || "—"}</dd></dl>
+        <p class="muted" style="margin:0">The system can't add events to our model. Its call issues our command, and the events that follow are ours.</p></div>`;
+      }
+      const d = screenDef(n.name) ?? {};
+      const triggers = changes.filter(o => o.trigger?.kind === "screen" && o.trigger.name === n.name).map(o => o.name);
+      const shows = viewSlices.filter(o => o.readBy.some(r => r.kind === "screen" && r.name === n.name)).map(o => o.view);
+      return `<div class="panel"><h2><span class="kind screen">Screen</span>${esc(spaced(n.name))}</h2>
+        ${d.description ? `<p style="margin:0">${esc(d.description)}</p>` : ""}
+        <dl class="kv"><dt>Actor</dt><dd>${esc(d.actor ? spaced(d.actor) : "—")}</dd>
+        <dt>Issues</dt><dd>${triggers.map(u => sel("slice:" + u, spaced(u))).join(", ") || "—"}</dd>
+        <dt>Shows</dt><dd>${shows.map(v => esc(spaced(v))).join(", ") || "—"}</dd>
+        ${d.wireframe ? `<dt>Wireframe</dt><dd>${esc(d.wireframe)}</dd>` : ""}</dl></div>`;
+    }
+
+    const detail = root.querySelector(".detail");
+    function select(nid, scroll) {
+      const isSlice = nid.startsWith("slice:");
+      const s = isSlice ? M.slices.find(x => x.name === nid.slice(6)) : M.slices[notes.find(n => n.id === nid).slice];
+      detail.innerHTML = isSlice ? sliceSummary(s) : elementPanel(nid) + sliceSummary(s);
+      detail.classList.toggle("single", isSlice);
+      board.classList.add("focusing");
+      const linked = new Set();
+      board.querySelectorAll(".note").forEach(el => el.classList.remove("sel", "linked"));
+      board.querySelectorAll(".col-head").forEach(el => el.classList.toggle("sel", el.dataset.id === "slice:" + s.name));
+      board.querySelectorAll(".edge").forEach(el => {
+        const e = edges[+el.dataset.e];
+        const hot = isSlice ? M.slices[e.a.slice] === s && M.slices[e.b.slice] === s : e.a.id === nid || e.b.id === nid;
+        el.classList.toggle("hot", hot);
+        el.setAttribute("marker-end", `url(#${hot ? "arrowHot" : "arrow"}-${id})`);
+        if (hot) { linked.add(e.a.id); linked.add(e.b.id); }
+      });
+      board.querySelectorAll(".note").forEach(el => {
+        if (el.dataset.id === nid) el.classList.add("sel");
+        if (linked.has(el.dataset.id) || (isSlice && M.slices[+el.dataset.slice] === s)) el.classList.add("linked");
+      });
+      if (scroll) board.querySelector(`[data-id="${CSS.escape(nid)}"]`)?.scrollIntoView({ block: "nearest", inline: "center",
+        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    }
+    board.addEventListener("click", e => { const b = e.target.closest("[data-id]"); if (b) select(b.dataset.id, false); });
+    detail.addEventListener("click", e => { const b = e.target.closest("[data-go]"); if (b) select(b.dataset.go, true); });
+    const first = opts.select && M.slices.some(s => s.name === opts.select) ? opts.select : M.slices[0].name;
+    select("slice:" + first, false);
+    return { select, width: W };
+  }
+  return { mountBoard, facts };
+})();
+
+const DEMOS = [{"key":"actors","tab":"Actors & screens","select":"PlaceOrder","title":"Actors and screens","intro":"Each actor gets a swimlane across the top of the board, and the screens they use sit in that lane. Here a customer orders at a kiosk, and a barista starts and completes the order on a tablet.","notice":["Two actor lanes, \u003cb>Customer\u003c/b> and \u003cb>Barista\u003c/b>, instead of one shared “Screens” lane.","\u003cb>Barista Tablet\u003c/b> issues two different commands, Start Order and Complete Order.","Click a screen to see its actor and the commands it issues."],"M":{"file":"features/actors-and-screens.teml.yaml","apiVersion":"teml.org/v-alpha-002","metadata":{"name":"Coffee shop orders","description":"A customer orders at a kiosk; a barista makes the drink."},"types":[],"actors":[{"name":"Customer","body":{"description":"Orders drinks at the kiosk."}},{"name":"Barista","body":{"description":"Makes the drinks."}}],"screens":[{"name":"OrderKiosk","actor":"Customer","description":null,"wireframe":null},{"name":"BaristaTablet","actor":"Barista","description":null,"wireframe":null}],"aggs":[{"name":"OrderAgg","body":{"orderId":"g","drink":"s","customerName":"s","status":"s"}}],"views":[],"wfes":[],"systems":[],"slices":[{"kind":"change","agg":"OrderAgg","trigger":{"kind":"screen","name":"OrderKiosk"},"command":{"name":"PlaceOrder","props":{"orderId":"g","drink":"s","customerName":"s"},"inferred":false},"events":[{"name":"OrderPlaced","props":{"orderId":"g","drink":"s","customerName":"s"}}],"views":[],"wfes":[],"name":"PlaceOrder","status":null,"story":null,"description":null,"specs":[]},{"kind":"change","agg":"OrderAgg","trigger":{"kind":"screen","name":"BaristaTablet"},"command":{"name":"StartOrder","props":{"orderId":"g"},"inferred":false},"events":[{"name":"OrderStarted","props":{"orderId":"g","startedAt":"dt"}}],"views":[],"wfes":[],"name":"StartOrder","status":null,"story":null,"description":null,"specs":[]},{"kind":"change","agg":"OrderAgg","trigger":{"kind":"screen","name":"BaristaTablet"},"command":{"name":"CompleteOrder","props":{"orderId":"g"},"inferred":false},"events":[{"name":"OrderCompleted","props":{"orderId":"g","completedAt":"dt"}}],"views":[],"wfes":[],"name":"CompleteOrder","status":null,"story":null,"description":null,"specs":[]}],"source":"# yaml-language-server: $schema=../../schema/teml-alpha-002.schema.json\n#\n# Feature demo: actors and screens (spec §10).\n# Each actor gets a swimlane at the top of the board, and their screens sit in it.\n\napiVersion: teml.org/v-alpha-002\nmetadata:\n  name: Coffee shop orders\n  description: A customer orders at a kiosk; a barista makes the drink.\n\nactors:\n  - Customer:\n      description: Orders drinks at the kiosk.\n  - Barista:\n      description: Makes the drinks.\n\nscreens:\n  - OrderKiosk:\n      actor: Customer\n  - BaristaTablet:\n      actor: Barista\n\naggs:\n  - OrderAgg: &Order\n      orderId: g\n      drink: s\n      customerName: s\n      status: s\n\nslices:\n  - PlaceOrder:\n      agg: *Order\n      trigger: { screen: OrderKiosk }          # the Customer's screen\n      command:\n        props: { orderId: g, drink: s, customerName: s }\n      event:\n        name: OrderPlaced\n        props: { orderId: g, drink: s, customerName: s }\n\n  - StartOrder:\n      agg: *Order\n      trigger: { screen: BaristaTablet }       # the Barista's screen\n      command:\n        props: { orderId: g }\n      event:\n        name: OrderStarted\n        props: { orderId: g, startedAt: dt }\n\n  - CompleteOrder:\n      agg: *Order\n      trigger: { screen: BaristaTablet }       # same screen, another command\n      command:\n        props: { orderId: g }\n      event:\n        name: OrderCompleted\n        props: { orderId: g, completedAt: dt }\n"}},{"key":"views","tab":"View slices","select":"ShowQueue","title":"View slices","intro":"A view slice shows where a read model is read. It has a green read model with arrows up to whoever reads it: a screen, or an automation that works from it as a to-do list. Its specs say what the view shows after certain events.","notice":["\u003cb>Show Queue\u003c/b>: the barista's tablet shows the Order Queue.","\u003cb>Track Order\u003c/b>: one read model, shown on two screens to two different actors.","\u003cb>Notify Todo\u003c/b>: the Ready Notifier automation reads its to-do list, then issues Send Ready Text in the next slice.","View slices are tagged \u003cb>View\u003c/b> in their headings. Click one to see its Given / Then specs."],"M":{"file":"features/view-slices.teml.yaml","apiVersion":"teml.org/v-alpha-002","metadata":{"name":"Coffee shop pickup","description":"Baristas work from a queue, customers track their order, and an automation texts customers when a drink is ready."},"types":[],"actors":[{"name":"Customer","body":{}},{"name":"Barista","body":{}}],"screens":[{"name":"OrderKiosk","actor":"Customer","description":null,"wireframe":null},{"name":"OrderStatusPage","actor":"Customer","description":null,"wireframe":null},{"name":"BaristaTablet","actor":"Barista","description":null,"wireframe":null}],"aggs":[{"name":"OrderAgg","body":{"orderId":"g","drink":"s","phone":"s","status":"s"}}],"views":[{"name":"OrderQueue","body":{"orders":[{"orderId":"g","drink":"s","customerName":"s"}]}},{"name":"OrderStatus","body":{"orderId":"g","drink":"s","status":"s"}},{"name":"ReadyToNotify","body":{"pending":[{"orderId":"g","phone":"s"}]}}],"wfes":[{"name":"ReadyNotifier","body":{"description":"Texts the customer when their drink is ready."}}],"systems":[],"slices":[{"kind":"change","agg":"OrderAgg","trigger":{"kind":"screen","name":"OrderKiosk"},"command":{"name":"PlaceOrder","props":{"orderId":"g","drink":"s","customerName":"s","phone":"s"},"inferred":false},"events":[{"name":"OrderPlaced","props":{"orderId":"g","drink":"s","customerName":"s","phone":"s"}}],"views":[{"name":"OrderQueue","touched":[["orders","x"]]},{"name":"OrderStatus","touched":[["orderId","x"],["drink","x"],["status","x"]]}],"wfes":[],"name":"PlaceOrder","status":null,"story":null,"description":null,"specs":[]},{"kind":"view","view":"OrderQueue","readBy":[{"kind":"screen","name":"BaristaTablet"}],"name":"ShowQueue","status":null,"story":null,"description":null,"specs":[{"name":"lists orders that are not finished yet","given":[{"OrderPlaced":{"orderId":"o-1","drink":"Latte","customerName":"Ada"}},{"OrderPlaced":{"orderId":"o-2","drink":"Mocha","customerName":"Grace"}},{"OrderCompleted":{"orderId":"o-1"}}],"then":[{"OrderQueue":{"orders":[{"orderId":"o-2","drink":"Mocha","customerName":"Grace"}]}}]}]},{"kind":"change","agg":"OrderAgg","trigger":{"kind":"screen","name":"BaristaTablet"},"command":{"name":"CompleteOrder","props":{"orderId":"g"},"inferred":false},"events":[{"name":"OrderCompleted","props":{"orderId":"g","completedAt":"dt"}}],"views":[{"name":"OrderQueue","touched":[["orders","x"]]},{"name":"OrderStatus","touched":[["status","x"]]},{"name":"ReadyToNotify","touched":[["pending","x"]]}],"wfes":[],"name":"CompleteOrder","status":null,"story":null,"description":null,"specs":[]},{"kind":"view","view":"OrderStatus","readBy":[{"kind":"screen","name":"OrderStatusPage"},{"kind":"screen","name":"BaristaTablet"}],"name":"TrackOrder","status":null,"story":null,"description":null,"specs":[{"name":"shows the order as ready once it is completed","given":[{"OrderPlaced":{"orderId":"o-1","drink":"Latte"}},{"OrderCompleted":{"orderId":"o-1"}}],"then":[{"OrderStatus":{"orderId":"o-1","drink":"Latte","status":"Ready"}}]}]},{"kind":"view","view":"ReadyToNotify","readBy":[{"kind":"wfe","name":"ReadyNotifier"}],"name":"NotifyTodo","status":null,"story":null,"description":null,"specs":[{"name":"lists completed orders whose customer has not been texted","given":[{"OrderPlaced":{"orderId":"o-1","phone":"+1 555 0100"}},{"OrderCompleted":{"orderId":"o-1"}}],"then":[{"ReadyToNotify":{"pending":[{"orderId":"o-1","phone":"+1 555 0100"}]}}]}]},{"kind":"change","agg":"OrderAgg","trigger":{"kind":"wfe","name":"ReadyNotifier"},"command":{"name":"SendReadyText","props":{"orderId":"g","phone":"s"},"inferred":false},"events":[{"name":"CustomerNotified","props":{"orderId":"g","notifiedAt":"dt"}}],"views":[{"name":"ReadyToNotify","touched":[["pending","x"]]}],"wfes":[],"name":"NotifyCustomer","status":null,"story":null,"description":null,"specs":[]}],"source":"# yaml-language-server: $schema=../../schema/teml-alpha-002.schema.json\n#\n# Feature demo: view slices (spec §12.7).\n# A view slice shows where a read model is read: on screens, or by an\n# automation that works from it as a to-do list.\n\napiVersion: teml.org/v-alpha-002\nmetadata:\n  name: Coffee shop pickup\n  description: Baristas work from a queue, customers track their order, and an automation texts customers when a drink is ready.\n\nactors:\n  - Customer:\n  - Barista:\n\nscreens:\n  - OrderKiosk:\n      actor: Customer\n  - OrderStatusPage:\n      actor: Customer\n  - BaristaTablet:\n      actor: Barista\n\naggs:\n  - OrderAgg: &Order\n      orderId: g\n      drink: s\n      phone: s\n      status: s\n\nviews:\n  - OrderQueue: &OrderQueue\n      orders:\n        - orderId: g\n          drink: s\n          customerName: s\n\n  - OrderStatus: &OrderStatus\n      orderId: g\n      drink: s\n      status: s\n\n  - ReadyToNotify: &ReadyToNotify\n      pending:\n        - orderId: g\n          phone: s\n\nwfes:\n  - ReadyNotifier: &ReadyNotifier\n      description: Texts the customer when their drink is ready.\n\nslices:\n  - PlaceOrder:\n      agg: *Order\n      trigger: { screen: OrderKiosk }\n      command:\n        props: { orderId: g, drink: s, customerName: s, phone: s }\n      event:\n        name: OrderPlaced\n        props: { orderId: g, drink: s, customerName: s, phone: s }\n      views:\n        - \u003c\u003c: *OrderQueue\n          orders: x\n        - \u003c\u003c: *OrderStatus\n          orderId: x\n          drink: x\n          status: x\n\n  # View slice read by a screen: the barista's queue.\n  - ShowQueue:\n      view: *OrderQueue\n      readBy:\n        - screen: BaristaTablet\n      specs:\n        - name: lists orders that are not finished yet\n          given:\n            - OrderPlaced: { orderId: o-1, drink: Latte, customerName: Ada }\n            - OrderPlaced: { orderId: o-2, drink: Mocha, customerName: Grace }\n            - OrderCompleted: { orderId: o-1 }\n          then:\n            - OrderQueue:\n                orders:\n                  - { orderId: o-2, drink: Mocha, customerName: Grace }\n\n  - CompleteOrder:\n      agg: *Order\n      trigger: { screen: BaristaTablet }\n      command:\n        props: { orderId: g }\n      event:\n        name: OrderCompleted\n        props: { orderId: g, completedAt: dt }\n      views:\n        - \u003c\u003c: *OrderQueue\n          orders: x\n        - \u003c\u003c: *OrderStatus\n          status: x\n        - \u003c\u003c: *ReadyToNotify\n          pending: x\n\n  # View slice read by two screens, used by two different actors.\n  - TrackOrder:\n      view: *OrderStatus\n      readBy:\n        - screen: OrderStatusPage\n        - screen: BaristaTablet\n      specs:\n        - name: shows the order as ready once it is completed\n          given:\n            - OrderPlaced: { orderId: o-1, drink: Latte }\n            - OrderCompleted: { orderId: o-1 }\n          then:\n            - OrderStatus: { orderId: o-1, drink: Latte, status: Ready }\n\n  # View slice read by an automation: its to-do list.\n  - NotifyTodo:\n      view: *ReadyToNotify\n      readBy:\n        - wfe: *ReadyNotifier\n      specs:\n        - name: lists completed orders whose customer has not been texted\n          given:\n            - OrderPlaced: { orderId: o-1, phone: \"+1 555 0100\" }\n            - OrderCompleted: { orderId: o-1 }\n          then:\n            - ReadyToNotify:\n                pending:\n                  - { orderId: o-1, phone: \"+1 555 0100\" }\n\n  - NotifyCustomer:\n      agg: *Order\n      trigger: { wfe: *ReadyNotifier }\n      command:\n        name: SendReadyText\n        props: { orderId: g, phone: s }\n      event:\n        name: CustomerNotified\n        props: { orderId: g, notifiedAt: dt }\n      views:\n        - \u003c\u003c: *ReadyToNotify\n          pending: x\n"}},{"key":"systems","tab":"External system","select":"ConfirmPayment","title":"An external system calls our API","intro":"The payment provider can't add events to our model. Its webhook calls our API, which issues our Confirm Payment command. Payment Confirmed is our own event, and it triggers our Receipt Sender automation.","notice":["\u003cb>Payment Provider\u003c/b> has its own lane at the top, beside the Shopper, because it plays the same role: it starts one of our commands from outside.","The dashed arrow from \u003cb>Payment Confirmed\u003c/b> to \u003cb>Receipt Sender\u003c/b>: our event triggers our workflow.","\u003cb>Confirm Payment\u003c/b>'s specs use When / Then like any user command, including an error case."],"M":{"file":"features/external-system.teml.yaml","apiVersion":"teml.org/v-alpha-002","metadata":{"name":"Online shop checkout","description":"A shopper pays by card; the payment provider confirms the charge through a webhook."},"types":[],"actors":[{"name":"Shopper","body":{}}],"screens":[{"name":"CheckoutPage","actor":"Shopper","description":null,"wireframe":null},{"name":"OrderConfirmationPage","actor":"Shopper","description":null,"wireframe":null}],"aggs":[{"name":"OrderAgg","body":{"orderId":"g","amount":"dec","status":"s"}}],"views":[{"name":"OrderSummary","body":{"orderId":"g","amount":"dec","status":"s"}}],"wfes":[{"name":"ReceiptSender","body":{"description":"Emails a receipt once a payment is confirmed."}}],"systems":[{"name":"PaymentProvider","description":"Card payments. Calls POST /webhooks/payments when a charge succeeds."}],"slices":[{"kind":"change","agg":"OrderAgg","trigger":{"kind":"screen","name":"CheckoutPage"},"command":{"name":"Checkout","props":{"orderId":"g","amount":"dec"},"inferred":false},"events":[{"name":"CheckoutStarted","props":{"orderId":"g","amount":"dec"}}],"views":[{"name":"OrderSummary","touched":[["orderId","x"],["amount","x"],["status","x"]]}],"wfes":[],"name":"Checkout","status":null,"story":null,"description":null,"specs":[]},{"kind":"change","agg":"OrderAgg","trigger":{"kind":"system","name":"PaymentProvider"},"command":{"name":"ConfirmPayment","props":{"orderId":"g","amount":"dec","providerReference":"s"},"inferred":false},"events":[{"name":"PaymentConfirmed","props":{"orderId":"g","amount":"dec","providerReference":"s"}}],"views":[{"name":"OrderSummary","touched":[["status","x"]]}],"wfes":["ReceiptSender"],"name":"ConfirmPayment","status":null,"story":null,"description":null,"specs":[{"name":"confirms the payment","given":[{"CheckoutStarted":{"orderId":"o-1","amount":42}}],"when":{"ConfirmPayment":{"orderId":"o-1","amount":42,"providerReference":"ch_123"}},"then":[{"PaymentConfirmed":{"orderId":"o-1","amount":42,"providerReference":"ch_123"}}]},{"name":"rejects a charge for the wrong amount","given":[{"CheckoutStarted":{"orderId":"o-1","amount":42}}],"when":{"ConfirmPayment":{"orderId":"o-1","amount":4.2,"providerReference":"ch_124"}},"then":[{"error":"AmountMismatch"}]}]},{"kind":"view","view":"OrderSummary","readBy":[{"kind":"screen","name":"OrderConfirmationPage"}],"name":"ShowOrder","status":null,"story":null,"description":null,"specs":[]},{"kind":"change","agg":"OrderAgg","trigger":{"kind":"wfe","name":"ReceiptSender"},"command":{"name":"SendReceipt","props":{"orderId":"g"},"inferred":false},"events":[{"name":"ReceiptSent","props":{"orderId":"g","sentAt":"dt"}}],"views":[],"wfes":[],"name":"SendReceipt","status":null,"story":null,"description":null,"specs":[{"name":"sends a receipt once the payment is confirmed","given":[{"PaymentConfirmed":{"orderId":"o-1"}}],"then":[{"SendReceipt":{"orderId":"o-1"}}]}]}],"source":"# yaml-language-server: $schema=../../schema/teml-alpha-002.schema.json\n#\n# Feature demo: an external system that calls our API (spec §11).\n# The payment provider can't add events to our model. Its webhook calls our\n# API, which issues our ConfirmPayment command. The PaymentConfirmed event is\n# ours, and it triggers our ReceiptSender workflow.\n\napiVersion: teml.org/v-alpha-002\nmetadata:\n  name: Online shop checkout\n  description: A shopper pays by card; the payment provider confirms the charge through a webhook.\n\nactors:\n  - Shopper:\n\nscreens:\n  - CheckoutPage:\n      actor: Shopper\n  - OrderConfirmationPage:\n      actor: Shopper\n\nsystems:\n  - PaymentProvider:\n      description: Card payments. Calls POST /webhooks/payments when a charge succeeds.\n\naggs:\n  - OrderAgg: &Order\n      orderId: g\n      amount: dec\n      status: s\n\nviews:\n  - OrderSummary: &OrderSummary\n      orderId: g\n      amount: dec\n      status: s\n\nwfes:\n  - ReceiptSender: &ReceiptSender\n      description: Emails a receipt once a payment is confirmed.\n\nslices:\n  - Checkout:\n      agg: *Order\n      trigger: { screen: CheckoutPage }\n      command:\n        props: { orderId: g, amount: dec }\n      event:\n        name: CheckoutStarted\n        props: { orderId: g, amount: dec }\n      views:\n        - \u003c\u003c: *OrderSummary\n          orderId: x\n          amount: x\n          status: x\n\n  # The provider's webhook calls our API, which issues this command.\n  - ConfirmPayment:\n      agg: *Order\n      trigger: { system: PaymentProvider }\n      command:\n        props: { orderId: g, amount: dec, providerReference: s }\n      event:\n        name: PaymentConfirmed\n        props: { orderId: g, amount: dec, providerReference: s }\n      views:\n        - \u003c\u003c: *OrderSummary\n          status: x\n      wfes:\n        - *ReceiptSender                       # our event triggers our workflow\n      specs:\n        - name: confirms the payment\n          given:\n            - CheckoutStarted: { orderId: o-1, amount: 42.00 }\n          when:\n            ConfirmPayment: { orderId: o-1, amount: 42.00, providerReference: ch_123 }\n          then:\n            - PaymentConfirmed: { orderId: o-1, amount: 42.00, providerReference: ch_123 }\n        - name: rejects a charge for the wrong amount\n          given:\n            - CheckoutStarted: { orderId: o-1, amount: 42.00 }\n          when:\n            ConfirmPayment: { orderId: o-1, amount: 4.20, providerReference: ch_124 }\n          then:\n            - error: AmountMismatch\n\n  - ShowOrder:\n      view: *OrderSummary\n      readBy:\n        - screen: OrderConfirmationPage\n\n  - SendReceipt:\n      agg: *Order\n      trigger: { wfe: *ReceiptSender }\n      command:\n        props: { orderId: g }\n      event:\n        name: ReceiptSent\n        props: { orderId: g, sentAt: dt }\n      specs:\n        - name: sends a receipt once the payment is confirmed\n          given:\n            - PaymentConfirmed: { orderId: o-1 }\n          then:\n            - SendReceipt: { orderId: o-1 }\n"}},{"key":"hotel","tab":"Full model: hotel","select":"RecordPayment","title":"Everything together: the hotel","intro":"The classic Event Modeling hotel example, using every new feature: four actors, four view slices, two automations, and a payment provider that calls our API.","notice":["Actor lanes for \u003cb>Guest\u003c/b>, \u003cb>Manager\u003c/b>, \u003cb>Front Desk\u003c/b> and \u003cb>Housekeeping\u003c/b>, with the \u003cb>Payment Provider\u003c/b> beside them.","View slices: \u003cb>Browse Rooms\u003c/b>, \u003cb>Payment Todo\u003c/b> (an automation's to-do list), \u003cb>Show Bookings\u003c/b> (two screens) and \u003cb>Cleaning List\u003c/b>.","\u003cb>Record Payment\u003c/b> is triggered by the provider's webhook. Its \u003cb>Booking Confirmed\u003c/b> event triggers the Confirmation Emailer."],"M":{"file":"Examples/hotel.teml.yaml","apiVersion":"teml.org/v-alpha-002","metadata":{"name":"Hotel","description":"Guests find and book rooms and pay online. The front desk checks guests in and out, and housekeeping cleans rooms between stays.\n","version":"0.2.0"},"types":[{"name":"RoomType","body":{"enum":["Single","Double","Suite"]}},{"name":"BookingStatus","body":{"enum":["AwaitingPayment","Confirmed","CheckedIn","CheckedOut","Cancelled"]}}],"actors":[{"name":"Guest","body":{"description":"Someone booking or staying at the hotel."}},{"name":"Manager","body":{"description":"Runs the hotel and manages its rooms."}},{"name":"FrontDesk","body":{"description":"Reception staff who check guests in and out."}},{"name":"Housekeeping","body":{"description":"Staff who clean rooms between stays."}}],"screens":[{"name":"SignUpPage","actor":"Guest","description":null,"wireframe":null},{"name":"RoomSearch","actor":"Guest","description":null,"wireframe":"wireframes/room-search.png"},{"name":"MyBookings","actor":"Guest","description":null,"wireframe":null},{"name":"RoomManagement","actor":"Manager","description":null,"wireframe":null},{"name":"FrontDeskConsole","actor":"FrontDesk","description":null,"wireframe":null},{"name":"HousekeepingTablet","actor":"Housekeeping","description":null,"wireframe":null}],"aggs":[{"name":"GuestAgg","body":{"guestId":"g","name":"s","email":"s"}},{"name":"RoomAgg","body":{"roomNumber":"s","roomType":"RoomType","nightlyRate":"dec","needsCleaning":"bool"}},{"name":"BookingAgg","body":{"bookingId":"g","guestId":"g","roomNumber":"s","checkIn":"date","checkOut":"date","total":"dec","status":"BookingStatus"}}],"views":[{"name":"RoomAvailability","body":{"rooms":[{"roomNumber":"s","roomType":"RoomType","nightlyRate":"dec","bookedNights":"date[]"}]}},{"name":"GuestBookings","body":{"guestId":"g","guestName":"s","bookings":[{"bookingId":"g","roomNumber":"s","checkIn":"date","checkOut":"date","total":"dec","status":"BookingStatus"}]}},{"name":"PaymentsToRequest","body":{"pending":[{"bookingId":"g","guestId":"g","total":"dec"}]}},{"name":"CleaningSchedule","body":{"rooms":[{"roomNumber":"s","vacatedAt":"dt"}]}}],"wfes":[{"name":"PaymentRequester","body":{"description":"Asks the payment provider to charge the guest for each new booking.","schedule":"every minute"}},{"name":"ConfirmationEmailer","body":{"description":"Emails the guest as soon as their booking is confirmed."}}],"systems":[{"name":"PaymentProvider","description":"Third-party card payments. Calls POST /webhooks/payments when a charge succeeds."}],"slices":[{"kind":"change","agg":"GuestAgg","trigger":{"kind":"screen","name":"SignUpPage"},"command":{"name":"RegisterGuest","props":{"guestId":"g","name":"s","email":"s"},"inferred":false},"events":[{"name":"GuestRegistered","props":{"guestId":"g","name":"s","email":"s"}}],"views":[{"name":"GuestBookings","touched":[["guestId","x"],["guestName","x"]]}],"wfes":[],"name":"RegisterGuest","status":"Completed","story":null,"description":null,"specs":[{"name":"registers a guest","when":{"RegisterGuest":{"guestId":"g-1","name":"Ada Lovelace","email":"ada@example.com"}},"then":[{"GuestRegistered":{"guestId":"g-1","name":"Ada Lovelace","email":"ada@example.com"}}]},{"name":"rejects an email that is already registered","given":[{"GuestRegistered":{"guestId":"g-1","email":"ada@example.com"}}],"when":{"RegisterGuest":{"guestId":"g-2","email":"ada@example.com"}},"then":[{"error":"EmailAlreadyRegistered"}]}]},{"kind":"change","agg":"RoomAgg","trigger":{"kind":"screen","name":"RoomManagement"},"command":{"name":"AddRoom","props":{"roomNumber":"s","roomType":"RoomType","nightlyRate":"dec"},"inferred":false},"events":[{"name":"RoomAdded","props":{"roomNumber":"s","roomType":"RoomType","nightlyRate":"dec"}}],"views":[{"name":"RoomAvailability","touched":[["rooms","x"]]}],"wfes":[],"name":"AddRoom","status":"Completed","story":null,"description":null,"specs":[]},{"kind":"view","view":"RoomAvailability","readBy":[{"kind":"screen","name":"RoomSearch"}],"name":"BrowseRooms","status":"Completed","story":null,"description":null,"specs":[{"name":"shows a booked night as taken","given":[{"RoomAdded":{"roomNumber":"101","roomType":"Double","nightlyRate":120}},{"RoomBooked":{"bookingId":"b-1","roomNumber":"101","checkIn":"2026-11-02","checkOut":"2026-11-03"}}],"then":[{"RoomAvailability":{"rooms":[{"roomNumber":"101","roomType":"Double","nightlyRate":120,"bookedNights":["2026-11-02"]}]}}]}]},{"kind":"change","agg":"BookingAgg","trigger":{"kind":"screen","name":"RoomSearch"},"command":{"name":"BookRoom","props":{"bookingId":"g","guestId":"g","roomNumber":"s","checkIn":"date","checkOut":"date"},"inferred":false},"events":[{"name":"RoomBooked","props":{"bookingId":"g","guestId":"g","roomNumber":"s","checkIn":"date","checkOut":"date","total":"dec"}}],"views":[{"name":"RoomAvailability","touched":[["rooms","x"]]},{"name":"GuestBookings","touched":[["bookings","x"]]},{"name":"PaymentsToRequest","touched":[["pending","x"]]}],"wfes":[],"name":"BookRoom","status":"InDev","story":"HOTEL-12","description":null,"specs":[{"name":"books an available room and prices the stay","given":[{"RoomAdded":{"roomNumber":"101","roomType":"Double","nightlyRate":120}}],"when":{"BookRoom":{"bookingId":"b-1","guestId":"g-1","roomNumber":"101","checkIn":"2026-11-02","checkOut":"2026-11-05"}},"then":[{"RoomBooked":{"bookingId":"b-1","roomNumber":"101","checkIn":"2026-11-02","checkOut":"2026-11-05","total":360}}]},{"name":"rejects dates that overlap an existing booking","given":[{"RoomAdded":{"roomNumber":"101"}},{"RoomBooked":{"bookingId":"b-1","roomNumber":"101","checkIn":"2026-11-02","checkOut":"2026-11-05"}}],"when":{"BookRoom":{"bookingId":"b-2","roomNumber":"101","checkIn":"2026-11-04","checkOut":"2026-11-06"}},"then":[{"error":"RoomUnavailable"}]}]},{"kind":"view","view":"PaymentsToRequest","readBy":[{"kind":"wfe","name":"PaymentRequester"}],"name":"PaymentTodo","status":"InDev","story":null,"description":null,"specs":[{"name":"lists bookings that still need a payment request","given":[{"RoomBooked":{"bookingId":"b-1","guestId":"g-1","total":360}},{"RoomBooked":{"bookingId":"b-2","guestId":"g-2","total":120}},{"PaymentRequested":{"bookingId":"b-1"}}],"then":[{"PaymentsToRequest":{"pending":[{"bookingId":"b-2","guestId":"g-2","total":120}]}}]}]},{"kind":"change","agg":"BookingAgg","trigger":{"kind":"wfe","name":"PaymentRequester"},"command":{"name":"RequestPayment","props":{"bookingId":"g","amount":"dec"},"inferred":false},"events":[{"name":"PaymentRequested","props":{"bookingId":"g","amount":"dec","requestedAt":"dt"}}],"views":[{"name":"PaymentsToRequest","touched":[["pending","x"]]}],"wfes":[],"name":"RequestPayment","status":"InDev","story":null,"description":null,"specs":[{"name":"requests payment for a new booking","given":[{"RoomBooked":{"bookingId":"b-1","total":360}}],"then":[{"RequestPayment":{"bookingId":"b-1","amount":360}}]},{"name":"does not request payment twice","given":[{"RoomBooked":{"bookingId":"b-1","total":360}},{"PaymentRequested":{"bookingId":"b-1"}}],"then":[]}]},{"kind":"change","agg":"BookingAgg","trigger":{"kind":"system","name":"PaymentProvider"},"command":{"name":"RecordPayment","props":{"bookingId":"g","amount":"dec","providerReference":"s"},"inferred":false},"events":[{"name":"PaymentReceived","props":{"bookingId":"g","amount":"dec","providerReference":"s"}},{"name":"BookingConfirmed","props":{"bookingId":"g"}}],"views":[{"name":"GuestBookings","touched":[["bookings","x"]]}],"wfes":["ConfirmationEmailer"],"name":"RecordPayment","status":"Planned","story":null,"description":null,"specs":[{"name":"records the payment and confirms the booking","given":[{"RoomBooked":{"bookingId":"b-1","total":360}},{"PaymentRequested":{"bookingId":"b-1","amount":360}}],"when":{"RecordPayment":{"bookingId":"b-1","amount":360,"providerReference":"pay_123"}},"then":[{"PaymentReceived":{"bookingId":"b-1","amount":360,"providerReference":"pay_123"}},{"BookingConfirmed":{"bookingId":"b-1"}}]},{"name":"rejects a payment for an unknown booking","when":{"RecordPayment":{"bookingId":"b-9","amount":50,"providerReference":"pay_999"}},"then":[{"error":"UnknownBooking"}]}]},{"kind":"change","agg":"BookingAgg","trigger":{"kind":"wfe","name":"ConfirmationEmailer"},"command":{"name":"SendConfirmationEmail","props":{"bookingId":"g"},"inferred":false},"events":[{"name":"ConfirmationEmailSent","props":{"bookingId":"g","sentAt":"dt"}}],"views":[],"wfes":[],"name":"SendBookingConfirmation","status":"Planned","story":null,"description":null,"specs":[{"name":"emails the guest once the booking is confirmed","given":[{"BookingConfirmed":{"bookingId":"b-1"}}],"then":[{"SendConfirmationEmail":{"bookingId":"b-1"}}]}]},{"kind":"view","view":"GuestBookings","readBy":[{"kind":"screen","name":"MyBookings"},{"kind":"screen","name":"FrontDeskConsole"}],"name":"ShowBookings","status":"Planned","story":null,"description":null,"specs":[{"name":"shows a confirmed booking","given":[{"GuestRegistered":{"guestId":"g-1","name":"Ada Lovelace"}},{"RoomBooked":{"bookingId":"b-1","guestId":"g-1","roomNumber":"101","total":360}},{"BookingConfirmed":{"bookingId":"b-1"}}],"then":[{"GuestBookings":{"guestId":"g-1","guestName":"Ada Lovelace","bookings":[{"bookingId":"b-1","roomNumber":"101","total":360,"status":"Confirmed"}]}}]}]},{"kind":"change","agg":"BookingAgg","trigger":{"kind":"screen","name":"MyBookings"},"command":{"name":"CancelBooking","props":{"bookingId":"g","reason":"s?"},"inferred":false},"events":[{"name":"BookingCancelled","props":{"bookingId":"g","reason":"s?"}}],"views":[{"name":"RoomAvailability","touched":[["rooms","x"]]},{"name":"GuestBookings","touched":[["bookings","x"]]}],"wfes":[],"name":"CancelBooking","status":"Planned","story":null,"description":null,"specs":[{"name":"cannot cancel after check-in","given":[{"RoomBooked":{"bookingId":"b-1"}},{"GuestCheckedIn":{"bookingId":"b-1"}}],"when":{"CancelBooking":{"bookingId":"b-1"}},"then":[{"error":"AlreadyCheckedIn"}]}]},{"kind":"change","agg":"BookingAgg","trigger":{"kind":"screen","name":"FrontDeskConsole"},"command":{"name":"CheckIn","props":{"bookingId":"g"},"inferred":false},"events":[{"name":"GuestCheckedIn","props":{"bookingId":"g","roomNumber":"s","checkedInAt":"dt"}}],"views":[{"name":"GuestBookings","touched":[["bookings","x"]]}],"wfes":[],"name":"CheckIn","status":"Planned","story":null,"description":null,"specs":[{"name":"cannot check in before payment is confirmed","given":[{"RoomBooked":{"bookingId":"b-1"}}],"when":{"CheckIn":{"bookingId":"b-1"}},"then":[{"error":"PaymentNotConfirmed"}]}]},{"kind":"change","agg":"BookingAgg","trigger":{"kind":"screen","name":"FrontDeskConsole"},"command":{"name":"CheckOut","props":{"bookingId":"g"},"inferred":false},"events":[{"name":"GuestCheckedOut","props":{"bookingId":"g","roomNumber":"s","checkedOutAt":"dt"}}],"views":[{"name":"GuestBookings","touched":[["bookings","x"]]},{"name":"CleaningSchedule","touched":[["rooms","x"]]}],"wfes":[],"name":"CheckOut","status":"Planned","story":null,"description":null,"specs":[]},{"kind":"view","view":"CleaningSchedule","readBy":[{"kind":"screen","name":"HousekeepingTablet"}],"name":"CleaningList","status":"Planned","story":null,"description":null,"specs":[]},{"kind":"change","agg":"RoomAgg","trigger":{"kind":"screen","name":"HousekeepingTablet"},"command":{"name":"MarkRoomCleaned","props":{"roomNumber":"s"},"inferred":false},"events":[{"name":"RoomCleaned","props":{"roomNumber":"s","cleanedAt":"dt"}}],"views":[{"name":"CleaningSchedule","touched":[["rooms","x"]]}],"wfes":[],"name":"MarkRoomCleaned","status":"Planned","story":null,"description":null,"specs":[]}],"source":"# yaml-language-server: $schema=../schema/teml-alpha-002.schema.json\n#\n# Hotel booking: the classic Event Modeling example (see eventmodeling.org)\n# as a compliant TEML document. It uses every v-alpha-002 feature: actors and\n# screens, change and view slices, automations, an external system that calls\n# our API, and specs.\n\napiVersion: teml.org/v-alpha-002\nmetadata:\n  name: Hotel\n  description: >\n    Guests find and book rooms and pay online. The front desk checks guests in\n    and out, and housekeeping cleans rooms between stays.\n  version: \"0.2.0\"\n\ntypes:\n  - RoomType:\n      enum: [Single, Double, Suite]\n  - BookingStatus:\n      enum: [AwaitingPayment, Confirmed, CheckedIn, CheckedOut, Cancelled]\n\n# People (the swimlanes at the top of the board) and their screens.\n# Actors are referenced by name, so their names don't need anchors.\nactors:\n  - Guest:\n      description: Someone booking or staying at the hotel.\n  - Manager:\n      description: Runs the hotel and manages its rooms.\n  - FrontDesk:\n      description: Reception staff who check guests in and out.\n  - Housekeeping:\n      description: Staff who clean rooms between stays.\n\nscreens:\n  - SignUpPage:\n      actor: Guest\n  - RoomSearch:\n      actor: Guest\n      wireframe: wireframes/room-search.png\n  - MyBookings:\n      actor: Guest\n  - RoomManagement:\n      actor: Manager\n  - FrontDeskConsole:\n      actor: FrontDesk\n  - HousekeepingTablet:\n      actor: Housekeeping\n\n# Aggregates\naggs:\n  - GuestAgg: &Guest\n      guestId: g\n      name: s\n      email: s\n\n  - RoomAgg: &Room\n      roomNumber: s\n      roomType: RoomType\n      nightlyRate: dec\n      needsCleaning: bool\n\n  - BookingAgg: &Booking\n      bookingId: g\n      guestId: g\n      roomNumber: s\n      checkIn: date\n      checkOut: date\n      total: dec\n      status: BookingStatus\n\n# Views\nviews:\n  - RoomAvailability: &RoomAvailability\n      rooms:\n        - roomNumber: s\n          roomType: RoomType\n          nightlyRate: dec\n          bookedNights: date[]\n\n  - GuestBookings: &GuestBookings\n      guestId: g\n      guestName: s\n      bookings:\n        - bookingId: g\n          roomNumber: s\n          checkIn: date\n          checkOut: date\n          total: dec\n          status: BookingStatus\n\n  - PaymentsToRequest: &PaymentsToRequest\n      pending:\n        - bookingId: g\n          guestId: g\n          total: dec\n\n  - CleaningSchedule: &CleaningSchedule\n      rooms:\n        - roomNumber: s\n          vacatedAt: dt\n\n# Workflow engines\nwfes:\n  - PaymentRequester: &PaymentRequester\n      description: Asks the payment provider to charge the guest for each new booking.\n      schedule: every minute\n\n  - ConfirmationEmailer: &ConfirmationEmailer\n      description: Emails the guest as soon as their booking is confirmed.\n\n# External systems that call our API\nsystems:\n  - PaymentProvider:\n      description: Third-party card payments. Calls POST /webhooks/payments when a charge succeeds.\n\n# Slices (left to right on the timeline)\nslices:\n\n  # ---- Setting up --------------------------------------------------------\n\n  - RegisterGuest:\n      agg: *Guest\n      trigger: { screen: SignUpPage }\n      command:\n        props:\n          guestId: g\n          name: s\n          email: s\n      event:\n        name: GuestRegistered\n        props:\n          guestId: g\n          name: s\n          email: s\n      views:\n        - \u003c\u003c: *GuestBookings\n          guestId: x\n          guestName: x\n      status: Completed\n      specs:\n        - name: registers a guest\n          when:\n            RegisterGuest: { guestId: g-1, name: Ada Lovelace, email: ada@example.com }\n          then:\n            - GuestRegistered: { guestId: g-1, name: Ada Lovelace, email: ada@example.com }\n        - name: rejects an email that is already registered\n          given:\n            - GuestRegistered: { guestId: g-1, email: ada@example.com }\n          when:\n            RegisterGuest: { guestId: g-2, email: ada@example.com }\n          then:\n            - error: EmailAlreadyRegistered\n\n  - AddRoom:\n      agg: *Room\n      trigger: { screen: RoomManagement }\n      command:\n        props:\n          roomNumber: s\n          roomType: RoomType\n          nightlyRate: dec\n      event:\n        name: RoomAdded\n        props:\n          roomNumber: s\n          roomType: RoomType\n          nightlyRate: dec\n      views:\n        - \u003c\u003c: *RoomAvailability\n          rooms: x\n      status: Completed\n\n  # ---- Booking -------------------------------------------------------------\n\n  # View slice: the guest browses availability before booking.\n  - BrowseRooms:\n      view: *RoomAvailability\n      readBy:\n        - screen: RoomSearch\n      status: Completed\n      specs:\n        - name: shows a booked night as taken\n          given:\n            - RoomAdded: { roomNumber: \"101\", roomType: Double, nightlyRate: 120.00 }\n            - RoomBooked: { bookingId: b-1, roomNumber: \"101\", checkIn: 2026-11-02, checkOut: 2026-11-03 }\n          then:\n            - RoomAvailability:\n                rooms:\n                  - { roomNumber: \"101\", roomType: Double, nightlyRate: 120.00, bookedNights: [2026-11-02] }\n\n  - BookRoom:\n      agg: *Booking\n      trigger: { screen: RoomSearch }\n      command:\n        props:\n          bookingId: g\n          guestId: g\n          roomNumber: s\n          checkIn: date\n          checkOut: date\n      event:\n        name: RoomBooked\n        props:\n          bookingId: g\n          guestId: g\n          roomNumber: s\n          checkIn: date\n          checkOut: date\n          total: dec\n      views:\n        - \u003c\u003c: *RoomAvailability\n          rooms: x\n        - \u003c\u003c: *GuestBookings\n          bookings: x\n        - \u003c\u003c: *PaymentsToRequest\n          pending: x\n      status: InDev\n      story: HOTEL-12\n      specs:\n        - name: books an available room and prices the stay\n          given:\n            - RoomAdded: { roomNumber: \"101\", roomType: Double, nightlyRate: 120.00 }\n          when:\n            BookRoom: { bookingId: b-1, guestId: g-1, roomNumber: \"101\", checkIn: 2026-11-02, checkOut: 2026-11-05 }\n          then:\n            - RoomBooked: { bookingId: b-1, roomNumber: \"101\", checkIn: 2026-11-02, checkOut: 2026-11-05, total: 360.00 }\n        - name: rejects dates that overlap an existing booking\n          given:\n            - RoomAdded: { roomNumber: \"101\" }\n            - RoomBooked: { bookingId: b-1, roomNumber: \"101\", checkIn: 2026-11-02, checkOut: 2026-11-05 }\n          when:\n            BookRoom: { bookingId: b-2, roomNumber: \"101\", checkIn: 2026-11-04, checkOut: 2026-11-06 }\n          then:\n            - error: RoomUnavailable\n\n  # ---- Payment -------------------------------------------------------------\n\n  # View slice: the PaymentRequester WFE works from this to-do list.\n  - PaymentTodo:\n      view: *PaymentsToRequest\n      readBy:\n        - wfe: *PaymentRequester\n      status: InDev\n      specs:\n        - name: lists bookings that still need a payment request\n          given:\n            - RoomBooked: { bookingId: b-1, guestId: g-1, total: 360.00 }\n            - RoomBooked: { bookingId: b-2, guestId: g-2, total: 120.00 }\n            - PaymentRequested: { bookingId: b-1 }\n          then:\n            - PaymentsToRequest:\n                pending:\n                  - { bookingId: b-2, guestId: g-2, total: 120.00 }\n\n  # Automation: the WFE issues a command for each item on its to-do list.\n  - RequestPayment:\n      agg: *Booking\n      trigger: { wfe: *PaymentRequester }\n      command:\n        props:\n          bookingId: g\n          amount: dec\n      event:\n        name: PaymentRequested\n        props:\n          bookingId: g\n          amount: dec\n          requestedAt: dt\n      views:\n        - \u003c\u003c: *PaymentsToRequest\n          pending: x\n      status: InDev\n      specs:\n        - name: requests payment for a new booking\n          given:\n            - RoomBooked: { bookingId: b-1, total: 360.00 }\n          then:\n            - RequestPayment: { bookingId: b-1, amount: 360.00 }\n        - name: does not request payment twice\n          given:\n            - RoomBooked: { bookingId: b-1, total: 360.00 }\n            - PaymentRequested: { bookingId: b-1 }\n          then: []\n\n  # Translation: the payment provider's webhook calls our API, which issues\n  # RecordPayment. The events are ours, and BookingConfirmed triggers a workflow.\n  - RecordPayment:\n      agg: *Booking\n      trigger: { system: PaymentProvider }\n      command:\n        props:\n          bookingId: g\n          amount: dec\n          providerReference: s\n      events:\n        - name: PaymentReceived\n          props:\n            bookingId: g\n            amount: dec\n            providerReference: s\n        - name: BookingConfirmed\n          props:\n            bookingId: g\n      views:\n        - \u003c\u003c: *GuestBookings\n          bookings: x\n      wfes:\n        - *ConfirmationEmailer\n      status: Planned\n      specs:\n        - name: records the payment and confirms the booking\n          given:\n            - RoomBooked: { bookingId: b-1, total: 360.00 }\n            - PaymentRequested: { bookingId: b-1, amount: 360.00 }\n          when:\n            RecordPayment: { bookingId: b-1, amount: 360.00, providerReference: pay_123 }\n          then:\n            - PaymentReceived: { bookingId: b-1, amount: 360.00, providerReference: pay_123 }\n            - BookingConfirmed: { bookingId: b-1 }\n        - name: rejects a payment for an unknown booking\n          when:\n            RecordPayment: { bookingId: b-9, amount: 50.00, providerReference: pay_999 }\n          then:\n            - error: UnknownBooking\n\n  # Automation triggered directly by our own event (no to-do list needed).\n  - SendBookingConfirmation:\n      agg: *Booking\n      trigger: { wfe: *ConfirmationEmailer }\n      command:\n        name: SendConfirmationEmail\n        props:\n          bookingId: g\n      event:\n        name: ConfirmationEmailSent\n        props:\n          bookingId: g\n          sentAt: dt\n      status: Planned\n      specs:\n        - name: emails the guest once the booking is confirmed\n          given:\n            - BookingConfirmed: { bookingId: b-1 }\n          then:\n            - SendConfirmationEmail: { bookingId: b-1 }\n\n  # ---- Managing a booking --------------------------------------------------\n\n  # View slice: one view, read on two screens by two different actors.\n  - ShowBookings:\n      view: *GuestBookings\n      readBy:\n        - screen: MyBookings\n        - screen: FrontDeskConsole\n      status: Planned\n      specs:\n        - name: shows a confirmed booking\n          given:\n            - GuestRegistered: { guestId: g-1, name: Ada Lovelace }\n            - RoomBooked: { bookingId: b-1, guestId: g-1, roomNumber: \"101\", total: 360.00 }\n            - BookingConfirmed: { bookingId: b-1 }\n          then:\n            - GuestBookings:\n                guestId: g-1\n                guestName: Ada Lovelace\n                bookings:\n                  - { bookingId: b-1, roomNumber: \"101\", total: 360.00, status: Confirmed }\n\n  - CancelBooking:\n      agg: *Booking\n      trigger: { screen: MyBookings }\n      command:\n        props:\n          bookingId: g\n          reason: s?\n      event:\n        name: BookingCancelled\n        props:\n          bookingId: g\n          reason: s?\n      views:\n        - \u003c\u003c: *RoomAvailability\n          rooms: x\n        - \u003c\u003c: *GuestBookings\n          bookings: x\n      status: Planned\n      specs:\n        - name: cannot cancel after check-in\n          given:\n            - RoomBooked: { bookingId: b-1 }\n            - GuestCheckedIn: { bookingId: b-1 }\n          when:\n            CancelBooking: { bookingId: b-1 }\n          then:\n            - error: AlreadyCheckedIn\n\n  # ---- The stay ----------------------------------------------------------\n\n  - CheckIn:\n      agg: *Booking\n      trigger: { screen: FrontDeskConsole }\n      command:\n        props:\n          bookingId: g\n      event:\n        name: GuestCheckedIn\n        props:\n          bookingId: g\n          roomNumber: s\n          checkedInAt: dt\n      views:\n        - \u003c\u003c: *GuestBookings\n          bookings: x\n      status: Planned\n      specs:\n        - name: cannot check in before payment is confirmed\n          given:\n            - RoomBooked: { bookingId: b-1 }\n          when:\n            CheckIn: { bookingId: b-1 }\n          then:\n            - error: PaymentNotConfirmed\n\n  - CheckOut:\n      agg: *Booking\n      trigger: { screen: FrontDeskConsole }\n      command:\n        props:\n          bookingId: g\n      event:\n        name: GuestCheckedOut\n        props:\n          bookingId: g\n          roomNumber: s\n          checkedOutAt: dt\n      views:\n        - \u003c\u003c: *GuestBookings\n          bookings: x\n        - \u003c\u003c: *CleaningSchedule\n          rooms: x\n      status: Planned\n\n  # ---- Housekeeping --------------------------------------------------------\n\n  - CleaningList:\n      view: *CleaningSchedule\n      readBy:\n        - screen: HousekeepingTablet\n      status: Planned\n\n  - MarkRoomCleaned:\n      agg: *Room\n      trigger: { screen: HousekeepingTablet }\n      command:\n        props:\n          roomNumber: s\n      event:\n        name: RoomCleaned\n        props:\n          roomNumber: s\n          cleanedAt: dt\n      views:\n        - \u003c\u003c: *CleaningSchedule\n          rooms: x\n      status: Planned\n"}}];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const tabs = document.getElementById("tabs"), panels = document.getElementById("panels");
+DEMOS.forEach((d, i) => {
+  tabs.insertAdjacentHTML("beforeend", `<button type="button" class="tab" role="tab" id="tab-${d.key}" aria-controls="${d.key}" aria-selected="false">${esc(d.tab)}</button>`);
+  const panel = document.createElement("section");
+  panel.className = "demo"; panel.id = d.key; panel.setAttribute("role", "tabpanel"); panel.setAttribute("aria-labelledby", "tab-" + d.key); panel.hidden = true;
+  panel.innerHTML = `<div class="demo-intro">
+      <div><h2>${esc(d.title)}</h2><p>${d.intro}</p><div class="facts">${TEML_BOARD.facts(d.M)}</div></div>
+      <div><h3>What to look for</h3><ul>${d.notice.map(n => `<li>${n}</li>`).join("")}</ul></div>
+    </div>
+    <div class="board-app"></div>
+    <div class="src-block"><h3>The TEML behind this board <span>${esc(d.M.file)}</span></h3><pre></pre></div>`;
+  panel.querySelector(".board-app").append(document.getElementById("board-ui").content.cloneNode(true));
+  panel.querySelector("pre").textContent = d.M.source;
+  panels.append(panel);
+  TEML_BOARD.mountBoard(panel.querySelector(".board-app"), d.M, { select: d.select });
+});
+function show(key) {
+  DEMOS.forEach(d => {
+    const on = d.key === key;
+    document.getElementById(d.key).hidden = !on;
+    document.getElementById("tab-" + d.key).setAttribute("aria-selected", on);
+  });
+}
+tabs.addEventListener("click", e => {
+  const b = e.target.closest(".tab"); if (!b) return;
+  show(b.getAttribute("aria-controls"));
+  try { history.replaceState(null, "", "#" + b.getAttribute("aria-controls")); } catch {}
+});
+tabs.addEventListener("keydown", e => {
+  if (!["ArrowLeft", "ArrowRight"].includes(e.key)) return;
+  const list = [...tabs.querySelectorAll(".tab")], i = list.indexOf(document.activeElement);
+  const next = list[(i + (e.key === "ArrowRight" ? 1 : list.length - 1)) % list.length];
+  next.focus(); next.click();
+});
+const fromHash = location.hash.slice(1);
+show(DEMOS.some(d => d.key === fromHash) ? fromHash : DEMOS[0].key);
+</script>
