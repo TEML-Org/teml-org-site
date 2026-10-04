@@ -11,7 +11,7 @@ First we will view the sections and then at the end we can see the whole documen
 ## Document Header:
 
 ```yaml
-apiVersion: teml.org/v-alpha-002
+apiVersion: teml.org/v-alpha-003
 metadata:
   name: sample
 ```
@@ -23,28 +23,28 @@ The header information is not needed for informal use, but will be useful for to
 ```yaml
 # Aggregates
 aggs:
-  - UserAgg: &User
+  - UserAgg:
       id: g
       firstName: s
       lastName: s
       age: int
 ```
 
-Optionally define a list of aggregates near the top of the document. Each aggregate in the list can be created using the YAML anchor syntax (ie: &User) so it can be referenced later in the document.
+Optionally define a list of aggregates. Slices refer to an aggregate by its name, for example `agg: UserAgg`.
 
 ## Views:
 
 ```yaml
 # Views
 views:
-  - UserView: &UserView
+  - UserView:
       id: g
       firstName: s
       lastName: s
       age: int
 ```
 
-Optionally define a list of views near the top of the document. Each view in the list can be created using the YAML anchor syntax (ie: &UserView) so it can be referenced later in the document.
+Optionally define a list of views. Slices refer to a view by its name, for example `views: [UserView]`.
 
 ## Slices:
 
@@ -55,18 +55,17 @@ Optionally define a list of views near the top of the document. Each view in the
 # Slices
 slices:
   - AddUser:
-      agg: *User
+      agg: UserAgg
       command:
         name: AddUser # The command name is optional since by default it will match the name of the Slice
-      event:
-        name: AddedUser # The event name should be the past tense of the command
-        props:
-          id: g
-          firstName: s
-          lastName: s
-          age: int
+      events:
+        - AddedUser: # The event name should be the past tense of the command
+            id: g
+            firstName: s
+            lastName: s
+            age: int
       views:
-        - *UserView
+        - UserView
    ...
 
 ```
@@ -75,29 +74,28 @@ To see a model like this drawn as an Event Modeling board, visit the [demos](/de
 
 ---
 
-A list of slices are defined after the optional _aggregates_ and _views_. We put these after the aggregates and views so we can reference the YAML anchors using YAML aliases such as `*User` and `*UserView`.
+A list of slices makes up the timeline, read from left to right. Sections can appear in any order, because everything is referred to by name.
 
 A slice defines a unit of work in an application. The unit of work is triggered by some external force that calls a _command_. Every _command_ results in at least one _event_. _Views_ are updated by handling _events_.
 
 Properties of slices include:
 
-- _agg_: <optional> The aggregate that is affected by the slice.
+- _agg_: <optional> The name of the aggregate that is affected by the slice.
 - _command_: <optional> If not defined, a command is inferred and will have the same name as the slice. A command name should be imperative (ie: 'DoSomething!')
-- _event_: <required> An event is the result of a command. The name of an event must be in the past-tense. An event name should be declarative (ie: 'ItWasDone')
-- _views_: <optional> If the events will affect any views, the views can be listed here. Using the YAML alias syntax allows for linking back to a view that was optionally defined at the top of the document.
-- _wfes_: <optional> If the events will trigger a 'WorkFlowEngine' (WFE) process, then the WFEs can be listed here.
+- _events_: <required> The events that result from the command, usually just one. The name of an event must be in the past-tense. An event name should be declarative (ie: 'ItWasDone')
+- _views_: <optional> If the events will affect any views, list the views' names here. To say which properties the slice touches, write `- UserView: [id, age]`.
 
-Version v-alpha-002 adds more: a `trigger` for the command (a screen, an automation or an external system), Given/When/Then `specs`, and view slices. See the [Introduction](../) and the [Specification](../specification/).
+A slice can also have a `trigger` for the command (a screen, an automation or an external system) and Given/When/Then `specs`, and there are view slices that show where a view is read. See the [Introduction](../) and the [Specification](../specification/).
 
 ## The full document:
 
 ```yaml
-apiVersion: teml.org/v-alpha-002
+apiVersion: teml.org/v-alpha-003
 metadata:
   name: sample
 # Aggregates
 aggs:
-  - UserAgg: &User
+  - UserAgg:
       id: g
       firstName: s
       lastName: s
@@ -105,7 +103,7 @@ aggs:
 
 # Views
 views:
-  - UserView: &UserView
+  - UserView:
       id: g
       firstName: s
       lastName: s
@@ -117,45 +115,38 @@ views:
 # Slices
 slices:
   - AddUser:
-      agg: *User
+      agg: UserAgg
       command:
         name: AddUser # The command name is optional since by default it will match the name of the Slice
-      event:
-        name: AddedUser # The event name should be the past tense of the command
-        props:
-          id: g
-          firstName: s
-          lastName: s
-          age: int
+      events:
+        - AddedUser: # The event name should be the past tense of the command
+            id: g
+            firstName: s
+            lastName: s
+            age: int
       views:
-        - *UserView
+        - UserView
 
   - RenameUser: # In this slice we don't have a command specified. The command is inferred and will be named after the slice ('RenameUser' in this case)
-      agg: *User
-      event:
-        name: RenamedUser
-        props:
-          id: g
-          firstName: s
-          lastName: s
+      agg: UserAgg
+      events:
+        - RenamedUser:
+            id: g
+            firstName: s
+            lastName: s
       views:
-        - <<: *UserView
-          id: x
-          firstName: x
+        - UserView: [id, firstName, lastName]
 
   - ReAgeUser: # In this slice we don't have a command specified. The command is inferred and will be named after the slice ('ReAgeUser' in this case)
       story: "https://www.example.com/12345"
       status: InDev
-      agg: *User
-      event:
-        name: ReAgedUser
-        props:
-          id: g
-          age: int
+      agg: UserAgg
+      events:
+        - ReAgedUser:
+            id: g
+            age: int
       views:
-        - <<: *UserView
-          id: x
-          age: int
+        - UserView: [id, age]
 ```
 
 The full version would be good as a final document or if generated by a tool that parses the code to generate documentation.
@@ -166,35 +157,32 @@ The full version would be good as a final document or if generated by a tool tha
 # Header left out for brevity
 # Aggregates
 aggs:
-  - UserAgg: &User [id, firstName, lastName, age]
+  - UserAgg: [id, firstName, lastName, age]
 
 # Views
 views:
-  - UserView: &UserView [id, firstName, lastName, age]
+  - UserView: [id, firstName, lastName, age]
 
 # Slices
 slices:
   - AddUser:
-      event:
-        name: AddedUser
-        props: [id, firstName, lastName, age]
-      views: [*UserView]
+      events:
+        - AddedUser: [id, firstName, lastName, age]
+      views: [UserView]
 
   - RenameUser:
-      event:
-        name: RenamedUser
-        props: [id, firstName, lastName]
-      views: [*UserView]
+      events:
+        - RenamedUser: [id, firstName, lastName]
+      views: [UserView]
 
   - ReAgeUser:
-      event:
-        name: ReAgedUser
-        props: [age]
-      views: [*UserView]
+      events:
+        - ReAgedUser: [age]
+      views: [UserView]
 ```
 
 The property lists use YAML's `[a, b, c]` form. Listing names on separate lines without the brackets would turn them into a single string.
 
-This version is fairly minimal. Most of the valuable information is still conveyed. We can still see there is one aggregate, two views and 3 slices. We have shortened the slices by leaving out the command. The command and command-name can be inferred from the slice and slice name. The events are defined because they are the critical piece of information that we need to capture in our system. The event carries the data that will be used by the views and/or processors that handle events. The view that is being updated is defined, but the properties are not listed. This amount of brevity assumes your team would understand which properties would get updated so you only point them to the fact that the view will be updated. You can adjust your level as needed for you and your collaborators.
+This version is fairly minimal. Most of the valuable information is still conveyed. We can still see there is one aggregate, one view and 3 slices. We have shortened the slices by leaving out the command. The command and command-name can be inferred from the slice and slice name. The events are defined because they are the critical piece of information that we need to capture in our system. The event carries the data that will be used by the views and/or processors that handle events. The view that is being updated is defined, but the properties are not listed. This amount of brevity assumes your team would understand which properties would get updated so you only point them to the fact that the view will be updated. You can adjust your level as needed for you and your collaborators.
 
 Once teams become familiar with Event Modeling and with each other, the notation required to communicate can be more and more condensed. This notation allows us to be very brief when needed. It also allows us to add more details if we would like to feed the model into tooling that could help generate code or documentation.

@@ -1,17 +1,17 @@
 ---
 weight: 200
-title: "Specification (v-alpha-002)"
+title: "Specification (v-alpha-003)"
 ---
 
 # TEML Specification
 
-> Copied from [`spec/teml-alpha-002.md`](https://github.com/TEML-Org/Teml-spec/blob/main/spec/teml-alpha-002.md) in the Teml-spec repository. Edit it there, then run `scripts/sync-from-spec.py`.
+> Copied from [`spec/teml-alpha-003.md`](https://github.com/TEML-Org/Teml-spec/blob/main/spec/teml-alpha-003.md) in the Teml-spec repository. Edit it there, then run `scripts/sync-from-spec.py`.
 
-**Version:** `teml.org/v-alpha-002` (draft)
+**Version:** `teml.org/v-alpha-003` (draft)
 **Status:** Working draft. Anything here may change before the first stable version.
-**Machine-readable schema:** [`schema/teml-alpha-002.schema.json`](/schema/teml-alpha-002.schema.json)
+**Machine-readable schema:** [`schema/teml-alpha-003.schema.json`](/schema/teml-alpha-003.schema.json)
 **Website:** <https://teml.org>
-**Previous version:** [`teml.org/v-alpha-001`](https://github.com/TEML-Org/Teml-spec/blob/main/spec/teml-alpha-001.md). See [Changes from v-alpha-001](#changes-from-v-alpha-001) at the end.
+**Previous version:** [`teml.org/v-alpha-002`](https://github.com/TEML-Org/Teml-spec/blob/main/spec/teml-alpha-002.md). See [Changes from v-alpha-002](#changes-from-v-alpha-002) at the end.
 
 ---
 
@@ -41,8 +41,6 @@ The keywords **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** are 
 
 A **processor** is any tool that reads TEML: a validator, renderer, code generator, and so on.
 
-Sections marked **(extension)** were proposed in this spec repository and do not yet appear on teml.org. They are optional; a document that does not use them loses nothing.
-
 ---
 
 ## 2. Sketch and compliant documents
@@ -53,7 +51,7 @@ A document that contains an `apiVersion` (§4.1) is a **compliant** document. A 
 |---|---|---|
 | Header (`apiVersion`, `metadata`) | optional | required |
 | Property types | optional; properties can be listed by name only | required |
-| Change slice `event` | optional | required |
+| Change slice `events` | optional | required |
 | References | should resolve | **MUST** resolve |
 | Processor problems | reported as **warnings** | reported as **errors** |
 
@@ -63,39 +61,36 @@ A sketch, which is still valid YAML:
 
 ```yaml
 aggs:
-  - UserAgg: &User [id, firstName, lastName, age]
+  - UserAgg: [id, firstName, lastName, age]
 
 views:
-  - UserView: &UserView [id, firstName, lastName, age]
+  - UserView: [id, firstName, lastName, age]
 
 slices:
   - AddUser:
-      event:
-        name: AddedUser
-        props: [id, firstName, lastName, age]
-      views: [*UserView]
+      events: [AddedUser]
+      views: [UserView]
 
   - RenameUser:
-      event:
-        name: RenamedUser
-        props: [id, firstName, lastName]
-      views: [*UserView]
+      events:
+        - RenamedUser: [id, firstName, lastName]
+      views:
+        - UserView: [firstName, lastName]
 ```
 
-> **Note.** A sketch MUST still be valid YAML. Writing `UserAgg: &User id` and continuing on the next lines with `firstName`, `lastName` produces a single string (`"id firstName lastName"`), not a list. Use a flow list such as `[id, firstName, lastName]`, or a block list with `- id` on each line.
+> **Note.** A sketch MUST still be valid YAML. Writing `UserAgg: id` and continuing on the next lines with `firstName`, `lastName` produces a single string (`"id firstName lastName"`), not a list. Use a flow list such as `[id, firstName, lastName]`, or a block list with `- id` on each line.
 
 ---
 
 ## 3. Files
 
-- A TEML document **MUST** be a single YAML document. Processors **MUST** support YAML anchors, aliases and the merge key `<<`, because TEML relies on them (§5).
-- The file extension **SHOULD** be `.teml.yaml`, which keeps YAML editor support working. Processors **SHOULD** also accept `.teml` and `.yaml`.
-- The encoding **MUST** be UTF-8.
+- A TEML document **MUST** be a single YAML document, encoded as UTF-8.
+- The file extension **SHOULD** be `.teml.yaml`, which keeps YAML editor support working.
 
 Compliant documents **MAY** start with this comment, which lets YAML-aware editors provide autocomplete and validation:
 
 ```yaml
-# yaml-language-server: $schema=https://teml.org/schema/teml-alpha-002.schema.json
+# yaml-language-server: $schema=https://teml.org/schema/teml-alpha-003.schema.json
 ```
 
 ### 3.1 Extensions
@@ -109,30 +104,28 @@ In compliant documents, every other key that this spec does not define is an **e
 ## 4. Document structure
 
 ```yaml
-apiVersion: teml.org/v-alpha-002
+apiVersion: teml.org/v-alpha-003
 metadata:
   name: sample
 
-types:   []    # (extension) reusable property shapes and enums  §6.4
-actors:  []    # people and roles who use the system               §10.1
-screens: []    # user interfaces                                   §10.2
-aggs:    []    # aggregates                                        §7
-views:   []    # read models                                       §8
-wfes:    []    # (extension) workflow-engine processes             §9
-systems: []    # external systems that call our API                §11
-slices:  []    # the timeline, in order                            §12
+types:       []    # reusable property shapes and enums      §6.4
+actors:      []    # people and roles who use the system     §10.1
+screens:     []    # user interfaces                         §10.2
+systems:     []    # external systems that call our API      §11
+automations: []    # processes that run without a person     §9
+aggs:        []    # aggregates                              §7
+views:       []    # read models                             §8
+slices:      []    # the timeline, in order                  §12
 ```
 
-Each section is optional, but a model without `slices` describes nothing. Authors **SHOULD** define things before they are referenced by alias, because a YAML alias (`*User`) can only refer to an anchor (`&User`) that appears earlier in the file. The order above works: everything is defined before `slices`.
-
-YAML anchors are document-wide, so two definitions **MUST NOT** use the same anchor name, even in different lists. For example, if `GuestAgg` uses `&Guest`, an actor named `Guest` needs a different anchor, or none: refer to it by name instead.
+Each section is optional, but a model without `slices` describes nothing. Sections **MAY** appear in any order.
 
 ### 4.1 `apiVersion`
 
 The version of the TEML specification the document follows. It is a string of the form `teml.org/<version>`. For this version it **MUST** be:
 
 ```yaml
-apiVersion: teml.org/v-alpha-002
+apiVersion: teml.org/v-alpha-003
 ```
 
 ### 4.2 `metadata`
@@ -145,62 +138,38 @@ apiVersion: teml.org/v-alpha-002
 
 ### 4.3 Named lists
 
-`types`, `aggs`, `views`, `wfes` and `slices` are all **named lists**: lists whose items are single-key mappings from a **name** to a **body**.
+`types`, `actors`, `screens`, `systems`, `automations`, `aggs`, `views` and `slices` are all **named lists**: lists whose items are single-key mappings from a **name** to a **body**.
 
 ```yaml
 views:
-  - UserView: &UserView    # name: UserView, anchor: &UserView
+  - UserView:
       id: g
       firstName: s
 ```
 
 - Names **MUST** match `^[A-Za-z][A-Za-z0-9_]*$` and **MUST** be unique within their list.
 - List order is meaningful for `slices`, which run left to right on the timeline (§12). For the other lists, order only affects presentation.
-- The body **MAY** carry a YAML anchor so that it can be referenced later (§5).
 
 ---
 
 ## 5. References
 
-Slices, screens and systems refer to other definitions (actors, screens, aggregates, views, WFEs) in one of two ways:
-
-1. **By alias (recommended).** Put an anchor on the definition's body and use an alias wherever it is needed:
-   ```yaml
-   aggs:
-     - UserAgg: &User
-         id: g
-   slices:
-     - AddUser:
-         agg: *User
-   ```
-2. **By name.** Use a plain string holding the element's name:
-   ```yaml
-   agg: UserAgg
-   ```
-
-The anchor name (`User`) and the element name (`UserAgg`) **MAY** differ. A name reference always uses the element name.
-
-### 5.1 Merged references (views only)
-
-Within a slice's `views` list, an item **MAY** merge a view and list the properties the slice touches. Each listed property's value is either the marker `x` or the property's type:
+Wherever one element refers to another, it uses the other element's **name** as a plain string:
 
 ```yaml
-views:
-  - <<: *UserView
-    id: x
-    age: int
+aggs:
+  - UserAgg:
+      id: g
+slices:
+  - AddUser:
+      agg: UserAgg
 ```
 
-This means "this slice updates `UserView`, specifically `id` and `age` (an `int`)". See §12.4.
+The key holding a reference says what kind of element it names: `agg` names an aggregate, `screen` a screen, and so on. Names only need to be unique within their own list.
 
-### 5.2 Processor rules
+In a compliant document, every reference **MUST** resolve to an element defined in the document. In a sketch, references **MAY** name elements that are not defined; processors **SHOULD** warn about them and treat them as free text.
 
-- Processors **MUST** resolve an alias to the definition whose body carries the matching anchor. They **MUST** do this by node identity or by the anchor name, never by comparing values: two aggregates with identical properties are still different aggregates.
-- For a merged view reference, processors **MUST** identify the view from the alias given to `<<`.
-- For a merged view reference, processors **MUST** determine the touched properties from the keys written in the item itself, at the YAML node level, not from the merged result. After merging, an override such as `age: int` looks the same as the `age: int` inherited from the view.
-- Processors **MUST NOT** treat a property whose value is `x` as a type.
-
-> **Implementation note.** Most YAML libraries can preserve aliases. For example, `yaml` (JavaScript) via `parseDocument`, `ruamel.yaml` (Python), and `gopkg.in/yaml.v3` via `yaml.Node`. With libraries that expand aliases into shared objects, the alias and the definition are the same object, which also satisfies the node-identity rule.
+TEML does not use YAML anchors (`&`), aliases (`*`) or merge keys (`<<`). A reference that is not a string is an error.
 
 ---
 
@@ -216,14 +185,11 @@ In a compliant document, props are a mapping from property name to a **property 
 id: g                  # type
 middleName: s?         # optional
 roles: s[]             # list
-tags: [s]              # list (same as s[])
-address: Address       # named type (extension, §6.4)
+address: Address       # named type (§6.4)
+phones: Phone[]        # list of a named type
 name:                  # nested object
   first: s
   last: s
-phones:                # list of nested objects
-  - kind: s
-    number: s
 ```
 
 A **property spec** is one of:
@@ -231,8 +197,9 @@ A **property spec** is one of:
 | YAML form | Meaning |
 |---|---|
 | **string** | A type expression (§6.2). |
-| **sequence with exactly one item** | A list whose items are described by that item, which is itself a property spec. |
 | **mapping** | A nested object; the mapping is itself a property map. |
+
+For a list of objects, define the object as a named type (§6.4) and use `TypeName[]`.
 
 Property names **MUST** match `^[A-Za-z_][A-Za-z0-9_]*$` and **SHOULD** be camelCase.
 
@@ -250,26 +217,20 @@ optional-suffix ::= "?"
 
 ### 6.3 Primitive types
 
-TEML favours the short names used on teml.org. The longer aliases are equivalent, and processors **MUST** treat them identically.
+| Type | Meaning |
+|---|---|
+| `g` | Globally unique identifier |
+| `s` | Text |
+| `int` | Whole number |
+| `dec` | Exact decimal (money, quantities) |
+| `bool` | `true` / `false` |
+| `date` | Calendar date (ISO 8601) |
+| `dt` | Date and time with time zone (ISO 8601) |
+| `any` | Unspecified |
 
-| Type | Aliases | Meaning |
-|---|---|---|
-| `g` | `guid`, `uuid` | Globally unique identifier |
-| `s` | `str`, `string` | Text |
-| `int` | `i`, `integer` | Whole number |
-| `dec` | `decimal` | Exact decimal (money, quantities) |
-| `float` | `f` | Floating-point number |
-| `bool` | `b`, `boolean` | `true` / `false` |
-| `date` | | Calendar date (ISO 8601) |
-| `time` | | Time of day (ISO 8601) |
-| `dt` | `datetime`, `timestamp` | Date and time with time zone (ISO 8601) |
-| `dur` | `duration` | ISO 8601 duration |
-| `uri` | `url` | URI |
-| `any` | | Unspecified |
+None of these names may be used as a `types` name.
 
-`x` is reserved as the "touched" marker (§5.1) and is **not** a type. None of the names in this table, nor `x`, may be used as a `types` name.
-
-### 6.4 Named types (`types`) — (extension)
+### 6.4 Named types (`types`)
 
 `types` is a named list of reusable shapes. A body is either a property map (an object type) or a mapping with an `enum` list:
 
@@ -289,7 +250,7 @@ A body that has an `enum` key **MUST NOT** have any other keys.
 In a sketch, props **MAY** be a **list of property names** without types:
 
 ```yaml
-props: [id, firstName, lastName]
+UserAgg: [id, firstName, lastName]
 ```
 
 A compliant document **MUST** use a property map.
@@ -304,7 +265,7 @@ Aggregates are the parts of the system that handle commands and enforce business
 
 ```yaml
 aggs:
-  - UserAgg: &User
+  - UserAgg:
       id: g
       firstName: s
       lastName: s
@@ -321,27 +282,28 @@ Views are read models: projections of event data used for querying or presentati
 
 ```yaml
 views:
-  - UserView: &UserView
+  - UserView:
       id: g
       firstName: s
       lastName: s
       age: int
 ```
 
-Change slices declare which views their events update (§12.4). View slices declare where a view is read (§12.7).
+Change slices declare which views their events update (§12.4). View slices declare where a view is read (§12.6).
 
 ---
 
-## 9. Workflow engines (`wfes`)
+## 9. Automations (`automations`)
 
-A **WFE** (WorkFlow Engine) is a process that runs in response to events without a person involved, such as a policy, saga, scheduled job or integration. Event Modeling draws it as a ⚙ processor.
+An **automation** is a process that runs without a person involved, such as a policy, saga, scheduled job or integration. Event Modeling draws it as a ⚙ processor.
 
-Slices list the WFEs their events trigger (§12.1). **(Extension)** WFEs **MAY** also be defined up front so they can be referenced by alias. A slice **MAY** state that its command is issued by a WFE (§12.5), and a view slice **MAY** state that a WFE reads its view, for example as a to-do list (§12.7).
+An automation works from a view, its **to-do list**, and issues commands. A view slice records that the automation reads the view (§12.6), and each change slice it issues a command in names it as the trigger (§12.5).
 
 ```yaml
-wfes:
-  - WelcomeEmailer: &WelcomeEmailer
+automations:
+  - WelcomeEmailer:
       description: Sends a welcome email to each newly added user.
+      schedule: every minute
 ```
 
 | Key | Type | Description |
@@ -383,15 +345,13 @@ screens:
 
 | Key | Type | Description |
 |---|---|---|
-| `actor` | Actor reference | Who uses the screen. |
+| `actor` | Actor name | Who uses the screen. |
 | `description` | string | |
 | `wireframe` | string | URL or relative path of a mockup or image. |
 
 A screen is used in two places:
 - as the **trigger** of a slice, where a person issues the command from it (§12.5);
-- as a **reader** of a view slice, where it displays the view (§12.7).
-
-Defining `screens` is optional. If a document has a `screens` list, every screen named in a slice **MUST** be in it. If it has none, screen names in slices are free text, and their actors are unknown.
+- as a **reader** of a view slice, where it displays the view (§12.6).
 
 ---
 
@@ -399,7 +359,7 @@ Defining `screens` is optional. If a document has a `screens` list, every screen
 
 An **external system** is software outside the model, such as a payment provider, a shipping carrier or a partner's service.
 
-An external system cannot put events into our model. Events are facts recorded by *our* system. Instead, the external system **calls our API**, for example with a webhook callback, and that call issues one of our commands. The command produces our own events, which update views and trigger WFEs like any other events. Event Modeling calls this a **translation**: the outside world's information is translated into our commands and events.
+An external system cannot put events into our model. Events are facts recorded by *our* system. Instead, the external system **calls our API**, for example with a webhook callback, and that call issues one of our commands. The command produces our own events, which update views like any other events. Event Modeling calls this a **translation**: the outside world's information is translated into our commands and events.
 
 `systems` is a named list (§4.3) of the external systems that call the model:
 
@@ -420,10 +380,8 @@ A change slice whose command is issued by an external system names that system a
     trigger: { system: PaymentProvider }    # the provider's webhook calls our API
     command:
       props: { orderId: g, amount: dec, providerReference: s }
-    event:
-      name: PaymentConfirmed
-      props: { orderId: g, amount: dec }
-    wfes: [*ReceiptSender]                  # our event triggers our workflow
+    events:
+      - PaymentConfirmed: { orderId: g, amount: dec }
 ```
 
 On a board, each external system gets a swimlane at the top, next to the actors, because it plays the same role: it starts a command from outside the model.
@@ -434,28 +392,24 @@ On a board, each external system gets a swimlane at the top, next to the actors,
 
 `slices` is a named list (§4.3). **List order is timeline order** (left to right on the board). There are two kinds of slice:
 
-- A **change slice** changes the system. Something triggers a **command**, the command results in one or more **events**, and those events update **views** and may trigger **WFEs**. A change slice is identified by having `event` or `events`.
-- A **view slice** reads the system. It names one **view** and the screens or WFEs that read it (§12.7). It is identified by having `view`.
+- A **change slice** changes the system. Something triggers a **command**, the command results in one or more **events**, and those events update **views**. A change slice is identified by having `events`.
+- A **view slice** reads the system. It names one **view** and the screens or automations that read it (§12.6). It is identified by having `view`.
 
 A slice **MUST** be exactly one of these kinds.
 
 ```yaml
 slices:
   - AddUser:              # change slice
-      agg: *User
-      command:
-        name: AddUser
-      event:
-        name: AddedUser
-        props:
-          id: g
-          firstName: s
-          lastName: s
-      views:
-        - *UserView
+      agg: UserAgg
+      events:
+        - AddedUser:
+            id: g
+            firstName: s
+            lastName: s
+      views: [UserView]
 
   - ShowUsers:            # view slice
-      view: *UserView
+      view: UserView
       readBy:
         - screen: UserList
 ```
@@ -464,19 +418,15 @@ slices:
 
 | Key | Type | Description |
 |---|---|---|
-| `agg` | Aggregate reference | The aggregate affected by the slice. |
+| `agg` | Aggregate name | The aggregate affected by the slice. |
+| `trigger` | Trigger | §12.5. What issues the command. |
 | `command` | Command | §12.2. Optional; inferred from the slice name when omitted. |
-| `event` | Event | §12.3. **Required** in compliant documents (unless `events` is used). |
-| `events` | list of Event | **(extension)** Use instead of `event` when a command produces more than one event. |
-| `views` | list of view references | §12.4. Views updated by the slice's events. |
-| `wfes` | list of WFE references or names | WFEs triggered by the slice's events. |
-| `trigger` | Trigger | **(extension)** §12.5. What issues the command. |
+| `events` | list of Event | §12.3. **Required** in compliant documents. |
+| `views` | list of View update | §12.4. Views updated by the slice's events. |
 | `story` | string | URL or identifier of the related story or ticket. |
-| `status` | string | §12.6. |
+| `status` | string | Free-form state of the slice. Recommended values are `Planned`, `InDev` and `Completed`. |
 | `description` | string | |
-| `specs` | list of Spec | **(extension)** §13. |
-
-`event` and `events` **MUST NOT** both appear.
+| `specs` | list of Spec | §13. |
 
 ### 12.2 Command
 
@@ -496,59 +446,58 @@ command:
     firstName: s
 ```
 
-### 12.3 Event
+### 12.3 Events
 
 An event is the fact that results from the command. It is the critical piece of information that a model captures. Its name **MUST** be in the past tense and **SHOULD** be declarative, for example `AddedUser` or `ItWasDone`.
 
-| Form | Meaning |
-|---|---|
-| string | The event's name; props unspecified (sketch). |
-| mapping | `name` (**required**) and `props`. |
+`events` is a named list (§4.3) of the events the command produces. Most slices have one. Each item is either:
 
-In a compliant document, an event **MUST** be a mapping with `props`.
+- a **string**: the event's name, with props unspecified (sketch); or
+- a **single-key mapping** from the event's name to its props (§6).
+
+```yaml
+events:
+  - PaymentReceived:
+      bookingId: g
+      amount: dec
+  - BookingConfirmed:
+      bookingId: g
+```
+
+In a compliant document, every event **MUST** have a property map.
 
 An event is defined by the slice that produces it, and an event name **MUST** be unique across all slices.
 
-### 12.4 Views in a slice
+### 12.4 View updates
 
-Each item of a slice's `views` list is one of:
+Each item of a change slice's `views` list is one of:
 
 | Form | Example | Meaning |
 |---|---|---|
-| alias | `- *UserView` | This slice updates `UserView`; which properties is not specified. |
-| name | `- UserView` | Same as above, by name. |
-| merged alias with overrides | `- <<: *UserView` `  firstName: x` `  age: int` | This slice updates `UserView`, touching the properties listed in the item. |
+| name | `- UserView` | This slice updates `UserView`; which properties is not specified. |
+| name with properties | `- UserView: [firstName, age]` | This slice updates `UserView`, touching the listed properties. |
 
-In the merged form:
+Each listed property **MUST** be a property of the view. "Touched" covers both properties the event sets and properties used to find the view record, such as `id`.
 
-- each listed key **MUST** be a property of the view;
-- each value **MUST** be either `x` (touched, type as in the view) or a type expression equal to the view's type for that property (touched, with its type restated). The type form is useful when reading the slice on its own. A type that differs from the view's type is an error in compliant documents.
-
-"Touched" covers both properties the event sets and properties used to find the view record, such as `id`.
-
-### 12.5 Trigger — (extension)
+### 12.5 Trigger
 
 `trigger` records what issues the command. It is a single-key mapping:
 
 | Form | Meaning |
 |---|---|
 | `trigger: { screen: AddUserForm }` | A person issues the command from the screen (§10.2). |
-| `trigger: { wfe: *WelcomeEmailer }` | The referenced WFE issues the command (an automation). |
+| `trigger: { automation: WelcomeEmailer }` | The automation issues the command (§9). |
 | `trigger: { system: PaymentProvider }` | An external system issues the command by calling our API, for example a webhook callback (§11). |
 
 When `trigger` is omitted, the trigger is unspecified.
 
-### 12.6 Status
+### 12.6 View slices
 
-A free-form string describing the slice's state. Recommended values are `Planned`, `InDev` and `Completed`. Teams **MAY** use their own values.
-
-### 12.7 View slices
-
-A view slice shows where a view is read: a screen that displays it, or a WFE that works from it, such as a to-do list. The events that build the view are already recorded by the change slices that update it (§12.4), so a view slice does not repeat them.
+A view slice shows where a view is read: a screen that displays it, or an automation that works from it as a to-do list. The events that build the view are already recorded by the change slices that update it (§12.4), so a view slice does not repeat them.
 
 ```yaml
 - BrowseRooms:
-    view: *RoomAvailability
+    view: RoomAvailability
     readBy:
       - screen: RoomSearch
     specs:
@@ -562,14 +511,14 @@ A view slice shows where a view is read: a screen that displays it, or a WFE tha
 
 | Key | Type | Description |
 |---|---|---|
-| `view` | View reference | **Required.** The view being read. |
-| `readBy` | list of Reader | Who reads the view. Each item is a single-key mapping: `screen: <Screen>` or `wfe: <WFE reference>`. |
+| `view` | View name | **Required.** The view being read. |
+| `readBy` | list of Reader | Who reads the view. Each item is a single-key mapping: `screen: <Screen>` or `automation: <Automation>`. |
 | `story` | string | |
-| `status` | string | §12.6. |
+| `status` | string | As for change slices (§12.1). |
 | `description` | string | |
 | `specs` | list of Spec | §13. |
 
-A view slice **MUST NOT** contain the change-slice keys `agg`, `command`, `event`, `events`, `views`, `wfes` or `trigger`.
+A view slice **MUST NOT** contain the change-slice keys `agg`, `trigger`, `command`, `events` or `views`.
 
 A view **MAY** appear in more than one view slice, for example when it is shown at different points on the timeline.
 
@@ -577,7 +526,7 @@ On a board, a view slice's readers are drawn to the **right** of its view, becau
 
 ---
 
-## 13. Specifications (Given / When / Then) — (extension)
+## 13. Specifications (Given / When / Then)
 
 A slice **MAY** include `specs`, a list of scenarios written in Event Modeling's Given/When/Then form.
 
@@ -595,7 +544,7 @@ What `then` holds depends on the slice:
 | Slice | `when` | `then` |
 |---|---|---|
 | Change slice, triggered by a screen, an external system, or unspecified | the command | the events produced, **or** a single `error: <Name>` |
-| Change slice, triggered by a WFE | omitted | the commands the WFE issues (an empty list means it does nothing) |
+| Change slice, triggered by an automation | omitted | the commands the automation issues (an empty list means it does nothing) |
 | View slice | omitted | exactly one instance of the slice's view, showing its state after the `given` events |
 
 ```yaml
@@ -623,20 +572,19 @@ These rules apply to compliant documents. For sketches, processors **SHOULD** re
 **Errors**
 
 - E1 `apiVersion` is missing or not supported, or `metadata.name` is missing.
-- E2 A name is duplicated within a named list, an anchor is defined twice, or an event name is used by more than one slice.
-- E3 A reference (alias or name) does not resolve to an element of the expected kind. This includes a screen name in a slice when the document defines `screens`, and a system named in `trigger: { system: … }`.
+- E2 A name is duplicated within a named list, or an event name is used by more than one slice.
+- E3 A reference does not resolve to a defined element of the expected kind (§5).
 - E4 A property is untyped, or a type expression names an unknown type.
-- E5 A slice is neither a change slice nor a view slice, or mixes keys of both kinds; or a change slice has both `event` and `events`.
-- E6 A merged view reference lists a property the view does not have, or gives it a type different from the view's type.
+- E5 A slice is neither a change slice nor a view slice, or mixes keys of both kinds.
+- E6 A view update lists a property the view does not have.
 - E7 A spec instance names an unknown command, event or view, or a property it does not define; or its `when`/`then` does not fit the slice (§13).
 
 **Warnings**
 
-- W1 An event name does not appear to be in the past tense, or a command name does not appear to be imperative.
-- W2 A view is not updated by any slice.
-- W3 An actor, screen, system, aggregate, view or WFE is defined but never referenced.
-- W4 A view is updated but never read by a view slice.
-- W5 A WFE issues commands (`trigger: { wfe: … }`) but nothing triggers it, and no view slice says it reads a view.
+- W1 A view is not updated by any slice.
+- W2 An actor, screen, system, automation or aggregate is defined but never referenced.
+- W3 A view is updated but never read by a view slice.
+- W4 An automation issues commands but does not read any view.
 
 ---
 
@@ -657,9 +605,9 @@ These rules apply to compliant documents. For sketches, processors **SHOULD** re
 
 ## Appendix B. Open questions
 
-- **Multiple files.** An include mechanism for large models. Note that YAML aliases cannot cross files, so name references (§5) would be required there.
+- **Multiple files.** An include mechanism for large models. Because references are names (§5), they can work across files.
 - **Chapters.** Grouping slices into named chapters on the timeline.
-- **Nested overrides.** A view override such as `rooms: x` cannot say which properties *inside* `rooms` a slice touches. A dotted key such as `rooms.bookedNights: x` is one option.
+- **Nested properties in view updates.** `- RoomAvailability: [rooms]` cannot say which properties *inside* `rooms` a slice touches. A dotted name such as `rooms.bookedNights` is one option.
 - **Command errors.** Declaring the errors a command can produce, so that `error:` names in specs can be checked.
 - **Repeated props.** A command's props often repeat its event's props. A shorthand could cut the duplication.
 - **API endpoints.** Should `trigger: { system: … }` be able to name the endpoint the system calls (for example `POST /webhooks/payments`), the way a screen names its wireframe?
@@ -675,7 +623,6 @@ The board is a timeline. **Anything that uses an element is drawn to its right**
 
 - In a view slice, the screens and automations that read the view are drawn to the **right** of the read model. On the timeline, a read model must exist before a screen can show it or an automation can work from it.
 - In a change slice, the read models an event updates are drawn to the right of that event.
-- An automation triggered by an event is drawn in a later column than the event.
 
 Within a change slice, the trigger is drawn directly above its command, and the command directly above its events. These happen together, at one point on the timeline, so they share a column.
 
@@ -685,7 +632,7 @@ Within a change slice, the trigger is drawn directly above its command, and the 
 - **Lanes, top to bottom:**
   1. One lane per actor, holding that actor's screens (§10). Screens without an actor share a "Screens" lane.
   2. One lane per external system (§11).
-  3. Automations (WFEs).
+  3. Automations.
   4. Commands and read models.
   5. One lane per aggregate, holding its events.
 
@@ -693,12 +640,25 @@ Within a change slice, the trigger is drawn directly above its command, and the 
 
 Following Event Modeling convention: commands are blue, events orange, read models green, and screens white. Automations are marked with a gear (⚙).
 
-## Changes from v-alpha-001
+## Changes from v-alpha-002
 
-- **New: actors and screens** (§10). `actors` and `screens` named lists. Screens name their actor. When `screens` is defined, screen names in slices must resolve.
-- **New: view slices** (§12.7). A slice with `view` and `readBy` instead of an event. It records which screens display a view and which WFEs work from it. Specs on a view slice check the view's state.
-- **New: external systems** (§11). A `systems` named list declares the external systems that call our API. A slice triggered by one uses `trigger: { system: … }`. The resulting events are our own and can trigger WFEs as usual.
-- **Changed:** a slice is now either a change slice or a view slice (E5). E2, E3, E7 and W3 cover the new elements; W4 and W5 are new.
-- **Changed:** `Planned` is added to the recommended status values.
-- **New:** Appendix C (informative) describes how to draw a board, including the rule that information flows left to right.
-- **Migrating:** change `apiVersion` to `teml.org/v-alpha-002`. Every valid v-alpha-001 document is otherwise valid v-alpha-002.
+v-alpha-003 removes features rather than adding them. Each removed feature had a simpler equivalent already in the language.
+
+- **Removed: YAML anchors, aliases and merge keys** (§5). References are always names. This removes the anchor rules, the define-before-use rule, and the `x` marker. Sections can now appear in any order.
+- **Changed: view updates** (§12.4). `- <<: *UserView` with `prop: x` lines becomes `- UserView: [prop, …]`. Restating a property's type is no longer allowed.
+- **Changed: one name per primitive type** (§6.3), and fewer primitives. The aliases (`guid`, `string`, `integer` and so on) are gone, as are `float`, `time`, `dur` and `uri`. Any of them can be added back later without breaking documents.
+- **Changed: one way to write a list type** (§6.1). `[s]` is gone; use `s[]`. For a list of objects, define a named type and use `Name[]`.
+- **Changed: one rule for references** (§5). In a compliant document every reference must resolve, including screens and automations. In a sketch, undefined names are warnings.
+- **Renamed: `wfes` is now `automations`** (§9), and the trigger and reader keys are `automation:`.
+- **Removed: `wfes` on change slices.** An automation now always works from a view: a view slice says it reads the view, and `trigger: { automation: … }` says which commands it issues. W4 checks for automations that read no view.
+- **Changed: `event` and `events` are merged** into one `events` named list (§12.3). Each item is `EventName: props`, or just the name in a sketch.
+- **Removed: the (extension) labels.** Everything in this document is part of the spec.
+- **Removed: warning W1** (past-tense and imperative names). It was a heuristic, better suited to a linter. The remaining warnings are renumbered W1–W4.
+- **Changed:** the `status` section is folded into §12.1, and view slices move to §12.6.
+- **Migrating:** change `apiVersion` to `teml.org/v-alpha-003`, then:
+  - replace every alias (`*Name`) with the element's name and delete the anchors;
+  - rewrite merged view references as `- ViewName: [touched, props]`;
+  - replace type aliases with the short names, and `[T]` with `T[]` (moving lists of objects into named types);
+  - rename `wfes` to `automations` and `wfe:` to `automation:`;
+  - replace `event: { name: X, props: P }` with `events: [ { X: P } ]`;
+  - for each `wfes:` on a change slice, add a to-do view that the slice updates and a view slice whose `readBy` names the automation.
