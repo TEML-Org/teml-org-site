@@ -95,7 +95,7 @@ Something triggers a **command**, which produces one or more **events**. The eve
     agg: BookingAgg
     trigger: { screen: RoomSearch }
     command:
-      props: { bookingId: g, roomNumber: s, checkIn: date, checkOut: date }
+      BookRoom: { bookingId: g, roomNumber: s, checkIn: date, checkOut: date }
     events:
       - RoomBooked: { bookingId: g, roomNumber: s, checkIn: date, checkOut: date, total: dec }
     views:

@@ -379,7 +379,7 @@ A change slice whose command is issued by an external system names that system a
 - ConfirmPayment:
     trigger: { system: PaymentProvider }    # the provider's webhook calls our API
     command:
-      props: { orderId: g, amount: dec, providerReference: s }
+      ConfirmPayment: { orderId: g, amount: dec, providerReference: s }
     events:
       - PaymentConfirmed: { orderId: g, amount: dec }
 ```
@@ -436,15 +436,16 @@ A command is the request to do something. Its name **SHOULD** be imperative, for
 |---|---|
 | omitted | The command is inferred. Its name is the slice name, and its props are unspecified. |
 | string | The command's name; props unspecified. |
-| mapping | `name` (optional; defaults to the slice name) and `props` (optional). |
+| single-key mapping | The command's name, mapped to its props (§6), written like an event (§12.3). |
 
 ```yaml
 command:
-  name: AddUser          # optional, defaults to the slice name
-  props:
+  AddUser:
     id: g
     firstName: s
 ```
+
+The name is usually the slice name. It can differ, for example when an automation's slice `SendBookingConfirmation` issues `SendConfirmationEmail`.
 
 ### 12.3 Events
 
@@ -652,6 +653,7 @@ v-alpha-003 removes features rather than adding them. Each removed feature had a
 - **Renamed: `wfes` is now `automations`** (§9), and the trigger and reader keys are `automation:`.
 - **Removed: `wfes` on change slices.** An automation now always works from a view: a view slice says it reads the view, and `trigger: { automation: … }` says which commands it issues. W4 checks for automations that read no view.
 - **Changed: `event` and `events` are merged** into one `events` named list (§12.3). Each item is `EventName: props`, or just the name in a sketch.
+- **Changed: a command is written like an event** (§12.2): `command: { AddUser: props }`, or just the name. The `name:` / `props:` keys are gone.
 - **Removed: the (extension) labels.** Everything in this document is part of the spec.
 - **Removed: warning W1** (past-tense and imperative names). It was a heuristic, better suited to a linter. The remaining warnings are renumbered W1–W4.
 - **Changed:** the `status` section is folded into §12.1, and view slices move to §12.6.
@@ -661,4 +663,5 @@ v-alpha-003 removes features rather than adding them. Each removed feature had a
   - replace type aliases with the short names, and `[T]` with `T[]` (moving lists of objects into named types);
   - rename `wfes` to `automations` and `wfe:` to `automation:`;
   - replace `event: { name: X, props: P }` with `events: [ { X: P } ]`;
+  - replace `command: { name: X, props: P }` with `command: { X: P }`, using the slice name for X when `name` was omitted;
   - for each `wfes:` on a change slice, add a to-do view that the slice updates and a view slice whose `readBy` names the automation.
