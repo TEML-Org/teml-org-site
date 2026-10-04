@@ -6,238 +6,171 @@ title: "Introduction to TEML"
 
 # Introduction to TEML
 
-## Overview
+**The Event Modeling Language (TEML)** is a text format for writing down an Event Model. A TEML file is a YAML document, so you can write it in any editor, keep it in Git, and feed it to tools that draw boards, check models and generate code.
 
-**The Event Modeling Language (TEML)** is a standardized textual representation for defining Event Models. Its purpose is to improve accessibility, streamline input and maintenance, and provide a common format for tooling and version control.
-
-This specification defines the syntax, semantics, and structural conventions for writing a valid TEML document.
+This page is a quick tour of TEML **v-alpha-002**. The full rules are in the [Specification](specification/). To see models drawn as Event Modeling boards, visit the [demos](/demos/).
 
 ---
 
-## Document Structure
+## Two ways to write TEML
 
-A TEML document is written in YAML and is structured as follows:
+- **Sketch:** quick, pseudo-code style notes. No header, and properties can be listed by name only.
+- **Compliant:** fully specified, so tools can process it. It starts with an `apiVersion` header, and every property has a type.
 
-```yaml
-apiVersion: <string>
-metadata:
-  name: <string>
-
-aggs:
-  - <aggregate_definition>
-
-views:
-  - <view_definition>
-
-slices:
-  - <slice_definition>
-```
-
-### `apiVersion`
-
-Specifies the version of the TEML specification being used.
-
-- **Type:** String
-- **Example:** `teml.org/v001`
-
-### `metadata`
-
-Provides metadata about the model.
-
-- **Type:** Object
-  - `name`: The name of the model.
-- **Example:**
-  ```yaml
-  metadata:
-    name: sample
-  ```
-
----
-
-## Aggregates (`aggs`)
-
-Defines the aggregates in the system. Aggregates are reusable components that encapsulate domain logic.
-
-### Syntax
+A sketch, which is still valid YAML:
 
 ```yaml
 aggs:
-  - &<aggregate_name>
-    <property>: <type>
-```
+  - UserAgg: &User [id, firstName, lastName, age]
 
-### Properties
-
-Each aggregate defines a list of properties. Each property must have a name and type.
-
-- **Types:**
-  - `g`: Globally unique identifier (GUID).
-  - `s`: String.
-  - `int`: Integer.
-  - Other types may be added as necessary.
-
-### Example
-
-```yaml
-aggs:
-  - &User
-    id: g
-    firstName: s
-    lastName: s
-```
-
----
-
-## Views (`views`)
-
-Defines the read models (views) in the system. Views represent projections of data for querying or presentation.
-
-### Syntax
-
-```yaml
 views:
-  - <view_name>: &<view_reference>
-    <property>: <type>
-```
+  - UserView: &UserView [id, firstName, lastName, age]
 
-### Example
-
-```yaml
-views:
-  - UserView: &UserView
-      id: g
-      firstName: s
-      lastName: s
-```
-
----
-
-## Slices (`slices`)
-
-Defines the commands and events within the Event Model. Each slice represents a discrete unit of behavior, consisting of:
-
-1. **Aggregate reference (`agg`)**
-2. **Command definition (`command`)**
-3. **Event definition (`event`)**
-4. **Associated views (`views`)**
-5. **Optional metadata (`story`, `status`)**
-
-### Syntax
-
-```yaml
-slices:
-  - <slice_name>:
-      agg: *<aggregate_reference>
-      command:
-        name: <string>
-      event:
-        name: <string>
-        props:
-          <property>: <type>
-      views:
-        - <<: *<view_reference>
-          <overrides>
-```
-
-### Properties
-
-- `agg`: References an aggregate defined in `aggs`. Uses YAML anchors (`*` syntax).
-- `command`: Defines the command associated with the slice. If omitted, it defaults to the slice name.
-  - `name`: Name of the command.
-- `event`: Defines the event produced by the command.
-  - `name`: Name of the event (usually in the past tense of the command).
-  - `props`: Properties of the event, with names and types.
-- `views`: A list of view references, with optional property overrides.
-- `story` (optional): URL or identifier for further context.
-- `status` (optional): Status of the slice (e.g., `InDev`, `Completed`).
-
-### Example
-
-```yaml
 slices:
   - AddUser:
-      agg: *User
-      command:
-        name: AddUser
       event:
         name: AddedUser
-        props:
-          id: g
-          firstName: s
-          lastName: s
-      views:
-        - *UserView
-
-  - RenameUser:
-      agg: *User
-      event:
-        name: RenamedUser
-        props:
-          id: g
-          firstName: s
-          lastName: s
-      views:
-        - <<: *UserView
-          id: x
-          firstName: x
-
-  - ReAgeUser:
-      story: 'https://www.example.com/12345'
-      status: InDev
-      agg: *User
-      event:
-        name: ReAgedUser
-        props:
-          id: g
-          age: int
-      views:
-        - <<: *UserView
-          id: x
-          age: int
+        props: [id, firstName, lastName, age]
+      views: [*UserView]
 ```
 
 ---
 
-## Anchors and References
-
-TEML makes use of YAML anchors (`&`) and references (`*`) for reusable components such as aggregates and views.
-
-- **Anchor (`&`)**: Declares a reusable component.
-- **Reference (`*`)**: References a declared anchor.
-
-Example:
+## Document structure
 
 ```yaml
-aggs:
-  - &User
-    id: g
-    firstName: s
-    lastName: s
+apiVersion: teml.org/v-alpha-002
+metadata:
+  name: Hotel
 
-slices:
-  - AddUser:
-      agg: *User
+types:   []    # reusable property shapes and enums
+actors:  []    # people who use the system
+screens: []    # user interfaces, each used by an actor
+aggs:    []    # aggregates
+views:   []    # read models
+wfes:    []    # automations (workflow engines)
+systems: []    # external systems that call our API
+slices:  []    # the timeline, left to right
+```
+
+Each section is a **named list**: a list of `- Name: body` items. Put a YAML anchor on a body (`&User`) and refer to it later with an alias (`*User`), or simply use its name.
+
+---
+
+## Properties and types
+
+Props map property names to types. TEML uses short type names:
+
+| Type | Meaning | | Type | Meaning |
+|---|---|---|---|---|
+| `g` | unique identifier | | `dt` | date and time |
+| `s` | text | | `date` | calendar date |
+| `int` | whole number | | `bool` | true / false |
+| `dec` | decimal | | `any` | unspecified |
+
+```yaml
+props:
+  id: g
+  middleName: s?        # optional
+  roles: s[]            # list
+  address:              # nested object
+    street: s
+    city: s
 ```
 
 ---
 
-## Metadata Fields
+## Slices
 
-### `story`
+The timeline is a list of **slices**, read left to right. There are two kinds.
 
-- **Type:** String (URL or identifier)
-- **Description:** Provides context or links to related documentation.
-- **Example:** `story: 'https://www.example.com/12345'`
+### Change slices
 
-### `status`
+Something triggers a **command**, which produces one or more **events**. The events update **views** (read models) and may trigger **automations**.
 
-- **Type:** Enum
-- **Allowed Values:** `InDev`, `Completed`, or custom statuses.
-- **Description:** Indicates the current state of the slice.
-- **Example:** `status: InDev`
+```yaml
+- BookRoom:
+    agg: *Booking
+    trigger: { screen: RoomSearch }
+    command:
+      props: { bookingId: g, roomNumber: s, checkIn: date, checkOut: date }
+    event:
+      name: RoomBooked
+      props: { bookingId: g, roomNumber: s, checkIn: date, checkOut: date, total: dec }
+    views:
+      - <<: *RoomAvailability
+        rooms: x            # x marks the view properties this slice touches
+```
+
+A command can be issued from three kinds of trigger:
+- **A screen**, used by a person: `trigger: { screen: RoomSearch }`
+- **An automation**: `trigger: { wfe: *PaymentRequester }`
+- **An external system calling our API**, for example a webhook: `trigger: { system: PaymentProvider }`
+
+### View slices
+
+A view slice shows where a read model is **read**: on screens, or by an automation that works from it as a to-do list.
+
+```yaml
+- BrowseRooms:
+    view: *RoomAvailability
+    readBy:
+      - screen: RoomSearch
+```
+
+On a board, information flows **left to right**. A read model must exist before anything can read it, so readers are drawn to its right.
 
 ---
 
-## Summary
+## Actors, screens and external systems
 
-TEML provides a concise and standardized way to represent Event Models in a plain-text format. By leveraging YAML, it allows for easy reuse of components, accessibility, and integration with tooling. The specification will evolve to include additional features and constructs as required.
+```yaml
+actors:
+  - Guest:
+screens:
+  - RoomSearch:
+      actor: Guest
+systems:
+  - PaymentProvider:
+      description: Calls POST /webhooks/payments when a charge succeeds.
+```
+
+Each actor gets a swimlane at the top of the board, holding their screens. An external system can't add events to our model. It calls our API, which issues one of our commands, and the events that follow are ours.
+
+---
+
+## Specifications (Given / When / Then)
+
+Any slice can carry specs:
+
+```yaml
+specs:
+  - name: rejects dates that overlap an existing booking
+    given:
+      - RoomBooked: { roomNumber: "101", checkIn: 2026-11-02, checkOut: 2026-11-05 }
+    when:
+      BookRoom: { roomNumber: "101", checkIn: 2026-11-04, checkOut: 2026-11-06 }
+    then:
+      - error: RoomUnavailable
+```
+
+For a view slice, `then` shows what the view contains after the `given` events.
+
+---
+
+## Editor support
+
+Add this line to the top of a compliant `.teml.yaml` file to get autocomplete and validation in VS Code (Red Hat YAML extension) and other editors that use yaml-language-server:
+
+```yaml
+# yaml-language-server: $schema=https://teml.org/schema/teml-alpha-002.schema.json
+```
+
+---
+
+## Next steps
+
+- Read [A Simple Example](simple-user-example/), which builds a small model step by step.
+- See the full [Specification](specification/).
+- Explore the [demos](/demos/), which show actors, view slices, an external system and a complete hotel model drawn as boards.
+- Browse the examples and tools in the [Teml-spec repository](https://github.com/TEML-Org/Teml-spec).
