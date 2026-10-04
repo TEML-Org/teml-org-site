@@ -1,0 +1,493 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://teml.org/schema/teml-alpha-003.schema.json",
+  "title": "TEML teml.org/v-alpha-003 (compliant documents)",
+  "description": "Structural schema for compliant TEML documents. Sketch documents (no apiVersion) are intentionally looser and are not covered. Semantic rules (reference resolution, etc.) are in spec/teml-alpha-003.md §14.",
+  "type": "object",
+  "required": [
+    "apiVersion",
+    "metadata"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "teml.org/v-alpha-003"
+    },
+    "metadata": {
+      "$ref": "#/$defs/metadata"
+    },
+    "types": {
+      "$ref": "#/$defs/namedList",
+      "items": {
+        "additionalProperties": {
+          "$ref": "#/$defs/typeBody"
+        }
+      }
+    },
+    "actors": {
+      "$ref": "#/$defs/namedList",
+      "items": {
+        "additionalProperties": {
+          "$ref": "#/$defs/actorBody"
+        }
+      }
+    },
+    "screens": {
+      "$ref": "#/$defs/namedList",
+      "items": {
+        "additionalProperties": {
+          "$ref": "#/$defs/screenBody"
+        }
+      }
+    },
+    "systems": {
+      "$ref": "#/$defs/namedList",
+      "items": {
+        "additionalProperties": {
+          "$ref": "#/$defs/systemBody"
+        }
+      }
+    },
+    "automations": {
+      "$ref": "#/$defs/namedList",
+      "items": {
+        "additionalProperties": {
+          "$ref": "#/$defs/automationBody"
+        }
+      }
+    },
+    "aggs": {
+      "$ref": "#/$defs/namedList",
+      "items": {
+        "additionalProperties": {
+          "$ref": "#/$defs/props"
+        }
+      }
+    },
+    "views": {
+      "$ref": "#/$defs/namedList",
+      "items": {
+        "additionalProperties": {
+          "$ref": "#/$defs/props"
+        }
+      }
+    },
+    "slices": {
+      "$ref": "#/$defs/namedList",
+      "items": {
+        "additionalProperties": {
+          "$ref": "#/$defs/slice"
+        }
+      }
+    }
+  },
+  "patternProperties": {
+    "^x-": true
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "name": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+    },
+    "propName": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+    },
+    "namedList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "minProperties": 1,
+        "maxProperties": 1,
+        "propertyNames": {
+          "$ref": "#/$defs/name"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "patternProperties": {
+        "^x-": true
+      },
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ]
+    },
+    "typeExpr": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]*(\\[\\])*\\??$"
+    },
+    "props": {
+      "description": "A property map: name -> type expression | nested property map.",
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/propName"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/propSpec"
+      }
+    },
+    "propSpec": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/typeExpr"
+        },
+        {
+          "$ref": "#/$defs/props"
+        }
+      ]
+    },
+    "typeBody": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "enum"
+          ],
+          "properties": {
+            "enum": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "#/$defs/props"
+            },
+            {
+              "not": {
+                "required": [
+                  "enum"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "actorBody": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        }
+      },
+      "patternProperties": {
+        "^x-": true
+      },
+      "additionalProperties": false
+    },
+    "screenBody": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "actor": {
+          "$ref": "#/$defs/name"
+        },
+        "description": {
+          "type": "string"
+        },
+        "wireframe": {
+          "type": "string"
+        }
+      },
+      "patternProperties": {
+        "^x-": true
+      },
+      "additionalProperties": false
+    },
+    "systemBody": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        }
+      },
+      "patternProperties": {
+        "^x-": true
+      },
+      "additionalProperties": false
+    },
+    "automationBody": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "schedule": {
+          "type": "string"
+        }
+      },
+      "patternProperties": {
+        "^x-": true
+      },
+      "additionalProperties": false
+    },
+    "command": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/name"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "$ref": "#/$defs/name"
+            },
+            "props": {
+              "$ref": "#/$defs/props"
+            }
+          },
+          "patternProperties": {
+            "^x-": true
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "event": {
+      "description": "A single-key mapping from the event name to its props.",
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 1,
+      "propertyNames": {
+        "$ref": "#/$defs/name"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/props"
+      }
+    },
+    "viewUpdate": {
+      "description": "A view name, or a single-key mapping from a view name to the properties the slice touches.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/name"
+        },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 1,
+          "propertyNames": {
+            "$ref": "#/$defs/name"
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/propName"
+            }
+          }
+        }
+      ]
+    },
+    "trigger": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 1,
+      "properties": {
+        "screen": {
+          "$ref": "#/$defs/name"
+        },
+        "automation": {
+          "$ref": "#/$defs/name"
+        },
+        "system": {
+          "$ref": "#/$defs/name"
+        }
+      },
+      "additionalProperties": false
+    },
+    "reader": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 1,
+      "properties": {
+        "screen": {
+          "$ref": "#/$defs/name"
+        },
+        "automation": {
+          "$ref": "#/$defs/name"
+        }
+      },
+      "additionalProperties": false
+    },
+    "instance": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 1,
+      "propertyNames": {
+        "$ref": "#/$defs/name"
+      }
+    },
+    "spec": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "given": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/instance"
+          }
+        },
+        "when": {
+          "$ref": "#/$defs/instance"
+        },
+        "then": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/instance"
+          }
+        }
+      },
+      "patternProperties": {
+        "^x-": true
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "then"
+      ]
+    },
+    "changeSlice": {
+      "type": "object",
+      "properties": {
+        "agg": {
+          "$ref": "#/$defs/name"
+        },
+        "trigger": {
+          "$ref": "#/$defs/trigger"
+        },
+        "command": {
+          "$ref": "#/$defs/command"
+        },
+        "events": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/event"
+          }
+        },
+        "views": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/viewUpdate"
+          }
+        },
+        "story": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "examples": [
+            "Planned",
+            "InDev",
+            "Completed"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "specs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/spec"
+          }
+        }
+      },
+      "patternProperties": {
+        "^x-": true
+      },
+      "additionalProperties": false,
+      "required": [
+        "events"
+      ],
+      "description": "A change slice: trigger -> command -> events -> views."
+    },
+    "viewSlice": {
+      "type": "object",
+      "properties": {
+        "view": {
+          "$ref": "#/$defs/name"
+        },
+        "readBy": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reader"
+          }
+        },
+        "story": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "examples": [
+            "Planned",
+            "InDev",
+            "Completed"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "specs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/spec"
+          }
+        }
+      },
+      "patternProperties": {
+        "^x-": true
+      },
+      "additionalProperties": false,
+      "required": [
+        "view"
+      ],
+      "description": "A view slice: where a view is read (screens and/or automations)."
+    },
+    "slice": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/changeSlice"
+        },
+        {
+          "$ref": "#/$defs/viewSlice"
+        }
+      ]
+    }
+  }
+}
