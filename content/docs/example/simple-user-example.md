@@ -56,8 +56,7 @@ Optionally define a list of views. Slices refer to a view by its name, for examp
 slices:
   - AddUser:
       agg: UserAgg
-      command:
-        name: AddUser # The command name is optional since by default it will match the name of the Slice
+      command: AddUser # Optional: by default the command is named after the Slice
       events:
         - AddedUser: # The event name should be the past tense of the command
             id: g
@@ -116,8 +115,7 @@ views:
 slices:
   - AddUser:
       agg: UserAgg
-      command:
-        name: AddUser # The command name is optional since by default it will match the name of the Slice
+      command: AddUser # Optional: by default the command is named after the Slice
       events:
         - AddedUser: # The event name should be the past tense of the command
             id: g

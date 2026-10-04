@@ -254,24 +254,13 @@
       "additionalProperties": false
     },
     "command": {
+      "description": "A command name, or a single-key mapping from the command name to its props.",
       "oneOf": [
         {
           "$ref": "#/$defs/name"
         },
         {
-          "type": "object",
-          "properties": {
-            "name": {
-              "$ref": "#/$defs/name"
-            },
-            "props": {
-              "$ref": "#/$defs/props"
-            }
-          },
-          "patternProperties": {
-            "^x-": true
-          },
-          "additionalProperties": false
+          "$ref": "#/$defs/event"
         }
       ]
     },
