@@ -14,7 +14,7 @@ TEML can be used in two key ways:
    - Feeding into processors to generate code.
    - Outputting models from existing code using specialized tools.
 
-TEML is an open-source project. The specification, examples and tools live in [TEML-Org/Teml-spec](https://github.com/TEML-Org/Teml-spec), and this website in [TEML-Org/teml-org-site](https://github.com/TEML-Org/teml-org-site).
+TEML is an open-source project. The specification and examples live in [TEML-Org/Teml-spec](https://github.com/TEML-Org/Teml-spec), and this website in [TEML-Org/teml-org-site](https://github.com/TEML-Org/teml-org-site).
 
 ---
 
@@ -75,5 +75,6 @@ The current version of TEML is **v-alpha-003**, a working draft.
 - [Introduction to TEML](docs/example/): a quick tour of the language.
 - [A Simple Example](docs/example/simple-user-example/): a small model built step by step.
 - [Specification](docs/example/specification/): the full rules.
+- [Viewer](/viewer/): write TEML and see it drawn as an Event Modeling board as you type. Nothing leaves your browser.
 - [Demos](/demos/): models drawn as Event Modeling boards, straight from their TEML.
 - JSON Schema for editors and tools: [`teml-alpha-003.schema.json`](/schema/teml-alpha-003.schema.json)
