@@ -75,6 +75,6 @@ The current version of TEML is **v-alpha-003**, a working draft.
 - [Introduction to TEML](docs/example/): a quick tour of the language.
 - [A Simple Example](docs/example/simple-user-example/): a small model built step by step.
 - [Specification](docs/example/specification/): the full rules.
-- [Viewer](/viewer/): write TEML and see it drawn as an Event Modeling board as you type. Nothing leaves your browser.
+- [Viewer](https://tools.teml.org/): write TEML and see it drawn as an Event Modeling board as you type. Nothing leaves your browser.
 - [Demos](/demos/): models drawn as Event Modeling boards, straight from their TEML.
 - JSON Schema for editors and tools: [`teml-alpha-003.schema.json`](/schema/teml-alpha-003.schema.json)
