@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
-"""Copy the TEML spec, JSON Schemas and demo page from a local Teml-spec checkout.
+"""Copy the TEML spec and JSON Schemas from a local Teml-spec checkout, and build the
+demo page with a local teml-tools checkout.
 
-Usage: python3 scripts/sync-from-spec.py [path/to/Teml-spec]   (default: ../Teml-spec)
+Usage: python3 scripts/sync-from-spec.py [path/to/Teml-spec] [path/to/teml-tools]
+       (defaults: ../Teml-spec and ../teml-tools)
 
-- spec/teml-<latest>.md       -> content/docs/example/specification.md
-- schema/*.schema.json        -> static/schema/   (served at https://teml.org/schema/...)
-- tools/prototype demo page   -> static/demos/index.html   (needs Node; run `npm install` in tools/prototype once)
+- Teml-spec  spec/teml-<latest>.md  -> content/docs/example/specification.md
+- Teml-spec  schema/*.schema.json   -> static/schema/   (served at https://teml.org/schema/...)
+- teml-tools demo page              -> static/demos/index.html   (needs Node; run `npm install` in teml-tools once)
+
+The demo page is drawn from teml-tools' own spec/ submodule, the spec commit the tools support.
 """
 import pathlib, re, shutil, subprocess, sys
 
 site = pathlib.Path(__file__).resolve().parent.parent
 spec_repo = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else site.parent / "Teml-spec").resolve()
+tools_repo = pathlib.Path(sys.argv[2] if len(sys.argv) > 2 else site.parent / "teml-tools").resolve()
 GITHUB = "https://github.com/TEML-Org/Teml-spec/blob/main/"
 
 # Spec: the newest teml-alpha-NNN.md
@@ -42,7 +47,6 @@ for f in sorted((spec_repo / "schema").glob("*.schema.json")):
     shutil.copy(f, site / "static/schema" / f.name)
     print("copied", f"static/schema/{f.name}")
 
-# Demo page, built by the prototype tools
+# Demo page, built by teml-tools
 (site / "static/demos").mkdir(parents=True, exist_ok=True)
-proto = spec_repo / "tools/prototype"
-subprocess.run(["node", "build-demos.mjs", str(site / "static/demos/index.html")], cwd=proto, check=True)
+subprocess.run(["node", "build-demos.mjs", str(site / "static/demos/index.html")], cwd=tools_repo, check=True)
