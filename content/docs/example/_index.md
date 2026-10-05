@@ -176,4 +176,5 @@ Add this line to the top of a compliant `.teml.yaml` file to get autocomplete an
 - Read [A Simple Example](simple-user-example/), which builds a small model step by step.
 - See the full [Specification](specification/).
 - Explore the [demos](/demos/), which show actors, view slices, an external system and a complete hotel model drawn as boards.
-- Browse the examples and tools in the [Teml-spec repository](https://github.com/TEML-Org/Teml-spec).
+- Try your own model in the [viewer](/viewer/), which draws the board as you type.
+- Browse the examples in the [Teml-spec repository](https://github.com/TEML-Org/Teml-spec).

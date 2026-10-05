@@ -8,8 +8,9 @@ Usage: python3 scripts/sync-from-spec.py [path/to/Teml-spec] [path/to/teml-tools
 - Teml-spec  spec/teml-<latest>.md  -> content/docs/example/specification.md
 - Teml-spec  schema/*.schema.json   -> static/schema/   (served at https://teml.org/schema/...)
 - teml-tools demo page              -> static/demos/index.html   (needs Node; run `npm install` in teml-tools once)
+- teml-tools viewer                 -> static/viewer/index.html
 
-The demo page is drawn from teml-tools' own spec/ submodule, the spec commit the tools support.
+The demo page and the viewer's examples come from teml-tools' own spec/ submodule, the spec commit the tools support.
 """
 import pathlib, re, shutil, subprocess, sys
 
@@ -50,3 +51,6 @@ for f in sorted((spec_repo / "schema").glob("*.schema.json")):
 # Demo page, built by teml-tools
 (site / "static/demos").mkdir(parents=True, exist_ok=True)
 subprocess.run(["node", "build-demos.mjs", str(site / "static/demos/index.html")], cwd=tools_repo, check=True)
+
+# Viewer, built by teml-tools
+subprocess.run(["node", "build-viewer.mjs", str(site / "static/viewer/index.html")], cwd=tools_repo, check=True)
