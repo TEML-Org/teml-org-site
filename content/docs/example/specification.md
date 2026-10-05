@@ -424,7 +424,7 @@ slices:
 | `events` | list of Event | §12.3. **Required** in compliant documents. |
 | `views` | list of View update | §12.4. Views updated by the slice's events. |
 | `story` | string | URL or identifier of the related story or ticket. |
-| `status` | string | Free-form state of the slice. Recommended values are `Planned`, `InDev` and `Completed`. |
+| `status` | string | Free-form state of the slice. Recommended values are `Planned`, `InDev`, `Completed` and `Declined`. `Declined` means the team decided not to build the slice; its `description` **SHOULD** say why. |
 | `description` | string | |
 | `specs` | list of Spec | §13. |
 
@@ -586,6 +586,7 @@ These rules apply to compliant documents. For sketches, processors **SHOULD** re
 - W2 An actor, screen, system, automation or aggregate is defined but never referenced.
 - W3 A view is updated but never read by a view slice.
 - W4 An automation issues commands but does not read any view.
+- W5 A slice's `status` is `Declined` but it has no `description` saying why.
 
 ---
 
@@ -657,6 +658,7 @@ v-alpha-003 removes features rather than adding them. Each removed feature had a
 - **Removed: the (extension) labels.** Everything in this document is part of the spec.
 - **Removed: warning W1** (past-tense and imperative names). It was a heuristic, better suited to a linter. The remaining warnings are renumbered W1–W4.
 - **Changed:** the `status` section is folded into §12.1, and view slices move to §12.6.
+- **Added: `Declined`** as a recommended `status` value (§12.1), for a slice the team decided not to build, with the reason in its `description`. W5 checks for the reason. Added on 2026-10-05.
 - **Migrating:** change `apiVersion` to `teml.org/v-alpha-003`, then:
   - replace every alias (`*Name`) with the element's name and delete the anchors;
   - rewrite merged view references as `- ViewName: [touched, props]`;
