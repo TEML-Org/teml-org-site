@@ -638,7 +638,7 @@ These rules apply to compliant documents. For sketches, processors **SHOULD** re
 - **More from parts.** Parts that include other parts; `include` paths outside the root's folder or as URLs; a schema for parts, so editors can check them on their own; and a way to place a part's slices other than after the root's (§3.2).
 - **Chapters.** Grouping slices into named chapters on the timeline.
 - **Nested properties in view updates.** `- RoomAvailability: [rooms]` cannot say which properties *inside* `rooms` a slice touches. A dotted name such as `rooms.bookedNights` is one option.
-- **Command errors.** Declaring the errors a command can produce, so that `error:` names in specs can be checked.
+- **Command errors** (not planned). Declaring the errors a command can produce, so that `error:` names in specs can be checked. Decided on 2026-10-06 to leave this out to keep the spec small: `error:` names stay free text, and the specs that use them already list how a command can fail.
 - **Repeated props.** A command's props often repeat its event's props. A shorthand could cut the duplication.
 - **API endpoints.** Should `trigger: { system: … }` be able to name the endpoint the system calls (for example `POST /webhooks/payments`), the way a screen names its wireframe?
 - **Systems reading views.** Should `readBy` accept `system:` for an external system that queries one of our views through the API?
