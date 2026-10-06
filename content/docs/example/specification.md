@@ -86,6 +86,7 @@ slices:
 
 - A TEML document **MUST** be a single YAML document, encoded as UTF-8.
 - The file extension **SHOULD** be `.teml.yaml`, which keeps YAML editor support working.
+- A model **MAY** be split across several files (§3.2).
 
 Compliant documents **MAY** start with this comment, which lets YAML-aware editors provide autocomplete and validation:
 
@@ -99,6 +100,30 @@ Any mapping **MAY** contain keys that start with `x-`, for example `x-color: ora
 
 In compliant documents, every other key that this spec does not define is an **error**. The exceptions are property maps (§6), whose keys are property names.
 
+### 3.2 Parts (`include`)
+
+A large model is easier to read and review in several files. The model's **root** file lists the other files, its **parts**, in `include`:
+
+```yaml
+apiVersion: teml.org/v-alpha-003
+metadata:
+  name: Hotel
+include:
+  - booking.teml.yaml
+  - housekeeping.teml.yaml
+```
+
+- Each item is a path relative to the root file's folder, using `/` between folders. It **MUST NOT** be absolute, be a URL, or contain a `..` segment.
+- A part **MAY** contain any of the sections in §4, and extension keys (§3.1). It **MUST NOT** contain `apiVersion`, `metadata` or `include`: only the root includes.
+- The model is the root merged with its parts. Each section is the root's items followed by each part's items, in `include` order. So the timeline (§12) is the root's slices, then each part's slices in turn.
+- Names are unique across the whole model, and a reference in any file resolves against the whole model (§5).
+- The root decides whether the model is a sketch or compliant (§2), for every part.
+- Processors **SHOULD** report each problem with the file it is in.
+
+Read on its own, a part has no `apiVersion`, so it is a sketch: a processor can still draw it, and warns about the names it cannot resolve.
+
+[`Examples/hotel-split/`](https://github.com/TEML-Org/Teml-spec/blob/main/Examples/hotel-split/) is the hotel example split into a root and three parts, one per chapter of the timeline.
+
 ---
 
 ## 4. Document structure
@@ -107,6 +132,7 @@ In compliant documents, every other key that this spec does not define is an **e
 apiVersion: teml.org/v-alpha-003
 metadata:
   name: sample
+include:     []    # other files of the model                §3.2
 
 types:       []    # reusable property shapes and enums      §6.4
 actors:      []    # people and roles who use the system     §10.1
@@ -167,7 +193,7 @@ slices:
 
 The key holding a reference says what kind of element it names: `agg` names an aggregate, `screen` a screen, and so on. Names only need to be unique within their own list.
 
-In a compliant document, every reference **MUST** resolve to an element defined in the document. In a sketch, references **MAY** name elements that are not defined; processors **SHOULD** warn about them and treat them as free text.
+In a compliant document, every reference **MUST** resolve to an element defined in the model: the document, or one of its parts (§3.2). In a sketch, references **MAY** name elements that are not defined; processors **SHOULD** warn about them and treat them as free text.
 
 TEML does not use YAML anchors (`&`), aliases (`*`) or merge keys (`<<`). A reference that is not a string is an error.
 
@@ -573,12 +599,13 @@ These rules apply to compliant documents. For sketches, processors **SHOULD** re
 **Errors**
 
 - E1 `apiVersion` is missing or not supported, or `metadata.name` is missing.
-- E2 A name is duplicated within a named list, or an event name is used by more than one slice.
+- E2 A name is duplicated within a named list, or an event name is used by more than one slice. This applies across all of a model's files (§3.2).
 - E3 A reference does not resolve to a defined element of the expected kind (§5).
 - E4 A property is untyped, or a type expression names an unknown type.
 - E5 A slice is neither a change slice nor a view slice, or mixes keys of both kinds.
 - E6 A view update lists a property the view does not have.
 - E7 A spec instance names an unknown command, event or view, or a property it does not define; or its `when`/`then` does not fit the slice (§13).
+- E8 An `include` path is not allowed, or names a file that cannot be read or is listed twice; or a part contains `apiVersion`, `metadata` or `include` (§3.2).
 
 **Warnings**
 
@@ -604,10 +631,11 @@ These rules apply to compliant documents. For sketches, processors **SHOULD** re
 - [`Examples/user-sketch.teml.yaml`](https://github.com/TEML-Org/Teml-spec/blob/main/Examples/user-sketch.teml.yaml): a sketch.
 - [`Examples/user-compliant.teml.yaml`](https://github.com/TEML-Org/Teml-spec/blob/main/Examples/user-compliant.teml.yaml): the user example as a compliant document.
 - [`Examples/hotel.teml.yaml`](https://github.com/TEML-Org/Teml-spec/blob/main/Examples/hotel.teml.yaml): the classic Event Modeling hotel example, using actors, screens, view slices, automations, and an external payment provider that calls our API.
+- [`Examples/hotel-split/`](https://github.com/TEML-Org/Teml-spec/blob/main/Examples/hotel-split/): the same model split across a root file and three parts (§3.2).
 
 ## Appendix B. Open questions
 
-- **Multiple files.** An include mechanism for large models. Because references are names (§5), they can work across files.
+- **More from parts.** Parts that include other parts; `include` paths outside the root's folder or as URLs; a schema for parts, so editors can check them on their own; and a way to place a part's slices other than after the root's (§3.2).
 - **Chapters.** Grouping slices into named chapters on the timeline.
 - **Nested properties in view updates.** `- RoomAvailability: [rooms]` cannot say which properties *inside* `rooms` a slice touches. A dotted name such as `rooms.bookedNights` is one option.
 - **Command errors.** Declaring the errors a command can produce, so that `error:` names in specs can be checked.
@@ -659,6 +687,7 @@ v-alpha-003 removes features rather than adding them. Each removed feature had a
 - **Removed: warning W1** (past-tense and imperative names). It was a heuristic, better suited to a linter. The remaining warnings are renumbered W1–W4.
 - **Changed:** the `status` section is folded into §12.1, and view slices move to §12.6.
 - **Added: `Declined`** as a recommended `status` value (§12.1), for a slice the team decided not to build, with the reason in its `description`. W5 checks for the reason. Added on 2026-10-05.
+- **Added: parts** (§3.2). A root file's `include` lists other files of the model, merged in order. E8 checks the paths and the parts. Added on 2026-10-06.
 - **Migrating:** change `apiVersion` to `teml.org/v-alpha-003`, then:
   - replace every alias (`*Name`) with the element's name and delete the anchors;
   - rewrite merged view references as `- ViewName: [touched, props]`;

@@ -15,6 +15,16 @@
     "metadata": {
       "$ref": "#/$defs/metadata"
     },
+    "include": {
+      "description": "The model's parts (§3.2): paths relative to this file's folder, merged in this order.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(?!/)(?!(?:.*/)?\\.\\.(?:/|$))[^:\\\\]+$"
+      }
+    },
     "types": {
       "$ref": "#/$defs/namedList",
       "items": {
