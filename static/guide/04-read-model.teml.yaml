@@ -1,0 +1,28 @@
+actors:
+  - Librarian:
+  - Member:
+
+screens:
+  - Catalogue:
+      actor: Librarian
+  - BookSearch:
+      actor: Member
+
+aggs:
+  - BookAgg: [bookId, title]
+
+views:
+  - BookList: [bookId, title]
+
+slices:
+  - AddBook:
+      agg: BookAgg
+      trigger: { screen: Catalogue }
+      events:
+        - BookAdded: [bookId, title]
+      views: [BookList]
+
+  - BrowseBooks:
+      view: BookList
+      readBy:
+        - screen: BookSearch

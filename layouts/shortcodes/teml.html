@@ -1,0 +1,12 @@
+{{- /* A guide snippet from static/guide/<name>.teml.yaml, with a Copy button and a link that opens it in the viewer. */ -}}
+{{- $name := .Get 0 -}}
+{{- $file := printf "%s.teml.yaml" $name -}}
+{{- $src := readFile (printf "static/guide/%s" $file) -}}
+<div class="teml-snippet">
+  <div class="teml-snippet-bar">
+    <span class="teml-snippet-name">{{ $file }}</span>
+    <button type="button" class="teml-copy">Copy</button>
+    <a class="teml-open" href="https://tools.teml.org/?src={{ printf "https://teml.org/guide/%s" $file | urlquery }}" target="_blank" rel="noopener">Open in viewer</a>
+  </div>
+  {{ highlight $src "yaml" "" }}
+</div>

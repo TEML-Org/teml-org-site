@@ -8,6 +8,8 @@ title: "Introduction to TEML"
 
 **The Event Modeling Language (TEML)** is a text format for writing down an Event Model. A TEML file is a YAML document, so you can write it in any editor, keep it in Git, and feed it to tools that draw boards, check models and generate code.
 
+New to TEML? [Getting started](getting-started/) builds a first board step by step, with every example ready to paste into the viewer.
+
 This page is a quick tour of TEML **v-alpha-003**. The full rules are in the [Specification](specification/). To see models drawn as Event Modeling boards, visit the [demos](/demos/).
 
 ---

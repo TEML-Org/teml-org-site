@@ -1,0 +1,8 @@
+aggs:
+  - BookAgg: [bookId, title]
+
+slices:
+  - AddBook:
+      agg: BookAgg
+      events:
+        - BookAdded: [bookId, title]

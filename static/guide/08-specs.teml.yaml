@@ -1,0 +1,102 @@
+apiVersion: teml.org/v-alpha-003
+metadata:
+  name: Library
+
+actors:
+  - Librarian:
+  - Member:
+
+screens:
+  - Catalogue:
+      actor: Librarian
+  - BookSearch:
+      actor: Member
+  - LoanDesk:
+      actor: Librarian
+
+aggs:
+  - BookAgg:
+      bookId: g
+      title: s
+      onLoan: bool
+
+views:
+  - BookList:
+      bookId: g
+      title: s
+
+slices:
+  - AddBook:
+      existing: true
+      status: Completed
+      agg: BookAgg
+      trigger: { screen: Catalogue }
+      command:
+        AddBook: { bookId: g, title: s }
+      events:
+        - BookAdded: { bookId: g, title: s }
+      views: [BookList]
+
+  - BrowseBooks:
+      existing: true
+      status: Completed
+      view: BookList
+      readBy:
+        - screen: BookSearch
+
+  - LendBook:
+      status: Planned
+      meta:
+        Story: LIB-42
+        Link: https://jira.example.com/browse/LIB-42
+        Points: 3
+        Developer: Ana Ruiz
+        Due: "2026-11-14"
+      agg: BookAgg
+      trigger: { screen: LoanDesk }
+      command:
+        LendBook: { bookId: g, loanId: g, memberId: g }
+      events:
+        - BookLent: { bookId: g, loanId: g, memberId: g }
+      specs:
+        - name: lends a book that is on the shelf
+          given:
+            - BookAdded: { bookId: b-1 }
+          when:
+            LendBook: { bookId: b-1, loanId: l-1, memberId: m-1 }
+          then:
+            - BookLent: { bookId: b-1, loanId: l-1, memberId: m-1 }
+        - name: won't lend a book that is out
+          given:
+            - BookAdded: { bookId: b-1 }
+            - BookLent: { bookId: b-1, loanId: l-1 }
+          when:
+            LendBook: { bookId: b-1, loanId: l-2 }
+          then:
+            - error: BookAlreadyLent
+        - name: lends a book again once it is returned
+          given:
+            - BookAdded: { bookId: b-1 }
+            - BookLent: { bookId: b-1, loanId: l-1 }
+            - BookReturned: { bookId: b-1, loanId: l-1 }
+          when:
+            LendBook: { bookId: b-1, loanId: l-2, memberId: m-2 }
+          then:
+            - BookLent: { bookId: b-1, loanId: l-2, memberId: m-2 }
+
+  - ReturnBook:
+      status: Planned
+      agg: BookAgg
+      trigger: { screen: LoanDesk }
+      command:
+        ReturnBook: { bookId: g, loanId: g }
+      events:
+        - BookReturned: { bookId: g, loanId: g }
+      specs:
+        - name: returns a book that is out
+          given:
+            - BookLent: { bookId: b-1, loanId: l-1 }
+          when:
+            ReturnBook: { bookId: b-1, loanId: l-1 }
+          then:
+            - BookReturned: { bookId: b-1, loanId: l-1 }

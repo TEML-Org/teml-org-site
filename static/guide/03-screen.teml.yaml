@@ -1,0 +1,16 @@
+actors:
+  - Librarian:
+
+screens:
+  - Catalogue:
+      actor: Librarian
+
+aggs:
+  - BookAgg: [bookId, title]
+
+slices:
+  - AddBook:
+      agg: BookAgg
+      trigger: { screen: Catalogue }
+      events:
+        - BookAdded: [bookId, title]
