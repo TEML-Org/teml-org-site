@@ -406,8 +406,8 @@
             "$ref": "#/$defs/viewUpdate"
           }
         },
-        "story": {
-          "type": "string"
+        "meta": {
+          "$ref": "#/$defs/meta"
         },
         "status": {
           "type": "string",
@@ -452,8 +452,8 @@
             "$ref": "#/$defs/reader"
           }
         },
-        "story": {
-          "type": "string"
+        "meta": {
+          "$ref": "#/$defs/meta"
         },
         "status": {
           "type": "string",
@@ -495,6 +495,20 @@
           "$ref": "#/$defs/viewSlice"
         }
       ]
+    },
+    "meta": {
+      "type": "object",
+      "description": "Slice metadata (§12.7): free keys, each with text, a number or true/false.",
+      "propertyNames": {
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "boolean"
+        ]
+      }
     }
   }
 }
