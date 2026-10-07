@@ -1,0 +1,60 @@
+apiVersion: teml.org/v-alpha-003
+metadata:
+  name: Library
+
+actors:
+  - Librarian:
+  - Member:
+
+screens:
+  - Catalogue:
+      actor: Librarian
+  - BookSearch:
+      actor: Member
+  - LoanDesk:
+      actor: Librarian
+
+aggs:
+  - BookAgg:
+      bookId: g
+      title: s
+      onLoan: bool
+
+views:
+  - BookList:
+      bookId: g
+      title: s
+
+slices:
+  - AddBook:
+      existing: true
+      status: Completed
+      agg: BookAgg
+      trigger: { screen: Catalogue }
+      command:
+        AddBook: { bookId: g, title: s }
+      events:
+        - BookAdded: { bookId: g, title: s }
+      views: [BookList]
+
+  - BrowseBooks:
+      existing: true
+      status: Completed
+      view: BookList
+      readBy:
+        - screen: BookSearch
+
+  - LendBook:
+      status: Planned
+      meta:
+        Story: LIB-42
+        Link: https://jira.example.com/browse/LIB-42
+        Points: 3
+        Developer: Ana Ruiz
+        Due: "2026-11-14"
+      agg: BookAgg
+      trigger: { screen: LoanDesk }
+      command:
+        LendBook: { bookId: g, loanId: g, memberId: g }
+      events:
+        - BookLent: { bookId: g, loanId: g, memberId: g }

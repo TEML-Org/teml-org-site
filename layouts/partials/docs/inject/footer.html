@@ -1,0 +1,11 @@
+<script>
+// Copy buttons on guide snippets (layouts/shortcodes/teml.html).
+document.querySelectorAll(".teml-copy").forEach(function (button) {
+  button.addEventListener("click", function () {
+    var code = button.closest(".teml-snippet").querySelector("pre code").innerText;
+    var done = function (text) { button.textContent = text; setTimeout(function () { button.textContent = "Copy"; }, 1500); };
+    if (navigator.clipboard) navigator.clipboard.writeText(code).then(function () { done("Copied"); }, function () { done("Select and copy"); });
+    else done("Select and copy");
+  });
+});
+</script>

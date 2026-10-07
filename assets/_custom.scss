@@ -1,0 +1,31 @@
+// Guide snippets: a bar with the file name, a Copy button and an Open in viewer link, over the code.
+.teml-snippet {
+  margin: 1rem 0;
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  overflow: hidden;
+  .highlight, pre { margin: 0; border-radius: 0; }
+}
+.teml-snippet-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem 1rem;
+  padding: .4rem .75rem;
+  background: var(--gray-100);
+  border-bottom: 1px solid var(--gray-200);
+  font-size: .85rem;
+}
+.teml-snippet-name { font-family: var(--font-monospace, monospace); margin-right: auto; }
+.teml-copy {
+  font: inherit;
+  padding: .2rem .7rem;
+  border: 1px solid var(--gray-500);
+  border-radius: 4px;
+  background: var(--body-background);
+  color: var(--body-font-color);
+  cursor: pointer;
+}
+.teml-copy:focus-visible { outline: 2px solid var(--color-link); outline-offset: 1px; }
+.teml-open { font-weight: 600; }
+.markdown img { border: 1px solid var(--gray-200); border-radius: 6px; }

@@ -136,7 +136,9 @@ slices:
         - UserView: [id, firstName, lastName]
 
   - ReAgeUser: # In this slice we don't have a command specified. The command is inferred and will be named after the slice ('ReAgeUser' in this case)
-      story: "https://www.example.com/12345"
+      meta:
+        Story: "12345"
+        Link: https://www.example.com/12345
       status: InDev
       agg: UserAgg
       events:

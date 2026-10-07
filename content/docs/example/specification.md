@@ -449,7 +449,7 @@ slices:
 | `command` | Command | §12.2. Optional; inferred from the slice name when omitted. |
 | `events` | list of Event | §12.3. **Required** in compliant documents. |
 | `views` | list of View update | §12.4. Views updated by the slice's events. |
-| `story` | string | URL or identifier of the related story or ticket. |
+| `meta` | mapping | Information the team keeps on the slice (§12.7). |
 | `status` | string | Free-form state of the slice. Recommended values are `Planned`, `InDev`, `Completed` and `Declined`. `Declined` means the team decided not to build the slice; its `description` **SHOULD** say why. |
 | `existing` | boolean | `true` when the slice is already built. Omitted or `false`, the slice is new. |
 | `description` | string | |
@@ -550,7 +550,7 @@ A view slice shows where a view is read: a screen that displays it, or an automa
 |---|---|---|
 | `view` | View name | **Required.** The view being read. |
 | `readBy` | list of Reader | Who reads the view. Each item is a single-key mapping: `screen: <Screen>` or `automation: <Automation>`. |
-| `story` | string | |
+| `meta` | mapping | As for change slices (§12.7). |
 | `status` | string | As for change slices (§12.1). |
 | `existing` | boolean | As for change slices (§12.1). |
 | `description` | string | |
@@ -563,6 +563,25 @@ A view **MAY** appear in more than one view slice, for example when it is shown 
 On a board, a view slice's readers are drawn to the **right** of its view, because the view must exist before anything can read it (Appendix C).
 
 ---
+
+### 12.7 Slice metadata (`meta`)
+
+`meta` holds whatever the team wants to keep on a slice, such as a story number, a link to the story, effort points, a developer or a due date. Tools show it at the top of the slice, in the order written.
+
+```yaml
+- LendBook:
+    meta:
+      Story: LIB-42
+      Link: https://jira.example.com/browse/LIB-42
+      Points: 3
+      Developer: Ana Ruiz
+      Due: "2026-11-14"
+```
+
+- Keys are free text. Values **MUST** be text, numbers or `true`/`false`, not lists or mappings.
+- Quote a date, as in `"2026-11-14"`, so that every YAML reader keeps it as text.
+- A value that starts with `http://` or `https://` is a link, which tools **SHOULD** make clickable.
+- TEML gives no key a meaning. A team that wants its tools to read a key, such as `Points`, agrees on the name itself.
 
 ## 13. Specifications (Given / When / Then)
 
@@ -613,7 +632,7 @@ These rules apply to compliant documents. For sketches, processors **SHOULD** re
 - E2 A name is duplicated within a named list, or an event name is used by more than one slice. This applies across all of a model's files (§3.2).
 - E3 A reference does not resolve to a defined element of the expected kind (§5).
 - E4 A property is untyped, or a type expression names an unknown type.
-- E5 A slice is neither a change slice nor a view slice, or mixes keys of both kinds.
+- E5 A slice is neither a change slice nor a view slice, or mixes keys of both kinds; or a slice key has the wrong shape, such as `existing` that isn't `true` or `false`, or a `meta` value that is a list or a mapping.
 - E6 A view update lists a property the view does not have.
 - E7 A spec instance names an unknown command, event or view, or a property it does not define; or its `when`/`then` does not fit the slice (§13).
 - E8 An `include` path is not allowed, or names a file that cannot be read or is listed twice; or a part contains `apiVersion`, `metadata` or `include` (§3.2).
@@ -699,6 +718,7 @@ v-alpha-003 removes features rather than adding them. Each removed feature had a
 - **Removed: warning W1** (past-tense and imperative names). It was a heuristic, better suited to a linter. The remaining warnings are renumbered W1–W4.
 - **Changed:** the `status` section is folded into §12.1, and view slices move to §12.6.
 - **Added: `Declined`** as a recommended `status` value (§12.1), for a slice the team decided not to build, with the reason in its `description`. W5 checks for the reason. Added on 2026-10-05.
+- **Changed: `story` is replaced by `meta`** (§12.7), which holds the story and any other information the team keeps on a slice. Changed on 2026-10-06.
 - **Added: `existing`** on slices (§12.1), for a slice that is already built. It is independent of `status`, so an existing slice can still need work. Added on 2026-10-06.
 - **Added: parts** (§3.2). A root file's `include` lists other files of the model, merged in order. E8 checks the paths and the parts. Added on 2026-10-06.
 - **Migrating:** change `apiVersion` to `teml.org/v-alpha-003`, then:
@@ -708,4 +728,5 @@ v-alpha-003 removes features rather than adding them. Each removed feature had a
   - rename `wfes` to `automations` and `wfe:` to `automation:`;
   - replace `event: { name: X, props: P }` with `events: [ { X: P } ]`;
   - replace `command: { name: X, props: P }` with `command: { X: P }`, using the slice name for X when `name` was omitted;
+  - replace `story: X` with `meta: { Story: X }`;
   - for each `wfes:` on a change slice, add a to-do view that the slice updates and a view slice whose `readBy` names the automation.
