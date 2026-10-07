@@ -417,6 +417,10 @@
             "Completed"
           ]
         },
+        "existing": {
+          "type": "boolean",
+          "description": "true when the slice is already built (§12.1). Independent of status."
+        },
         "description": {
           "type": "string"
         },
@@ -458,6 +462,10 @@
             "InDev",
             "Completed"
           ]
+        },
+        "existing": {
+          "type": "boolean",
+          "description": "true when the slice is already built (§12.1). Independent of status."
         },
         "description": {
           "type": "string"

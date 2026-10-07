@@ -451,8 +451,18 @@ slices:
 | `views` | list of View update | §12.4. Views updated by the slice's events. |
 | `story` | string | URL or identifier of the related story or ticket. |
 | `status` | string | Free-form state of the slice. Recommended values are `Planned`, `InDev`, `Completed` and `Declined`. `Declined` means the team decided not to build the slice; its `description` **SHOULD** say why. |
+| `existing` | boolean | `true` when the slice is already built. Omitted or `false`, the slice is new. |
 | `description` | string | |
 | `specs` | list of Spec | §13. |
+
+`existing` and `status` are independent. A model of changes to a running system marks the slices already built as `existing`; `status` says what work is left on each. An existing slice that needs changes, such as a new field, is `Planned` like a new slice, and its `description` **SHOULD** say what changes. Such a change is usually less work than building the slice.
+
+```yaml
+- LendBook:
+    existing: true          # already built
+    status: Planned         # but needs work
+    description: Add the due date, 21 days after the loan.
+```
 
 ### 12.2 Command
 
@@ -542,6 +552,7 @@ A view slice shows where a view is read: a screen that displays it, or an automa
 | `readBy` | list of Reader | Who reads the view. Each item is a single-key mapping: `screen: <Screen>` or `automation: <Automation>`. |
 | `story` | string | |
 | `status` | string | As for change slices (§12.1). |
+| `existing` | boolean | As for change slices (§12.1). |
 | `description` | string | |
 | `specs` | list of Spec | §13. |
 
@@ -632,6 +643,7 @@ These rules apply to compliant documents. For sketches, processors **SHOULD** re
 - [`Examples/user-compliant.teml.yaml`](https://github.com/TEML-Org/Teml-spec/blob/main/Examples/user-compliant.teml.yaml): the user example as a compliant document.
 - [`Examples/hotel.teml.yaml`](https://github.com/TEML-Org/Teml-spec/blob/main/Examples/hotel.teml.yaml): the classic Event Modeling hotel example, using actors, screens, view slices, automations, and an external payment provider that calls our API.
 - [`Examples/hotel-split/`](https://github.com/TEML-Org/Teml-spec/blob/main/Examples/hotel-split/): the same model split across a root file and three parts (§3.2).
+- [`Examples/features/existing-slices.teml.yaml`](https://github.com/TEML-Org/Teml-spec/blob/main/Examples/features/existing-slices.teml.yaml): changes to a running system, with existing and new slices (§12.1).
 
 ## Appendix B. Open questions
 
@@ -687,6 +699,7 @@ v-alpha-003 removes features rather than adding them. Each removed feature had a
 - **Removed: warning W1** (past-tense and imperative names). It was a heuristic, better suited to a linter. The remaining warnings are renumbered W1–W4.
 - **Changed:** the `status` section is folded into §12.1, and view slices move to §12.6.
 - **Added: `Declined`** as a recommended `status` value (§12.1), for a slice the team decided not to build, with the reason in its `description`. W5 checks for the reason. Added on 2026-10-05.
+- **Added: `existing`** on slices (§12.1), for a slice that is already built. It is independent of `status`, so an existing slice can still need work. Added on 2026-10-06.
 - **Added: parts** (§3.2). A root file's `include` lists other files of the model, merged in order. E8 checks the paths and the parts. Added on 2026-10-06.
 - **Migrating:** change `apiVersion` to `teml.org/v-alpha-003`, then:
   - replace every alias (`*Name`) with the element's name and delete the anchors;
