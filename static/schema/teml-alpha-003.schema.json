@@ -223,6 +223,9 @@
         },
         "wireframe": {
           "type": "string"
+        },
+        "calls": {
+          "$ref": "#/$defs/calls"
         }
       },
       "patternProperties": {
@@ -238,6 +241,9 @@
       "properties": {
         "description": {
           "type": "string"
+        },
+        "calls": {
+          "$ref": "#/$defs/calls"
         }
       },
       "patternProperties": {
@@ -256,6 +262,9 @@
         },
         "schedule": {
           "type": "string"
+        },
+        "calls": {
+          "$ref": "#/$defs/calls"
         }
       },
       "patternProperties": {
@@ -390,6 +399,10 @@
         "trigger": {
           "$ref": "#/$defs/trigger"
         },
+        "api": {
+          "type": "string",
+          "description": "The endpoint of our API that issues the command, such as POST /bookings (§12.8)."
+        },
         "command": {
           "$ref": "#/$defs/command"
         },
@@ -509,6 +522,13 @@
           "boolean"
         ]
       }
+    },
+    "calls": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "API endpoints it calls, such as POST /bookings (§12.8)."
     }
   }
 }
