@@ -336,7 +336,6 @@ automations:
 |---|---|---|
 | `description` | string | |
 | `schedule` | string | When it runs, if time-based. Free text or a cron expression. |
-| `calls` | list of strings | The API endpoints it calls, ours and others' (§12.8). |
 
 ---
 
@@ -375,7 +374,6 @@ screens:
 | `actor` | Actor name | Who uses the screen. |
 | `description` | string | |
 | `wireframe` | string | URL or relative path of a mockup or image. |
-| `calls` | list of strings | The API endpoints it calls (§12.8). |
 
 A screen is used in two places:
 - as the **trigger** of a slice, where a person issues the command from it (§12.5);
@@ -394,22 +392,18 @@ An external system cannot put events into our model. Events are facts recorded b
 ```yaml
 systems:
   - PaymentProvider:
-      description: Card payments. Calls our webhook when a charge succeeds.
-      calls:
-        - POST /webhooks/payments
+      description: Card payments. Calls POST /webhooks/payments when a charge succeeds.
 ```
 
 | Key | Type | Description |
 |---|---|---|
-| `description` | string | What the system is, and how it calls us. |
-| `calls` | list of strings | The endpoints of our API it calls (§12.8). |
+| `description` | string | What the system is, and how it calls us (for example, which webhook). |
 
 A change slice whose command is issued by an external system names that system as its trigger (§12.5):
 
 ```yaml
 - ConfirmPayment:
     trigger: { system: PaymentProvider }    # the provider's webhook calls our API
-    api: POST /webhooks/payments
     command:
       ConfirmPayment: { orderId: g, amount: dec, providerReference: s }
     events:
@@ -452,7 +446,6 @@ slices:
 |---|---|---|
 | `agg` | Aggregate name | The aggregate affected by the slice. |
 | `trigger` | Trigger | §12.5. What issues the command. |
-| `api` | string | §12.8. The endpoint of our API that issues the command. |
 | `command` | Command | §12.2. Optional; inferred from the slice name when omitted. |
 | `events` | list of Event | §12.3. **Required** in compliant documents. |
 | `views` | list of View update | §12.4. Views updated by the slice's events. |
@@ -590,30 +583,6 @@ On a board, a view slice's readers are drawn to the **right** of its view, becau
 - A value that starts with `http://` or `https://` is a link, which tools **SHOULD** make clickable.
 - TEML gives no key a meaning. A team that wants its tools to read a key, such as `Points`, agrees on the name itself.
 
-### 12.8 API endpoints (`api`) and calls
-
-Screens, automations and external systems usually issue a command by calling an endpoint of our API. A change slice's `api` names that endpoint, and each caller's `calls` lists the endpoints it calls:
-
-```yaml
-automations:
-  - PaymentRequester:
-      calls:
-        - POST /bookings/{bookingId}/payment-requests   # ours: RequestPayment's api
-        - POST https://api.payments.example/charges     # the provider's API
-
-slices:
-  - RequestPayment:
-      trigger: { automation: PaymentRequester }
-      api: POST /bookings/{bookingId}/payment-requests
-      command: …
-```
-
-- An endpoint is text, usually an HTTP method and a path. TEML doesn't check its form.
-- Two endpoints **match** when they are the same after trimming, collapsing runs of spaces, upper-casing the first word (the method) and treating every `{…}` path parameter as the same: `post /bookings/{id}/payment-requests` matches the endpoint above.
-- A call that matches a slice's `api` is a **call into the model**: the caller issues that slice's command. Tools **SHOULD** draw it like a trigger, from the caller to the command, even when the slice's `trigger` is omitted. A call that matches no slice is a call to an API outside the model, such as a payment provider's or our own query endpoints; tools list it without a line.
-- An `api` **MUST NOT** match another slice's `api`.
-- `trigger` stays the slice's main issuer. W6 and W7 (§14) report where `trigger` and `calls` disagree.
-
 ## 13. Specifications (Given / When / Then)
 
 A slice **MAY** include `specs`, a list of scenarios written in Event Modeling's Given/When/Then form.
@@ -660,10 +629,10 @@ These rules apply to compliant documents. For sketches, processors **SHOULD** re
 **Errors**
 
 - E1 `apiVersion` is missing or not supported, or `metadata.name` is missing.
-- E2 A name is duplicated within a named list, an event name is used by more than one slice, or two slices' `api` endpoints match (§12.8). This applies across all of a model's files (§3.2).
+- E2 A name is duplicated within a named list, or an event name is used by more than one slice. This applies across all of a model's files (§3.2).
 - E3 A reference does not resolve to a defined element of the expected kind (§5).
 - E4 A property is untyped, or a type expression names an unknown type.
-- E5 A slice is neither a change slice nor a view slice, or mixes keys of both kinds; or a slice key has the wrong shape, such as `existing` that isn't `true` or `false`, a `meta` value that is a list or a mapping, an `api` that isn't text, or `calls` that isn't a list of text.
+- E5 A slice is neither a change slice nor a view slice, or mixes keys of both kinds; or a slice key has the wrong shape, such as `existing` that isn't `true` or `false`, or a `meta` value that is a list or a mapping.
 - E6 A view update lists a property the view does not have.
 - E7 A spec instance names an unknown command, event or view, or a property it does not define; or its `when`/`then` does not fit the slice (§13).
 - E8 An `include` path is not allowed, or names a file that cannot be read or is listed twice; or a part contains `apiVersion`, `metadata` or `include` (§3.2).
@@ -675,8 +644,6 @@ These rules apply to compliant documents. For sketches, processors **SHOULD** re
 - W3 A view is updated but never read by a view slice.
 - W4 An automation issues commands but does not read any view.
 - W5 A slice's `status` is `Declined` but it has no `description` saying why.
-- W6 A screen, automation or external system calls a slice's `api`, but the slice's `trigger` names another one.
-- W7 A slice's `trigger` names a screen, automation or external system that lists `calls`, but not the slice's `api`.
 
 ---
 
@@ -696,7 +663,6 @@ These rules apply to compliant documents. For sketches, processors **SHOULD** re
 - [`Examples/hotel.teml.yaml`](https://github.com/TEML-Org/Teml-spec/blob/main/Examples/hotel.teml.yaml): the classic Event Modeling hotel example, using actors, screens, view slices, automations, and an external payment provider that calls our API.
 - [`Examples/hotel-split/`](https://github.com/TEML-Org/Teml-spec/blob/main/Examples/hotel-split/): the same model split across a root file and three parts (§3.2).
 - [`Examples/features/existing-slices.teml.yaml`](https://github.com/TEML-Org/Teml-spec/blob/main/Examples/features/existing-slices.teml.yaml): changes to a running system, with existing and new slices (§12.1).
-- [`Examples/features/api-calls.teml.yaml`](https://github.com/TEML-Org/Teml-spec/blob/main/Examples/features/api-calls.teml.yaml): API endpoints and calls, with slices whose callers come from `calls` alone (§12.8).
 
 ## Appendix B. Open questions
 
@@ -755,7 +721,6 @@ v-alpha-003 removes features rather than adding them. Each removed feature had a
 - **Changed: `story` is replaced by `meta`** (§12.7), which holds the story and any other information the team keeps on a slice. Changed on 2026-10-06.
 - **Added: `existing`** on slices (§12.1), for a slice that is already built. It is independent of `status`, so an existing slice can still need work. Added on 2026-10-06.
 - **Added: parts** (§3.2). A root file's `include` lists other files of the model, merged in order. E8 checks the paths and the parts. Added on 2026-10-06.
-- **Added: `api` and `calls`** (§12.8). A change slice's `api` names the endpoint that issues its command; screens, automations and external systems list the endpoints they call. A call to a slice's `api` is drawn like a trigger. W6 and W7 check that calls and triggers agree. Added on 2026-10-13.
 - **Migrating:** change `apiVersion` to `teml.org/v-alpha-003`, then:
   - replace every alias (`*Name`) with the element's name and delete the anchors;
   - rewrite merged view references as `- ViewName: [touched, props]`;
