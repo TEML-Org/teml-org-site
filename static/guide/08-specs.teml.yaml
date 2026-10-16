@@ -45,6 +45,9 @@ slices:
         - screen: BookSearch
 
   - LendBook:
+      userStory: >
+        As a librarian, I want to lend a book to a member,
+        so that I know who has it.
       status: Planned
       meta:
         Story: LIB-42

@@ -87,6 +87,7 @@ Slices can say how far along they are, whether they already exist, and anything 
 
 - `status`: the work state, such as `Planned`, `InDev` or `Completed`.
 - `existing: true`: the slice is already built. Leave it out for a new slice. An existing slice can still be `Planned` when it needs changes, which are usually less work than a new slice.
+- `userStory`: the user story behind the slice, such as "As a librarian, I want to lend a book to a member, so that I know who has it." It is shown at the top of the slice's details when you select it.
 - `meta`: any information you want shown at the top of the slice, such as the story, a link, effort points, the developer and the due date. Use any names you like. Quote dates, as in `"2026-11-14"`.
 
 {{< teml "07-track-work" >}}
@@ -101,9 +102,9 @@ Slices can say how far along they are, whether they already exist, and anything 
 
 {{< teml "08-specs" >}}
 
-![The slice panel for Lend Book lists its metadata and its three specs. The last, lends a book again once it is returned, has Book Added, Book Lent and Book Returned as its Given.](/guide/08-specs.png)
+![The slice panel for Lend Book shows its user story, then its metadata and its three specs. The last, lends a book again once it is returned, has Book Added, Book Lent and Book Returned as its Given.](/guide/08-specs.png)
 
-Click **Lend Book** on the board to see its specs in the panel.
+Click **Lend Book** on the board to see its user story and specs in the panel.
 
 This is also why the book aggregate decides: it sees every loan of the book. An aggregate per loan would start empty for each new loan, and could never tell that the book was already out.
 

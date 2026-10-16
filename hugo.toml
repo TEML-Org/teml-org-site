@@ -2,3 +2,8 @@ baseURL = 'https://teml.org/'
 languageCode = 'en-us'
 title = 'The Event Modeling Language Org'
 theme = 'hugo-book'
+
+[[menu.after]]
+  name = "TEML Viewer"
+  url = "https://tools.teml.org/"
+  weight = 10
