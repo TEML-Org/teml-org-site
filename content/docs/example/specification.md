@@ -452,6 +452,7 @@ slices:
 | `meta` | mapping | Information the team keeps on the slice (§12.7). |
 | `status` | string | Free-form state of the slice. Recommended values are `Planned`, `InDev`, `Completed` and `Declined`. `Declined` means the team decided not to build the slice; its `description` **SHOULD** say why. |
 | `existing` | boolean | `true` when the slice is already built. Omitted or `false`, the slice is new. |
+| `userStory` | string | The user story behind the slice: who wants the work and why. Tools show it when the slice is selected. |
 | `description` | string | |
 | `specs` | list of Spec | §13. |
 
@@ -462,6 +463,17 @@ slices:
     existing: true          # already built
     status: Planned         # but needs work
     description: Add the due date, 21 days after the loan.
+```
+
+`userStory` says what the slice is for, in the team's words. TEML gives it no format; the usual one is "As a …, I want …, so that …". Use `description` for notes on the work and `meta` for short facts such as the story number.
+
+```yaml
+- LendBook:
+    userStory: >
+      As a librarian, I want to lend a book to a member,
+      so that I know who has it and when it is due back.
+    meta:
+      Story: LIB-42
 ```
 
 ### 12.2 Command
@@ -553,6 +565,7 @@ A view slice shows where a view is read: a screen that displays it, or an automa
 | `meta` | mapping | As for change slices (§12.7). |
 | `status` | string | As for change slices (§12.1). |
 | `existing` | boolean | As for change slices (§12.1). |
+| `userStory` | string | As for change slices (§12.1). |
 | `description` | string | |
 | `specs` | list of Spec | §13. |
 
@@ -721,6 +734,7 @@ v-alpha-003 removes features rather than adding them. Each removed feature had a
 - **Changed: `story` is replaced by `meta`** (§12.7), which holds the story and any other information the team keeps on a slice. Changed on 2026-10-06.
 - **Added: `existing`** on slices (§12.1), for a slice that is already built. It is independent of `status`, so an existing slice can still need work. Added on 2026-10-06.
 - **Added: parts** (§3.2). A root file's `include` lists other files of the model, merged in order. E8 checks the paths and the parts. Added on 2026-10-06.
+- **Added: `userStory`** on slices (§12.1), for the user story behind the slice. Added on 2026-10-16.
 - **Migrating:** change `apiVersion` to `teml.org/v-alpha-003`, then:
   - replace every alias (`*Name`) with the element's name and delete the anchors;
   - rewrite merged view references as `- ViewName: [touched, props]`;
