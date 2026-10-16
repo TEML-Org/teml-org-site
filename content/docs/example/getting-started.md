@@ -77,7 +77,7 @@ When the model is ready for other tools, such as code generators, make it **comp
 
 In a compliant model, problems are **errors**. Here is the same model with two mistakes, `title: string` instead of `title: s`, and a misspelled aggregate:
 
-![Problems lists three errors with their line numbers: unknown type string on lines 20 and 26, and no aggs entry named BooksAgg on line 44. The editor marks line 20 in red, and the board puts Book Lent in a lane marked not declared.](/guide/06-broken.png)
+![Problems lists three errors with their line numbers: unknown type string on lines 20 and 26, and no aggs entry named BooksAgg on line 44. Line number 20 turns red in the editor, and the board puts Book Lent in a lane marked not declared.](/guide/06-broken.png)
 
 Each problem has its line number; click it to jump there. The board still draws what it can, and puts anything it can't find in a lane marked **not declared**.
 
