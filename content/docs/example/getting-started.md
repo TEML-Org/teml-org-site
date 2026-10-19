@@ -108,6 +108,24 @@ Click **Lend Book** on the board to see its user story and specs in the panel.
 
 This is also why the book aggregate decides: it sees every loan of the book. An aggregate per loan would start empty for each new loan, and could never tell that the book was already out.
 
+## 9. Show the screens
+
+A board says *which* screen each step happens on. A **wireframe** shows what that screen looks like: a sketch, a mock-up or a screenshot. Give a screen a `wireframe`, and every slice that uses the screen shows it. When one slice shows the screen in a different state, such as a dialog that's open, give that slice's trigger its own `wireframe`; a reader in `readBy` can have one too:
+
+{{< teml "09-wireframes" >}}
+
+The wireframe is a path or a link. A path is relative to the TEML file, so keep the pictures in a folder beside it, here `wireframes/`. Use pictures (PNG, JPEG, SVG, GIF, WebP or AVIF) to see them on the board; anything else, such as a Figma link, is listed as a link.
+
+![Each screen sticky on the board now shows a small picture of its screen. Return Book's Loan Desk is selected, and the details below show its wireframe, a Return dialog, marked as this slice's own.](/guide/09-wireframes.png)
+
+Each screen sticky shows its picture, and the selected one shows it large in the details. Click the picture, or press <kbd>v</kbd>, to see it full size; the arrow keys step through every screen in timeline order:
+
+![The full-size view shows the Loan Desk with the Return dialog open, in Return Book, 4 of 4, with Previous and Next buttons.](/guide/09-full-size.png)
+
+Use **Wireframes** above the board to hide the pictures when you want a compact board.
+
+The viewer finds the pictures when you press **Open in viewer**, open a model from GitHub, or choose **Open file…** and select the model and its pictures together. If you paste a model, or open a share link, the board marks where each picture would go but can't show it.
+
 ---
 
 ## What next
