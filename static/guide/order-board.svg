@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1244" height="408" viewBox="0 0 1244 408" font-family="'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif">
+<title>Online shop</title>
+<defs><filter id="declined"><feColorMatrix type="saturate" values="0"/></filter><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7a8491"/></marker>
+<pattern id="inferred" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2" height="8" fill="#ffffff" fill-opacity="0.35"/></pattern></defs>
+<rect width="1244" height="408" fill="#ffffff"/>
+<line x1="0" y1="64.5" x2="1244" y2="64.5" stroke="#d4d9df"/>
+<rect x="0" y="64" width="136" height="86" fill="#f0f3f6"/>
+<text x="14" y="105" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2128">Customer</text>
+<text x="14" y="119" font-size="9.5" letter-spacing="0.5" fill="#5b6573">ACTOR</text>
+<rect x="0" y="150" width="1244" height="86" fill="#f7f8f9"/>
+<line x1="0" y1="150.5" x2="1244" y2="150.5" stroke="#d4d9df"/>
+<rect x="0" y="150" width="136" height="86" fill="#f0f3f6"/>
+<text x="14" y="191" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2128">Automations</text>
+<text x="14" y="205" font-size="9.5" letter-spacing="0.5" fill="#5b6573">NO PERSON INVOLVED</text>
+<line x1="0" y1="236.5" x2="1244" y2="236.5" stroke="#d4d9df"/>
+<rect x="0" y="236" width="136" height="86" fill="#f0f3f6"/>
+<text x="14" y="275" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2128">Commands &amp;</text>
+<text x="14" y="291" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2128">read models</text>
+<rect x="0" y="322" width="1244" height="86" fill="#f7f8f9"/>
+<line x1="0" y1="322.5" x2="1244" y2="322.5" stroke="#d4d9df"/>
+<rect x="0" y="322" width="136" height="86" fill="#f0f3f6"/>
+<text x="14" y="363" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2128">OrderAgg</text>
+<text x="14" y="377" font-size="9.5" letter-spacing="0.5" fill="#5b6573">EVENTS</text>
+<line x1="135.5" y1="64" x2="135.5" y2="408" stroke="#d4d9df"/>
+<text x="158" y="28" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="700" fill="#1b2128">Place Order</text>
+<line x1="500" y1="0" x2="500" y2="408" stroke="#d4d9df" stroke-dasharray="4 4"/>
+<text x="522" y="28" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="700" fill="#1b2128">List Orders To Confirm</text>
+<rect x="522" y="37" width="76.8" height="15" rx="7.5" fill="#f6e48b"/>
+<text x="528" y="48" font-size="9" font-weight="600" letter-spacing="0.5" fill="#1b2027">TO-DO LIST</text>
+<line x1="864" y1="0" x2="864" y2="408" stroke="#d4d9df" stroke-dasharray="4 4"/>
+<text x="886" y="28" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="700" fill="#1b2128">Send Confirmation</text>
+<text x="886" y="48" font-size="10.5" fill="#5b6573">1 spec</text>
+<path d="M228,134 C228,191.5 228,191.5 228,249" fill="none" stroke="#7a8491" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M228,306 C228,322 228,319 228,335" fill="none" stroke="#7a8491" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M298,365 C408,365 408,345.4 408,309" fill="none" stroke="#7a8491" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M662,279 C772,279 772,259.4 772,223" fill="none" stroke="#7a8491" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M956,220 C956,236 956,233 956,249" fill="none" stroke="#7a8491" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M956,306 C956,322 956,319 956,335" fill="none" stroke="#7a8491" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M1026,365 C1136,365 1136,345.4 1136,309" fill="none" stroke="#7a8491" stroke-width="1.4" marker-end="url(#arrow)"/>
+<g><rect x="158" y="80" width="140" height="54" rx="3" fill="#ffffff" stroke="#98a2ae"/>
+<rect x="166" y="85" width="124" height="3" rx="1.5" fill="#98a2ae" fill-opacity="0.35"/>
+<text x="168" y="103" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">SCREEN</text>
+<text x="168" y="118" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Checkout</text>
+</g>
+<g><rect x="158" y="252" width="140" height="54" rx="3" fill="#86bdf2"/>
+<text x="168" y="275" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">COMMAND</text>
+<text x="168" y="290" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Place Order</text>
+</g>
+<g><rect x="158" y="338" width="140" height="54" rx="3" fill="#f7ab5e"/>
+<text x="168" y="361" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">EVENT</text>
+<text x="168" y="376" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Order Placed</text>
+</g>
+<g><rect x="338" y="252" width="140" height="54" rx="3" fill="#f6e48b"/>
+<rect x="338" y="252" width="4" height="54" fill="#93d494"/>
+<path d="M1.3 3.2l1-1 1.2 1.2L5.9 1l1 1-3.4 3.4zM8 2.5h7v1.6H8zM1.3 8.7l1-1 1.2 1.2 2.4-2.4 1 1-3.4 3.4zM8 8h7v1.6H8zM1.5 12.5h4v3h-4zM8 13.4h7V15H8z" transform="translate(348,262) scale(0.62)" fill="#1b2027" fill-opacity="0.7"/>
+<text x="360" y="270" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">TO-DO LIST</text>
+<text x="348" y="285" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Orders To</text>
+<text x="348" y="300" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Confirm</text>
+</g>
+<g><rect x="522" y="252" width="140" height="54" rx="3" fill="#f6e48b"/>
+<rect x="522" y="252" width="4" height="54" fill="#93d494"/>
+<path d="M1.3 3.2l1-1 1.2 1.2L5.9 1l1 1-3.4 3.4zM8 2.5h7v1.6H8zM1.3 8.7l1-1 1.2 1.2 2.4-2.4 1 1-3.4 3.4zM8 8h7v1.6H8zM1.5 12.5h4v3h-4zM8 13.4h7V15H8z" transform="translate(532,262) scale(0.62)" fill="#1b2027" fill-opacity="0.7"/>
+<text x="544" y="270" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">TO-DO LIST</text>
+<text x="532" y="285" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Orders To</text>
+<text x="532" y="300" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Confirm</text>
+</g>
+<g><rect x="702" y="166" width="140" height="54" rx="3" fill="#d3cbf1"/>
+<path d="M9.4 1l.4 1.9c.4.1.8.3 1.1.5l1.7-1 1.4 1.4-1 1.7c.2.3.4.7.5 1.1l1.9.4v2l-1.9.4c-.1.4-.3.8-.5 1.1l1 1.7-1.4 1.4-1.7-1c-.3.2-.7.4-1.1.5L9.4 15h-2l-.4-1.9c-.4-.1-.8-.3-1.1-.5l-1.7 1-1.4-1.4 1-1.7c-.2-.3-.4-.7-.5-1.1L1.6 9V7l1.9-.4c.1-.4.3-.8.5-1.1l-1-1.7 1.4-1.4 1.7 1c.3-.2.7-.4 1.1-.5L7.6 1h1.8zM8.5 5.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5z" transform="translate(712,181) scale(0.62)" fill="#1b2027" fill-opacity="0.7"/>
+<text x="724" y="189" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">AUTOMATION</text>
+<text x="712" y="204" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Confirmer</text>
+</g>
+<g><rect x="886" y="166" width="140" height="54" rx="3" fill="#d3cbf1"/>
+<path d="M9.4 1l.4 1.9c.4.1.8.3 1.1.5l1.7-1 1.4 1.4-1 1.7c.2.3.4.7.5 1.1l1.9.4v2l-1.9.4c-.1.4-.3.8-.5 1.1l1 1.7-1.4 1.4-1.7-1c-.3.2-.7.4-1.1.5L9.4 15h-2l-.4-1.9c-.4-.1-.8-.3-1.1-.5l-1.7 1-1.4-1.4 1-1.7c-.2-.3-.4-.7-.5-1.1L1.6 9V7l1.9-.4c.1-.4.3-.8.5-1.1l-1-1.7 1.4-1.4 1.7 1c.3-.2.7-.4 1.1-.5L7.6 1h1.8zM8.5 5.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5z" transform="translate(896,181) scale(0.62)" fill="#1b2027" fill-opacity="0.7"/>
+<text x="908" y="189" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">AUTOMATION</text>
+<text x="896" y="204" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Confirmer</text>
+</g>
+<g><rect x="886" y="252" width="140" height="54" rx="3" fill="#86bdf2"/>
+<text x="896" y="270" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">COMMAND</text>
+<text x="896" y="285" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Send</text>
+<text x="896" y="300" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Confirmation</text>
+</g>
+<g><rect x="886" y="338" width="140" height="54" rx="3" fill="#f7ab5e"/>
+<text x="896" y="356" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">EVENT</text>
+<text x="896" y="371" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Confirmation</text>
+<text x="896" y="386" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Sent</text>
+</g>
+<g><rect x="1066" y="252" width="140" height="54" rx="3" fill="#f6e48b"/>
+<rect x="1066" y="252" width="4" height="54" fill="#93d494"/>
+<path d="M1.3 3.2l1-1 1.2 1.2L5.9 1l1 1-3.4 3.4zM8 2.5h7v1.6H8zM1.3 8.7l1-1 1.2 1.2 2.4-2.4 1 1-3.4 3.4zM8 8h7v1.6H8zM1.5 12.5h4v3h-4zM8 13.4h7V15H8z" transform="translate(1076,262) scale(0.62)" fill="#1b2027" fill-opacity="0.7"/>
+<text x="1088" y="270" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">TO-DO LIST</text>
+<text x="1076" y="285" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Orders To</text>
+<text x="1076" y="300" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Confirm</text>
+</g>
+</svg>
