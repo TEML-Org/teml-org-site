@@ -1,0 +1,38 @@
+apiVersion: teml.org/v-alpha-003
+metadata: { name: Online shop }
+
+actors:
+  - Customer:
+screens:
+  - Checkout: { actor: Customer }
+automations:
+  - Confirmer: { description: Emails a confirmation for each new order. }
+
+aggs:
+  - OrderAgg: { orderId: g, email: s }
+views:
+  - OrdersToConfirm: { orderId: g, email: s }
+
+slices:
+  - PlaceOrder:
+      userStory: As a customer, I want to place an order, so that I get what I chose.
+      agg: OrderAgg
+      trigger: { screen: Checkout }
+      command: { PlaceOrder: { orderId: g, email: s } }
+      events: [OrderPlaced: { orderId: g, email: s }]
+      views: [OrdersToConfirm]
+
+  - ListOrdersToConfirm:
+      view: OrdersToConfirm
+      readBy: [automation: Confirmer]
+
+  - SendConfirmation:
+      agg: OrderAgg
+      trigger: { automation: Confirmer }
+      command: { SendConfirmation: { orderId: g, email: s } }
+      events: [ConfirmationSent: { orderId: g }]
+      views: [OrdersToConfirm]
+      specs:
+        - name: confirms a new order once
+          given: [OrderPlaced: { orderId: o-1, email: ana@example.com }]
+          then: [SendConfirmation: { orderId: o-1, email: ana@example.com }]
