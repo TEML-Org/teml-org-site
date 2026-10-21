@@ -29,20 +29,29 @@ That picture is drawn from this text. Nobody drew boxes or arrows:
 
 The board is the big picture: every step of the story in order, and who or what takes part in each. Click a step and you zoom in to its details: what the screen sends, what's recorded and the examples that pin down how it behaves (*given* this happened, *then* that follows). You can always zoom back out, so you never lose sight of where the details fit.
 
-That works for the people deciding what to build as well as the people building it:
-
-- **Project managers and business analysts** see the workflow, agree on what each step should do, and spot what's missing before it's built.
-- **Developers** get small, well-defined steps to build one at a time, kept in Git and reviewed like code.
-
 ## **Do this with your own project**
 
-The [Getting started guide](docs/example/getting-started/) builds a small library system one step at a time, from a first sketch to a complete model. You can open each step in the viewer as you go.
+Pick the path that fits you. Both work from the same board, so the whole team sees the same picture.
 
-- [TEML Viewer](https://tools.teml.org/): write TEML and see the board as you type. Nothing leaves your browser.
-- [Demos](/demos/): bigger models drawn straight from their TEML.
-- [A Simple Example](docs/example/simple-user-example/) and the [Introduction to TEML](docs/example/): short tours of the language.
-- [Specification](docs/example/specification/): the full rules. The current version is **v-alpha-003**, a working draft.
-- JSON Schema for editors and tools: [`teml-alpha-003.schema.json`](/schema/teml-alpha-003.schema.json)
+### For project managers and business analysts
+
+You don't need to write any YAML to work from an Event Model.
+
+- **Read a board.** [Explore the order example](https://tools.teml.org/?src=https%3A%2F%2Fteml.org%2Fguide%2Forder.teml.yaml), or the bigger [demos](/demos/). Click a step to see its user story and the examples that say how it should behave.
+- **Agree on behaviour.** Each step's examples read as *given* this happened, *when* someone does this, *then* that follows. See [describe the behaviour](docs/example/getting-started/#8-describe-the-behaviour).
+- **Track the work.** Mark each step as planned, in progress or done, with the user story and ticket next to it. See [track the work](docs/example/getting-started/#7-track-the-work).
+- **See the screens.** Attach a sketch or mock-up of each screen to the steps that use it. See [show the screens](docs/example/getting-started/#9-show-the-screens).
+
+### For developers
+
+The model is a text file that lives in Git next to the code.
+
+- **Write one.** The [Getting started guide](docs/example/getting-started/) builds a small library system step by step, from a first sketch to a complete, checked model.
+- **See it as you type.** The [TEML Viewer](https://tools.teml.org/) draws the board and lists problems live. It can open a model from GitHub and commit your changes back.
+- **Review it like code.** The [TEML GitHub Action](https://github.com/TEML-Org/teml-action) comments on each pull request that changes a model: what changed, slice by slice, with the board before and after.
+- **Know the rules.** The [Specification](docs/example/specification/) (**v-alpha-003**, a working draft) and its [JSON Schema](/schema/teml-alpha-003.schema.json) for editors and tools. [A Simple Example](docs/example/simple-user-example/) and the [Introduction to TEML](docs/example/) are shorter tours.
+
+Later, tools could use a complete model to help write tests and code. That's where TEML is heading; it doesn't do it yet.
 
 ---
 
