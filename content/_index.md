@@ -5,7 +5,11 @@ type: docs
 
 # **The Event Modeling Language (TEML)**
 
-**Write down how your software should work, in plain text that business people and developers can both read.** TEML turns that text into a picture of the whole system, so everyone agrees on the same picture before anything is built. Because it's text, the picture lives next to the code and changes with it.
+**Sketch your idea, see the big picture, build with confidence.**
+
+Write down how your software should work, in plain text that business people and developers can both read. TEML turns that text into a picture of the whole system, so everyone agrees on the same picture before anything is built. Because it's text, the picture lives next to the code and changes with it.
+
+Start the way Event Modeling always has, like sticky notes on a wall: a few steps, roughly named. Add the precise details later, only when it's time to build.
 
 ## **See it in one minute**
 
@@ -21,9 +25,11 @@ Read it left to right, one column per step:
 
 {{< button href="https://tools.teml.org/?src=https%3A%2F%2Fteml.org%2Fguide%2Forder.teml.yaml" >}}Explore the interactive example{{< /button >}}
 
-That picture is drawn from this text. Nobody drew boxes or arrows:
+That picture is drawn from text. Nobody drew boxes or arrows. You can start with a sketch as short as this, which draws almost the same board:
 
-{{< teml "order" >}}
+{{< teml "order-sketch" >}}
+
+A sketch is enough to agree on the story. When it's time to build, the same story becomes precise: what each step carries, and examples of how it behaves. [See the precise version](https://tools.teml.org/?src=https%3A%2F%2Fteml.org%2Fguide%2Forder.teml.yaml).
 
 ## **Zoom out, zoom in**
 
@@ -31,7 +37,7 @@ The board is the big picture: every step of the story in order, and who or what 
 
 ## **From a business need to software**
 
-TEML follows a need all the way to the software that meets it. Here is the order example again, as a team would use it:
+TEML sits halfway between everyday words and code: anyone on the team can read it, and tools can check it. So less is lost in translation between the people who ask for software and the people who build it. Here is the order example again, as a team would use it:
 
 1. **Describe the need.** "Customers should get an email confirming each order, and never two."
 2. **Model the behaviour.** Together, lay out the steps, the screen, what's recorded and who acts. That's the board above, with examples that pin down "each order" and "never two".
@@ -117,8 +123,8 @@ Graphical tools are good for sharing an Event Model, but drawing and keeping one
 
 TEML can be written in two ways:
 
-1. **Sketch:** get ideas out of your head quickly, without filling in every detail.
-2. **Compliant:** refine the sketch into a complete, checked model that tools can rely on.
+1. **Sketch:** start here. Get ideas out of your head quickly, without filling in every detail.
+2. **Compliant:** when it's time to build, refine the sketch into a complete, checked model that tools can rely on.
 
 ## **Mission of TEML Org**
 

@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1608" height="496" viewBox="0 0 1608 496" font-family="'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif">
+<title>Library</title>
+<defs><filter id="declined"><feColorMatrix type="saturate" values="0"/></filter><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7a8491"/></marker>
+<pattern id="inferred" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2" height="8" fill="#ffffff" fill-opacity="0.35"/></pattern></defs>
+<rect width="1608" height="496" fill="#ffffff"/>
+<line x1="0" y1="152.5" x2="1608" y2="152.5" stroke="#d4d9df"/>
+<rect x="0" y="152" width="136" height="86" fill="#f0f3f6"/>
+<text x="14" y="193" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2128">Librarian</text>
+<text x="14" y="207" font-size="9.5" letter-spacing="0.5" fill="#5b6573">ACTOR</text>
+<rect x="0" y="238" width="1608" height="86" fill="#f7f8f9"/>
+<line x1="0" y1="238.5" x2="1608" y2="238.5" stroke="#d4d9df"/>
+<rect x="0" y="238" width="136" height="86" fill="#f0f3f6"/>
+<text x="14" y="279" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2128">Member</text>
+<text x="14" y="293" font-size="9.5" letter-spacing="0.5" fill="#5b6573">ACTOR</text>
+<line x1="0" y1="324.5" x2="1608" y2="324.5" stroke="#d4d9df"/>
+<rect x="0" y="324" width="136" height="86" fill="#f0f3f6"/>
+<text x="14" y="363" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2128">Commands &amp;</text>
+<text x="14" y="379" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2128">read models</text>
+<rect x="0" y="410" width="1608" height="86" fill="#f7f8f9"/>
+<line x1="0" y1="410.5" x2="1608" y2="410.5" stroke="#d4d9df"/>
+<rect x="0" y="410" width="136" height="86" fill="#f0f3f6"/>
+<text x="14" y="451" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2128">BookAgg</text>
+<text x="14" y="465" font-size="9.5" letter-spacing="0.5" fill="#5b6573">EVENTS</text>
+<line x1="135.5" y1="152" x2="135.5" y2="496" stroke="#d4d9df"/>
+<text x="158" y="28" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="700" fill="#1b2128">Add Book</text>
+<rect x="158" y="37" width="63.839999999999996" height="15" rx="7.5" fill="#f0f3f6"/>
+<text x="164" y="48" font-size="9" font-weight="600" letter-spacing="0.5" fill="#1b2128">EXISTING</text>
+<rect x="227.84" y="37" width="70.32" height="15" rx="7.5" fill="#1b2128"/>
+<text x="233.84" y="48" font-size="9" font-weight="600" letter-spacing="0.5" fill="#ffffff">COMPLETED</text>
+<line x1="500" y1="0" x2="500" y2="496" stroke="#d4d9df" stroke-dasharray="4 4"/>
+<text x="522" y="28" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="700" fill="#1b2128">Browse Books</text>
+<rect x="522" y="37" width="37.92" height="15" rx="3" fill="#93d494"/>
+<text x="528" y="48" font-size="9" font-weight="600" letter-spacing="0.5" fill="#1b2027">VIEW</text>
+<rect x="565.92" y="37" width="63.839999999999996" height="15" rx="7.5" fill="#f0f3f6"/>
+<text x="571.92" y="48" font-size="9" font-weight="600" letter-spacing="0.5" fill="#1b2128">EXISTING</text>
+<rect x="635.76" y="37" width="70.32" height="15" rx="7.5" fill="#1b2128"/>
+<text x="641.76" y="48" font-size="9" font-weight="600" letter-spacing="0.5" fill="#ffffff">COMPLETED</text>
+<line x1="864" y1="0" x2="864" y2="496" stroke="#d4d9df" stroke-dasharray="4 4"/>
+<text x="886" y="28" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="700" fill="#1b2128">Lend Book</text>
+<rect x="886" y="37" width="31.439999999999998" height="15" rx="7.5" fill="none" stroke="#d4d9df"/>
+<text x="892" y="48" font-size="9" font-weight="600" letter-spacing="0.5" fill="#1b2128">NEW</text>
+<rect x="923.44" y="37" width="57.36" height="15" rx="7.5" fill="none" stroke="#5b6573" stroke-dasharray="3 2"/>
+<text x="929.44" y="48" font-size="9" font-weight="600" letter-spacing="0.5" fill="#5b6573">PLANNED</text>
+<text x="986.8000000000001" y="48" font-size="10.5" fill="#5b6573">3 specs</text>
+<text x="886" y="70" font-size="10" fill="#5b6573">Story</text>
+<text x="952" y="70" font-size="11" fill="#1b2128">LIB-42</text>
+<text x="886" y="86" font-size="10" fill="#5b6573">Link</text>
+<text x="952" y="86" font-size="11" fill="#1b2128" text-decoration="underline">jira.example.com/browse/LIB-42</text>
+<text x="886" y="102" font-size="10" fill="#5b6573">Points</text>
+<text x="952" y="102" font-size="11" fill="#1b2128">3</text>
+<text x="886" y="118" font-size="10" fill="#5b6573">Developer</text>
+<text x="952" y="118" font-size="11" fill="#1b2128">Ana Ruiz</text>
+<text x="886" y="134" font-size="10" fill="#5b6573">Due</text>
+<text x="952" y="134" font-size="11" fill="#1b2128">2026-11-14</text>
+<line x1="1228" y1="0" x2="1228" y2="496" stroke="#d4d9df" stroke-dasharray="4 4"/>
+<text x="1250" y="28" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="700" fill="#1b2128">Return Book</text>
+<rect x="1250" y="37" width="31.439999999999998" height="15" rx="7.5" fill="none" stroke="#d4d9df"/>
+<text x="1256" y="48" font-size="9" font-weight="600" letter-spacing="0.5" fill="#1b2128">NEW</text>
+<rect x="1287.44" y="37" width="57.36" height="15" rx="7.5" fill="none" stroke="#5b6573" stroke-dasharray="3 2"/>
+<text x="1293.44" y="48" font-size="9" font-weight="600" letter-spacing="0.5" fill="#5b6573">PLANNED</text>
+<text x="1350.8" y="48" font-size="10.5" fill="#5b6573">1 spec</text>
+<path d="M228,222 C228,279.5 228,279.5 228,337" fill="none" stroke="#7a8491" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M228,394 C228,410 228,407 228,423" fill="none" stroke="#7a8491" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M298,453 C408,453 408,433.4 408,397" fill="none" stroke="#7a8491" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M662,367 C772,367 772,347.4 772,311" fill="none" stroke="#7a8491" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M956,222 C956,279.5 956,279.5 956,337" fill="none" stroke="#7a8491" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M956,394 C956,410 956,407 956,423" fill="none" stroke="#7a8491" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M1320,222 C1320,279.5 1320,279.5 1320,337" fill="none" stroke="#7a8491" stroke-width="1.4" marker-end="url(#arrow)"/>
+<path d="M1320,394 C1320,410 1320,407 1320,423" fill="none" stroke="#7a8491" stroke-width="1.4" marker-end="url(#arrow)"/>
+<g><rect x="158" y="168" width="140" height="54" rx="3" fill="#ffffff" stroke="#98a2ae"/>
+<rect x="166" y="173" width="124" height="3" rx="1.5" fill="#98a2ae" fill-opacity="0.35"/>
+<text x="168" y="191" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">SCREEN</text>
+<text x="168" y="206" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Catalogue</text>
+</g>
+<g><rect x="158" y="340" width="140" height="54" rx="3" fill="#86bdf2"/>
+<text x="168" y="363" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">COMMAND</text>
+<text x="168" y="378" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Add Book</text>
+</g>
+<g><rect x="158" y="426" width="140" height="54" rx="3" fill="#f7ab5e"/>
+<text x="168" y="449" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">EVENT</text>
+<text x="168" y="464" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Book Added</text>
+</g>
+<g><rect x="338" y="340" width="140" height="54" rx="3" fill="#93d494"/>
+<text x="348" y="363" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">READ MODEL</text>
+<text x="348" y="378" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Book List</text>
+</g>
+<g><rect x="522" y="340" width="140" height="54" rx="3" fill="#93d494"/>
+<text x="532" y="363" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">READ MODEL</text>
+<text x="532" y="378" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Book List</text>
+</g>
+<g><rect x="702" y="254" width="140" height="54" rx="3" fill="#ffffff" stroke="#98a2ae"/>
+<rect x="710" y="259" width="124" height="3" rx="1.5" fill="#98a2ae" fill-opacity="0.35"/>
+<text x="712" y="277" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">SCREEN</text>
+<text x="712" y="292" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Book Search</text>
+</g>
+<g><rect x="886" y="168" width="140" height="54" rx="3" fill="#ffffff" stroke="#98a2ae"/>
+<rect x="894" y="173" width="124" height="3" rx="1.5" fill="#98a2ae" fill-opacity="0.35"/>
+<text x="896" y="191" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">SCREEN</text>
+<text x="896" y="206" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Loan Desk</text>
+</g>
+<g><rect x="886" y="340" width="140" height="54" rx="3" fill="#86bdf2"/>
+<text x="896" y="363" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">COMMAND</text>
+<text x="896" y="378" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Lend Book</text>
+</g>
+<g><rect x="886" y="426" width="140" height="54" rx="3" fill="#f7ab5e"/>
+<text x="896" y="449" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">EVENT</text>
+<text x="896" y="464" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Book Lent</text>
+</g>
+<g><rect x="1250" y="168" width="140" height="54" rx="3" fill="#ffffff" stroke="#98a2ae"/>
+<rect x="1258" y="173" width="124" height="3" rx="1.5" fill="#98a2ae" fill-opacity="0.35"/>
+<text x="1260" y="191" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">SCREEN</text>
+<text x="1260" y="206" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Loan Desk</text>
+</g>
+<g><rect x="1250" y="340" width="140" height="54" rx="3" fill="#86bdf2"/>
+<text x="1260" y="363" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">COMMAND</text>
+<text x="1260" y="378" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Return Book</text>
+</g>
+<g><rect x="1250" y="426" width="140" height="54" rx="3" fill="#f7ab5e"/>
+<text x="1260" y="449" font-size="9" letter-spacing="0.5" fill="#1b2027" fill-opacity="0.7">EVENT</text>
+<text x="1260" y="464" font-family="'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="600" fill="#1b2027">Book Returned</text>
+</g>
+</svg>
