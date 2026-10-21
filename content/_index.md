@@ -73,13 +73,22 @@ TEML is young: the language is an alpha draft, and the tools around it already w
 
 **Still changing**
 
-- **The language.** Names and structure can still change between drafts, as they did from v-alpha-002 to v-alpha-003. Each model names the draft it follows in its `apiVersion` line.
+- **The language.** Names and structure can still change, as they did from v-alpha-002 to v-alpha-003. While TEML is in alpha, accepted changes update the current draft. Each model names the draft it follows in its `apiVersion` line.
 - **What comes next is decided by real use.** A change to the language starts from a concrete need; see [how to propose one](https://github.com/TEML-Org/Teml-spec/blob/main/CONTRIBUTING.md).
 
 **Not yet**
 
 - Generating tests or code from a model.
 - Producing a model from existing code.
+
+## **Help shape TEML**
+
+TEML is open source, and right now the most useful help is feedback on the language itself, from people using it on real work.
+
+- **Tell us where it falls short.** Write a model for something real. If TEML can't express what it needs, or only awkwardly, [open an issue on Teml-spec](https://github.com/TEML-Org/Teml-spec/issues/new) with a short snippet. That's how the language changes: each change starts from a concrete need ([how proposals work](https://github.com/TEML-Org/Teml-spec/blob/main/CONTRIBUTING.md)).
+- **Share an example.** A real or realistic model, and what was hard to write, helps decide what comes next. Post it as an issue on Teml-spec too.
+- **Fix small things.** Typos, unclear wording, broken links and mistakes in examples don't need an issue first. Open a pull request on [Teml-spec](https://github.com/TEML-Org/Teml-spec) or on [this website](https://github.com/TEML-Org/teml-org-site).
+- **Report problems with the tools.** For the GitHub Action, use [its issues](https://github.com/TEML-Org/teml-action/issues). The viewer's and the `teml` command's code isn't public yet, so report those on [this website's issues](https://github.com/TEML-Org/teml-org-site/issues).
 
 ---
 
