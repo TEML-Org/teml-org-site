@@ -60,6 +60,14 @@ The model is a text file that lives in Git next to the code.
 - **Review it like code.** The [TEML GitHub Action](https://github.com/TEML-Org/teml-action) comments on each pull request that changes a model: what changed, slice by slice, with the board before and after.
 - **Know the rules.** The [Specification](docs/example/specification/) (**v-alpha-003**, a working draft) and its [JSON Schema](/schema/teml-alpha-003.schema.json) for editors and tools. [A Simple Example](docs/example/simple-user-example/) and the [Introduction to TEML](docs/example/) are shorter tours.
 
+## **Have your own software project in mind?**
+
+TEML's author can help you work out what your software needs to do, model it with you, then build it in small, well-defined pieces, one slice at a time. Clarity first, building second, with TEML as the method. You don't need any of this to use TEML: the language and tools are free.
+
+{{< button href="https://github.com/TEML-Org/Teml-spec/discussions/new?category=general&title=My%20project%3A%20" >}}Let's talk about your project{{< /button >}}
+
+This opens a public discussion on GitHub, so share only what you're happy for others to read.
+
 ## **Where TEML is today**
 
 TEML is young: the language is an alpha draft, and the tools around it already work.
