@@ -29,6 +29,15 @@ That picture is drawn from this text. Nobody drew boxes or arrows:
 
 The board is the big picture: every step of the story in order, and who or what takes part in each. Click a step and you zoom in to its details: what the screen sends, what's recorded and the examples that pin down how it behaves (*given* this happened, *then* that follows). You can always zoom back out, so you never lose sight of where the details fit.
 
+## **From a business need to software**
+
+TEML follows a need all the way to the software that meets it. Here is the order example again, as a team would use it:
+
+1. **Describe the need.** "Customers should get an email confirming each order, and never two."
+2. **Model the behaviour.** Together, lay out the steps, the screen, what's recorded and who acts. That's the board above, with examples that pin down "each order" and "never two".
+3. **Keep the model as text.** `order.teml.yaml` lives in Git next to the code. A change to it goes through a pull request like any other, and the [TEML GitHub Action](https://github.com/TEML-Org/teml-action) shows the change slice by slice.
+4. **Connect it to development.** Today, `teml check` catches gaps in the model, and each step's *given / then* examples tell developers what to build and test. Later, tools could use a complete model to help write those tests and the code. That's the direction TEML is heading; it doesn't do it yet.
+
 ## **Do this with your own project**
 
 Pick the path that fits you. Both work from the same board, so the whole team sees the same picture.
@@ -51,7 +60,26 @@ The model is a text file that lives in Git next to the code.
 - **Review it like code.** The [TEML GitHub Action](https://github.com/TEML-Org/teml-action) comments on each pull request that changes a model: what changed, slice by slice, with the board before and after.
 - **Know the rules.** The [Specification](docs/example/specification/) (**v-alpha-003**, a working draft) and its [JSON Schema](/schema/teml-alpha-003.schema.json) for editors and tools. [A Simple Example](docs/example/simple-user-example/) and the [Introduction to TEML](docs/example/) are shorter tours.
 
-Later, tools could use a complete model to help write tests and code. That's where TEML is heading; it doesn't do it yet.
+## **Where TEML is today**
+
+TEML is young: the language is an alpha draft, and the tools around it already work.
+
+**Works today**
+
+- **The language**, [v-alpha-003](docs/example/specification/): write a quick sketch or a complete, checked model, split it across files if it grows, and get autocomplete in editors from the [JSON Schema](/schema/teml-alpha-003.schema.json).
+- **The [TEML Viewer](https://tools.teml.org/)**: the board as you type, problems listed live, each step's details and examples, screen wireframes, an ER diagram, comparing two versions, share links, opening from GitHub and committing back, and SVG or PNG export.
+- **The `teml` command**: `teml check` reports problems, `teml render` draws the board as SVG and `teml diff` describes what changed between two versions. It runs anywhere with Node 18 or later: `curl -fsSLO https://tools.teml.org/teml.mjs`.
+- **The [TEML GitHub Action](https://github.com/TEML-Org/teml-action)**: a comment on each pull request that changes a model.
+
+**Still changing**
+
+- **The language.** Names and structure can still change between drafts, as they did from v-alpha-002 to v-alpha-003. Each model names the draft it follows in its `apiVersion` line.
+- **What comes next is decided by real use.** A change to the language starts from a concrete need; see [how to propose one](https://github.com/TEML-Org/Teml-spec/blob/main/CONTRIBUTING.md).
+
+**Not yet**
+
+- Generating tests or code from a model.
+- Producing a model from existing code.
 
 ---
 

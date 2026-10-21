@@ -33,6 +33,11 @@ slices:
       events: [ConfirmationSent: { orderId: g }]
       views: [OrdersToConfirm]
       specs:
-        - name: confirms a new order once
+        - name: confirms a new order
           given: [OrderPlaced: { orderId: o-1, email: ana@example.com }]
           then: [SendConfirmation: { orderId: o-1, email: ana@example.com }]
+        - name: never confirms an order twice
+          given:
+            - OrderPlaced: { orderId: o-1, email: ana@example.com }
+            - ConfirmationSent: { orderId: o-1 }
+          then: []
