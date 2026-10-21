@@ -1,0 +1,14 @@
+slices:
+  - PlaceOrder:
+      trigger: { screen: Checkout }
+      events: [OrderPlaced]
+      views: [OrdersToConfirm]
+
+  - ListOrdersToConfirm:
+      view: OrdersToConfirm
+      readBy: [automation: Confirmer]
+
+  - SendConfirmation:
+      trigger: { automation: Confirmer }
+      events: [ConfirmationSent]
+      views: [OrdersToConfirm]

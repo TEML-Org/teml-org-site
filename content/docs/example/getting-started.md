@@ -6,7 +6,29 @@ title: "Getting started"
 
 # Getting started: your first board
 
-This guide builds a small library model one step at a time, from a single slice to a model your team can track work in. Each step is a complete TEML document that you can paste into the [TEML Viewer](https://tools.teml.org/), which draws the board as you type.
+This guide builds a small library system. It starts with the big picture: what the finished model says and what its board looks like. Then nine short steps build it, from a first sketch to a model your team can track work in.
+
+## The big picture
+
+A library needs software for its books and loans. In everyday words:
+
+- A librarian adds a new book to the catalogue.
+- A member searches the catalogue for a book.
+- A librarian lends a book to a member at the loan desk.
+- A librarian takes the book back when it's returned.
+- A book that's out on loan can't be lent again until it's back.
+
+That's the whole story, and here is the board TEML draws for it:
+
+![The finished library board, four steps from left to right: Add Book on the Catalogue screen records Book Added; Browse Books shows the Book List on the Book Search screen; Lend Book on the Loan Desk records Book Lent; Return Book on the Loan Desk records Book Returned.](/guide/library-board.svg)
+
+Read it left to right, one column per step. The top rows show who acts and on which screen, the middle shows what's asked for and what's shown, and the bottom shows what the system records. The last rule, no lending a book that's out, is in Lend Book's examples: click Lend Book in the viewer to see them.
+
+{{< button href="https://tools.teml.org/?src=https%3A%2F%2Fteml.org%2Fguide%2F09-wireframes.teml.yaml" >}}Explore the finished library{{< /button >}}
+
+## Build it step by step
+
+The steps below build that board one piece at a time. Each step is a complete TEML document that you can paste into the [TEML Viewer](https://tools.teml.org/), which draws the board as you type.
 
 For each step you can either:
 
