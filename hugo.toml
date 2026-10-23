@@ -7,3 +7,8 @@ theme = 'hugo-book'
   name = "TEML Viewer"
   url = "https://tools.teml.org/"
   weight = 10
+
+[[menu.after]]
+  name = "About"
+  url = "/about/"
+  weight = 20
