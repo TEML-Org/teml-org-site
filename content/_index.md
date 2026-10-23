@@ -68,7 +68,7 @@ The model is a text file that lives in Git next to the code.
 
 ## **Have your own software project in mind?**
 
-TEML's author can help you work out what your software needs to do, model it with you, then build it in small, well-defined pieces, one slice at a time. Clarity first, building second, with TEML as the method. You don't need any of this to use TEML: the language and tools are free.
+[TEML's author](/about/) can help you work out what your software needs to do, model it with you, then build it in small, well-defined pieces, one slice at a time. Clarity first, building second, with TEML as the method. You don't need any of this to use TEML: the language and tools are free.
 
 {{< button href="https://github.com/TEML-Org/Teml-spec/discussions/new?category=general&title=My%20project%3A%20" >}}Let's talk about your project{{< /button >}}
 
